@@ -311,7 +311,7 @@ def uploader():
         if file and allowed_file(file.filename):
             upload_filename = secure_filename(file.filename)
             extension_upload = upload_filename.rsplit('.')[-1]
-            filename = request,form.get('filename').replace('"', '') + '.' + extension_upload
+            filename = request.form.get('filename').replace('"', '') + '.' + extension_upload
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
             colormap_name = request.form.get('colormap').replace('"', '')
@@ -356,4 +356,4 @@ if __name__ == '__main__':
     file_handler.setFormatter(formatter)
     app.logger.addHandler(file_handler)
 
-    app.run(host="0.0.0.0", port=8080)
+    app.run(host="0.0.0.0", port=8899)
