@@ -1,19 +1,20 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    {{ super() }}
+{{ super() }}
 
 <div class="container-fluid mt-3">
 
     <div class="mb-3">
         <p class="fw-normal fs-6">To build charts, you need to draw up data according to this
             <a href="{{ url_for('download_file', filename='sample.xlsx') }}" class="link-danger">template</a>
-         and save it in the format "txt" (separator - tab) or "csv" (separator - ;)</p>
+            and save it in the format "txt" (separator - tab) or "csv" (separator - ;)</p>
     </div>
 
     <div class="mb-3">
         <div class="d-grid gap-2">
-            <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_table" aria-expanded="false" aria-controls="collapse_table">
+            <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_table"
+                    aria-expanded="false" aria-controls="collapse_table">
                 A few rules for working with our platform
             </button>
         </div>
@@ -23,67 +24,80 @@
                 <p class="lead">First line — cell name.</p>
                 <p class="lead">Second line — list of variable reagents.</p>
                 <p class="lead">Third line — list of variable products.</p>
-                <p class="lead">Then a table with information about the name of the substance, symbol of the substance, molar mass (g / mol),
-                     weight (g), CC50 (mM).</p>
+                <p class="lead">Then a table with information about the name of the substance, symbol of the substance,
+                    molar mass (g / mol),
+                    weight (g), CC50 (mM).</p>
             </div>
         </div>
     </div>
 
     <div class="mb-3">
         <div class="d-grid gap-2">
-            <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_notation" aria-expanded="false" aria-controls="collapse_notation">
+            <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_notation"
+                    aria-expanded="false" aria-controls="collapse_notation">
                 Designation of substances
             </button>
         </div>
 
         <div class="collapse" id="collapse_notation">
             <div class="card card-body">
-                <p class="fw-bold fs-3">Общая информация</p>
-                <p class="lead">У каждого вещества имеется своя роль в реакции, условно отображенная в названии переменной.
-                    Так, например, для постоянного реагента можно использовать нотацию SMi или Ri (или любую другую удобную для Вас).
-                    Если же вы хотите варьировать вещество SMi, то необходимо обозначать вещества данной группы следующим образом:
+                <p class="fw-bold fs-3">General information</p>
+                <p class="lead">Each substance has its own role in the reaction, conditionally reflected in the
+                    variable's name.
+                    For example, for a constant reagent, you can use the notation SMi or Ri (or any other that's
+                    convenient for you).
+                    If you want to vary the SMi substance, it's necessary to denote substances of this group in the
+                    following way:
                 </p>
-                <p class="fw-bold">SMi-1, SMi-2, и т.д.</p>
-                <p class="lead">Данной информации достаточно для случая независимых переменных
-                    (когда Вы хотите обойтись простым декартовым произведением).</p>
+                <p class="fw-bold">SMi-1, SMi-2, etc.</p>
+                <p class="lead">This information is sufficient for the case of independent variables
+                    (when you want to use simple Cartesian product).</p>
 
 
-                <p class="fw-bold fs-3">Обозначение продуктов</p>
-                <p class="lead">Имя переменной: Pi, или BPi, или любое удобное для Вас обозначение.
-                    Обозначение продукта определяется переменными указанными в строке «Product variables».
-                    Так, например, если продукт зависит от переменных: SM1, SM2, SM3, то обозначение продукта
-                    в общем случае будет выглядеть следующим образом:</p>
+                <p class="fw-bold fs-3">Product notation</p>
+                <p class="lead">Variable name: Pi, or BPi, or any convenient designation for you.
+                    Product notation is determined by the variables specified in the "Product variables" row.
+                    For example, if the product depends on the variables: SM1, SM2, SM3, then the general product
+                    notation
+                    will look as follows:</p>
                 <p class="fw-bold">Pi-k-l-m</p>
-                <p class="fw-normal">где i – порядковый номер продукта; k,l,m – порядковые номера веществ,
-                    от которых зависит продукт (SM1-k, SM2-l, SM3-m).</p>
-                <p class="lead">Если какой-то продукт не зависит от какой-то из переменных, то вместо порядкового номера необходимо указывать "0":</p>
-                <p class="fw-bold">Pi-k-0-m (продукт не зависит от переменной SM2)</p>
-                <p class="lead">В более тяжелом случае, когда один и тот же продукт может образовываться
-                    при разных комбинациях реагентов следует обозначать продукт следующим образом:</p>
-                <p class="fw-bold">Pi-k-l/n-m (одинаковый продукт образуется как в случае SM2-l, так и в случае SM2-n)</p>
+                <p class="fw-normal">where i is the ordinal number of the product; k,l,m are the ordinal numbers of
+                    substances,
+                    on which the product depends (SM1-k, SM2-l, SM3-m).</p>
+                <p class="lead">If a product does not depend on any of the variables, instead of the ordinal number it's
+                    necessary to specify "0":</p>
+                <p class="fw-bold">Pi-k-0-m (product does not depend on variable SM2)</p>
+                <p class="lead">In a more difficult case, when the same product can be formed
+                    with different combinations of reagents, product should be denoted as follows:</p>
+                <p class="fw-bold">Pi-k-l/n-m (the same product is formed both in case of SM2-l and SM2-n)</p>
 
 
-                <p class="fw-bold fs-3">Случай зависимых переменных</p>
-                <p class="lead">Более сложной является ситуация зависимых переменных. Общий вид нотации для вещества:</p>
+                <p class="fw-bold fs-3">Case of dependent variables</p>
+                <p class="lead">More complex is the situation of dependent variables. General notation for a
+                    substance:</p>
                 <p class="fw-bold">SMi-j-k,l,m,…</p>
-                <p class="fw-normal">где i – номер типа реагента, j – порядковый номер реагента данного типа,
-                    а k,l,m – порядковые номера веществ SMi-1, с которым рассматриваемое вещество реагирует.</p>
-                <p class="lead">Это можно представить как последовательное вытаскивание вещей из нескольких ящиков:
-                    если Вы вытаскиваете любой элемент из первого элемента, то Вы не можете взять любой элемент из второго
-                    и последующих ящиков. Это полезная аналогия для многокомпонентных химических реакций.
-                    Проще всего это понять из следующего графа:</p>
+                <p class="fw-normal">where i is the reagent type number, j is the ordinal number of the reagent of this
+                    type,
+                    and k,l,m are the ordinal numbers of SMi-1 with which the considered substance reacts.</p>
+                <p class="lead">This can be seen as sequentially pulling things out of several boxes:
+                    if you pull out any element from the first element, you can't take any element from the second
+                    and subsequent ones. This is a useful metaphor for multicomponent chemical reactions.
+                    The easiest way to understand this is from the following graph:</p>
                 <img src="{{ url_for('static', filename='images/tree_example.png') }}" class="img-fluid">
-                <p class="font-italic text-center">Дерево комбинаций веществ. В рамках вещество данного типа, справа - нотация</p>
-                <p class="lead">В данном случае, нотация становится сложнее и данные должны образовать структуру по типу
-                    голова-хвост: если у Вас несколько реагентов первого типа: SM1-1, SM1-2, …,
-                    то вторые реагенты необходимо нумеровать следующим образом: SM2-i-1 – в случае, если данный реагент реагирует
-                    только с SM1-1; только со вторым –  SM2-i-2; с двумя –  SM2-i-1,2. Добавление следующей переменной следует
-                    этой же логике: если SM3-i реагирует с веществами SM1-1 и SM2-1-1, то нотация должна быть следующей:
-                    SM3-1-1 (последняя цифра соответствует порядковому номеру SM2);
-                    если указанное вещество реагирует с парами SM1-1/SM2-2-1, SM1-2/SM2-3-2 - SM3-3-2,3;
-                    если вещество реагирует во всех возможных комбинациях - SM3-4. </p>
-                <p class="lead">Таким образом, каждая комбинация порождается последовательностью вершин графа
-                    от родительского элемента до крайнего дочернего.</p>
+                <p class="font-italic text-center">The substance combination tree. In each frame, notation to the
+                    right</p>
+                <p class="lead">In this case, the notation becomes more complex and the data should form a head-to-tail
+                    structure:
+                    if you have several first type reagent: SM1-1, SM1-2, …,
+                    the second reagents need to be numbered as follows: SM2-i-1 – if this reagent reacts
+                    only with SM1-1; only with the second – SM2-i-2; with the two - SM2-i-1,2.
+                    Adding the next variable follows this logic: if SM3-i reacts with substances SM1-1 and SM2-1-1,
+                    notation should be as follows:
+                    SM3-1-1 (the last digit corresponds to the ordinal number of SM2);
+                    if the said substance reacts with pairs SM1-1/SM2-2-1, SM1-2/SM2-3-2 - SM3-3-2,3;
+                    if the substance reacts in all possible combinations - SM3-4. </p>
+                <p class="lead">So, each combination is formed by a sequence of graph's nodes
+                    from parent element to the extreme child.</p>
 
             </div>
         </div>
@@ -91,7 +105,8 @@
 
     <div class="mb-3">
         <div class="d-grid gap-2">
-            <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_example" aria-expanded="false" aria-controls="collapse_example">
+            <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_example"
+                    aria-expanded="false" aria-controls="collapse_example">
                 Demo Files
             </button>
         </div>
