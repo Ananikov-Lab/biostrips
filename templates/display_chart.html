@@ -6,16 +6,33 @@
 <div class="alert alert-primary" id='check' style="display:block;margin-top: 1em;margin-bottom: 1em;">
             <p class="fw-bold fs-3">Congratulations, your file in our library</p>
             <div class="alert alert-primary">
-            <div class="mb-3">
-                <span class="fw-normal fs-6">Filename: </span>
-                <span class="fw-light fs-6">{{ filename }}</span>
-            </div>
+        <div class="mb-3">
+            <p class="fw-bold fs-3">Build charts</p>
+            <span class="fw-normal fs-6">Filename: </span>
+            <span class="fw-light fs-6">{{ filename }}</span>
+            <span class="fw-normal fs-6">Colormap: </span>
+            <span class="fw-light fs-6">{{ colormap }}</span>
+            <span class="fw-normal fs-6">Metric: </span>
+            <span class="fw-light fs-6">{{ cyt_potential }}</span>
+            <span class="fw-normal fs-6">Number of combinations: </span>
+            <span class="fw-light fs-6">{{ number }}</span>
+            <p class='fw-bold text-center'>Top combinations: </p>
+                {% for el in top_combinations %}
+                   <p class='text-justify lh-sm text-center'>
+                   <span class="fw-normal fs-6">combination: </span>
+                   <span class="fw-light fs-6">{{ el[0] }}</span>
+                   <span class="fw-normal fs-6">{{ cyt_potential }}: </span>
+                    <span class="fw-light fs-6">{{ el[1] }}</span>
+                    </p>
+                {% endfor %}
+            <form method = "post">
+                          <a href="{{ url_for('download', filename=filename) }}" class="btn btn-outline-dark btn-sm">Download</a>
+              </form>
+        </div>
+         <div class="container">
                 {% for graph in graphs %}
                     <img src="{{ url_for('static', filename=graph) }}" class="img-fluid" width="1000" height="1000">
                 {% endfor %}
             </div>
-<form method = "post">
-                        <a href="{{ url_for('download', filename=filename) }}" class="btn btn-outline-dark btn-sm">Download</a>
-            </form>
 </div> </div>
 {% endblock %}

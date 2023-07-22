@@ -65,7 +65,6 @@
 
 
             <div class="my-4">
-<!--                <a id="add-reagent-field" type="button" href='#'><img src="{{ url_for('static', filename='images/add.png') }}"></a>-->
                 <button class='btn btn-success' id="add-reagent-field" type="button">Add new reagent</button>
             </div>
 
@@ -102,7 +101,7 @@
     </div>
 
     <div class="alert alert-primary" id='upload-file-form' style="display:block;">
-        <form method = "post" class="was-validated" action="{{ url_for('uploader') }}" enctype = "multipart/form-data">
+        <form method = "post" class="was-validated" enctype = "multipart/form-data">
             <p class="fw-bold fs-3">Upload file and select options</p>
 
             <div class="mb-3">
@@ -136,44 +135,8 @@
         </form>
     </div>
 
-    <div class="alert alert-primary">
-        <div class="mb-3">
-            <p class="fw-bold fs-3">Build charts</p>
-            <span class="fw-normal fs-6">Filename: </span>
-            <span class="fw-light fs-6">{{ json['title'] }}</span>
-            <span class="fw-normal fs-6">Colormap: </span>
-            <span class="fw-light fs-6">{{ json['colormap'] }}</span>
-            <span class="fw-normal fs-6">Metric: </span>
-            <span class="fw-light fs-6">{{ json['cyt_potential'] }}</span>
-            <span class="fw-normal fs-6">Number of combinations: </span>
-            <span class="fw-light fs-6">{{ session["number_of_combinations"] }}</span>
-        </div>
-
-        <div class="container">
-            <form method = "post">
-                    <button name='gencombs' class="btn btn-outline-success btn-sm" type="submit">Find all combinations</button>
-                {% if session["combs_found"] == 1  %}
-                    <a href="{{ url_for('download', filename=json['title']) }}" class="btn btn-outline-dark btn-sm">Download</a>
-                {% endif %}
-            </form>
-        </div>
-    </div>
-
 </div>
 
-<div class="container">
-        <div class="alert alert-light">
-            <p class='fw-bold text-center'>Top combinations: </p>
-            {% for el in session["top_combinations"] %}
-                <p class='text-justify lh-sm text-center'>
-                <span class="fw-normal fs-6">combination: </span>
-                <span class="fw-light fs-6">{{ el[0] }}</span>
-                <span class="fw-normal fs-6">{{ json['cyt_potential'] }}: </span>
-                <span class="fw-light fs-6">{{ el[1] }}</span>
-                </p>
-            {% endfor %}
-        </div>
-    </div>
 
 <script src="{{ url_for('static', filename='javascript/update_form.js') }}"></script>
 
