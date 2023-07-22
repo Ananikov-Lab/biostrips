@@ -309,7 +309,9 @@ def uploader():
             flash('No selected file')
             return redirect(request.url)
         if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
+            upload_filename = secure_filename(file.filename)
+            extension_upload = upload_filename.rsplit('.')[-1]
+            filename = request,form.get('filename').replace('"', '') + '.' + extension_upload
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
             colormap_name = request.form.get('colormap').replace('"', '')
