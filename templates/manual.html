@@ -6,26 +6,25 @@
 <div class="container-fluid mt-3">
 
     <div class="mb-3">
-        <p class="fw-normal fs-6">Для построения диаграмм необходимо оформить данные по данному
-            <a href="{{ url_for('download_file', filename='sample.xlsx') }}" class="link-danger">шаблону</a>
-        и сохранить в формате "txt" (разделитель - табуляция) или "csv" (разделитель - ;)</p>
+        <p class="fw-normal fs-6">To build charts, you need to draw up data according to this
+            <a href="{{ url_for('download_file', filename='sample.xlsx') }}" class="link-danger">template</a>
+         and save it in the format "txt" (separator - tab) or "csv" (separator - ;)</p>
     </div>
 
     <div class="mb-3">
         <div class="d-grid gap-2">
             <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_table" aria-expanded="false" aria-controls="collapse_table">
-                Как оформить данные?
+                A few rules for working with our platform
             </button>
         </div>
 
         <div class="collapse" id="collapse_table">
             <div class="card card-body">
-                <p class="lead">Таблица состоит нескольких блоков:</p>
-                <p class="lead">Первой строкой указывается название клетки. Вторая строка содержит названия переменных реагентов.
-                    В третьей строке содержатся названия переменных, от которых зависит продукт.</p>
-                <p class="lead">Затем идет блок-таблица с информацией о реагентах и продуктах, содержащая несколько столбцов,
-                    которые необходимо заполнить пользователю: название вещества, условное обозначение вещества, молярная масса (г/моль),
-                    масса (г), СС50 (мМ).</p>
+                <p class="lead">First line — cell name.</p>
+                <p class="lead">Second line — list of variable reagents.</p>
+                <p class="lead">Third line — list of variable products.</p>
+                <p class="lead">Then a table with information about the name of the substance, symbol of the substance, molar mass (g / mol),
+                     weight (g), CC50 (mM).</p>
             </div>
         </div>
     </div>
@@ -33,7 +32,7 @@
     <div class="mb-3">
         <div class="d-grid gap-2">
             <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_notation" aria-expanded="false" aria-controls="collapse_notation">
-                Обозначение веществ
+                Designation of substances
             </button>
         </div>
 
@@ -93,30 +92,30 @@
     <div class="mb-3">
         <div class="d-grid gap-2">
             <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_example" aria-expanded="false" aria-controls="collapse_example">
-                Примеры
+                Demo Files
             </button>
         </div>
 
         <div class="collapse" id="collapse_example">
             <div class="card card-body">
-                <p class="fw-normal fs-6">Пример построения одной
-                    <a href="{{ url_for('download_file', filename='fast_1.txt') }}" class="link-danger">диаграммы</a>
+                <p class="fw-normal fs-6">For one
+                    <a href="{{ url_for('download_file', filename='fast_1.txt') }}" class="link-danger">chart</a>
                 </p>
 
-                <p class="fw-normal fs-6">Пример построения нескольких
-                    <a href="{{ url_for('download_file', filename='fast_2.txt') }}" class="link-danger">диаграмм</a>
+                <p class="fw-normal fs-6">For some
+                    <a href="{{ url_for('download_file', filename='fast_2.txt') }}" class="link-danger">charts</a>
                 </p>
 
-                <p class="fw-normal fs-6">Пример 1 построения диаграммы для реакции
-                    <a href="{{ url_for('download_file', filename='suzuki_1.txt') }}" class="link-danger">Сузуки</a>
+                <p class="fw-normal fs-6">For reaction
+                    <a href="{{ url_for('download_file', filename='suzuki_1.txt') }}" class="link-danger">Suzuki</a>
                 </p>
 
-                <p class="fw-normal fs-6">Пример 2 построения диаграммы для реакции
-                    <a href="{{ url_for('download_file', filename='suzuki_2.txt') }}" class="link-danger">Сузуки</a>
+                <p class="fw-normal fs-6">For reaction
+                    <a href="{{ url_for('download_file', filename='suzuki_2.txt') }}" class="link-danger">Suzuki 2</a>
                 </p>
 
-                <p class="fw-normal fs-6">Пример построения сложной
-                    <a href="{{ url_for('download_file', filename='abstract.txt') }}" class="link-danger">диаграммы</a>
+                <p class="fw-normal fs-6">For a complex
+                    <a href="{{ url_for('download_file', filename='abstract.txt') }}" class="link-danger">chart</a>
                 </p>
 
 

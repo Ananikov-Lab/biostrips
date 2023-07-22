@@ -7,7 +7,7 @@ def generate_charts(path_file, path_data, colormap, cyt_potential):
     # colormap = 'linear' or 'percentile'
     formats = ['png', 'svg', 'pdf']
     path_formats = []
-    filename = path_file.rsplit('\\', 1)[1].rsplit('.', 1)[0]
+    filename = path_file.rsplit('/', 1)[1].rsplit('.', 1)[0]
 
     reactions = cyt.read_data(path_data)
     all_cyt_metrics = {}

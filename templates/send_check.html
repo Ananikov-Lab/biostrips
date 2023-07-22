@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {{ super() }}
+<div class="container mt-3">
+    <div class="alert alert-primary" id='check' style="display:block;margin-top: 1em;margin-bottom: 1em;">
+        <form method = "post" class="was-validated" enctype = "multipart/form-data">
+            {{ form.hidden_tag() }}
+            <p class="fw-bold fs-3">Try to find a file in our library</p>
+            <div class="mb-3">
+                {{ form.filename.label }}
+                {{ form.filename(placeholder=form.filename.description, class="form-control") }}
+            </div>
+
+            <div class="mb-3">
+                <button name='send_check' class="btn btn-primary" type="submit">Send</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
