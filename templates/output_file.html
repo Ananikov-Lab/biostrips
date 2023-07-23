@@ -2,22 +2,22 @@
 
 {% block content %}
     {{ super() }}
-<div class="container mt-3">
-    <div class="alert alert-primary" id='check' style="display:block;margin-top: 1em;margin-bottom: 1em;">
-            <p class="fw-bold fs-3">Congratulations, your file in our library</p>
+    <div class="container mt-3">
+        <div class="alert alert-primary" id='check' style="display:block;margin-top: 1em;margin-bottom: 1em;">
             <div class="alert alert-primary">
-            <div class="mb-3">
-                <span class="fw-normal fs-6">Filename: </span>
-                <span class="fw-light fs-6">{{ filename }}</span>
-            </div>
+                <div class="mb-3">
+                    <span class="fw-normal fs-6">Filename: </span>
+                    <span class="fw-light fs-6">{{ filename }}</span>
+                </div>
 
-            <div class="container">
-            <form method = "post">
-                        <a href="{{ url_for('display_chart', filename=filename) }}" class="btn btn-outline-dark btn-sm">Build charts</a>
+                <div class="container">
+                    <form method="post">
+                        <a href="{{ url_for('display_chart', filename=filename) }}" class="btn btn-outline-dark btn-sm">Display
+                            charts</a>
                         <a href="{{ url_for('download', filename=filename) }}" class="btn btn-outline-dark btn-sm">Download</a>
-            </form>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-    </div>
-</div>
 {% endblock %}
