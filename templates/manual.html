@@ -1,142 +1,147 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{{ super() }}
+    {{ super() }}
 
-<div class="container-fluid mt-3">
+    <div class="container mt-3">
 
-    <div class="mb-3">
-        <p class="fw-normal fs-6">To build charts, you need to draw up data according to this
-            <a href="{{ url_for('download_file', filename='sample.xlsx') }}" class="link-danger">template</a>
-            and save it in the format "txt" (separator - tab) or "csv" (separator - ;)</p>
-    </div>
-
-    <div class="mb-3">
-        <div class="d-grid gap-2">
-            <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_table"
-                    aria-expanded="false" aria-controls="collapse_table">
-                A few rules for working with our platform
-            </button>
+        <div class="mb-3">
+            <p class="fw-normal fs-6">To build charts, you need to prepare data according to this
+                <a href="{{ url_for('download_file', filename='sample.xlsx') }}" class="link-danger">template</a>
+                and save it in the format "txt" (separator - tab) or "csv" (separator - ;)</p>
         </div>
 
-        <div class="collapse" id="collapse_table">
-            <div class="card card-body">
-                <p class="lead">First line — cell name.</p>
-                <p class="lead">Second line — list of variable reagents.</p>
-                <p class="lead">Third line — list of variable products.</p>
-                <p class="lead">Then a table with information about the name of the substance, symbol of the substance,
-                    molar mass (g / mol),
-                    weight (g), CC50 (mM).</p>
+        <div class="mb-3">
+            <div class="d-grid gap-2">
+                <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_table"
+                        aria-expanded="true" aria-controls="collapse_table">
+                    Input format overview
+                </button>
+            </div>
+
+            <div class="collapse show" id="collapse_table">
+                <div class="card card-body">
+                    <p class="lead">First line — cell name.</p>
+                    <p class="lead">Second line — list of variable reagents.</p>
+                    <p class="lead">Third line — list of variable products.</p>
+                    <p class="lead">Then a table with information about the name of the substance, symbol of the
+                        substance,
+                        molar mass (g / mol),
+                        weight (g), CC50 (mM).</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <div class="d-grid gap-2">
+                <button class="btn btn-success" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapse_notation"
+                        aria-expanded="true" aria-controls="collapse_notation">
+                    Substrance label format
+                </button>
+            </div>
+
+            <div class="collapse show" id="collapse_notation">
+                <div class="card card-body">
+                    <p class="fw-bold fs-3">General information</p>
+                    <p class="lead">Each substance has its own role in the reaction, reflected in the
+                        variable's name.
+                        For example, for a constant reagent, you can use the notation SMi or Ri (or any other that's
+                        convenient for you).
+                        If you want to vary the SMi substance, it's necessary to denote substances of this group in the
+                        following way:
+                    </p>
+                    <p class="fw-bold">SMi-1, SMi-2, etc.</p>
+                    <p class="lead">This information is sufficient for the case of independent variables
+                        (when you want to use simple Cartesian product).</p>
+
+
+                    <p class="fw-bold fs-3">Product notation</p>
+                    <p class="lead">Variable name: Pi, or BPi, or any convenient designation for you.
+                        Product notation is determined by the variables specified in the "Product variables" row.
+                        For example, if the product depends on the variables: SM1, SM2, SM3, then the general product
+                        notation
+                        will look as follows:</p>
+                    <p class="fw-bold">Pi-k-l-m</p>
+                    <p class="fw-normal">where i is the index of the product; k,l,m are the indexes of
+                        substances,
+                        on which the product depends (SM1-k, SM2-l, SM3-m).</p>
+                    <p class="lead">If a product does not depend on any of the variables, instead of the index
+                        "0" must be used:</p>
+                    <p class="fw-bold">Pi-k-0-m (product does not depend on variable SM2)</p>
+                    <p class="lead">In a more difficult case, when the same product can be formed
+                        with different combinations of reagents, product should be denoted as follows:</p>
+                    <p class="fw-bold">Pi-k-l/n-m (the same product is formed both in case of SM2-l and SM2-n)</p>
+
+
+                    <p class="fw-bold fs-3">Case of dependent variables</p>
+                    <p class="lead">More complex is the situation of dependent variables. General notation for a
+                        substance:</p>
+                    <p class="fw-bold">SMi-j-k,l,m,…</p>
+                    <p class="fw-normal">where i is the reagent type index, j is the index of the reagent of this
+                        type,
+                        and k,l,m are the indexes of SMi-1 with which the considered substance reacts.</p>
+                    <p class="lead">This can be seen as sequentially pulling things out of several boxes:
+                        if you pull out any element from the first element, you can't take any element from the second
+                        and subsequent ones. This is a useful metaphor for multicomponent chemical reactions.
+                        The easiest way to understand this is from the following graph:</p>
+                    <img src="{{ url_for('static', filename='images/tree_example.png') }}" class="img-fluid">
+                    <p class="font-italic text-center">The substance combination tree. In each frame, notation to the
+                        right</p>
+                    <p class="lead">In this case, the notation becomes more complex and the data should form a
+                        head-to-tail
+                        structure:
+                        if you have several first type reagents: SM1-1, SM1-2, …,
+                        the second reagents need to be numbered as follows: SM2-i-1 – if this reagent reacts
+                        only with SM1-1; only with the second – SM2-i-2; with the two - SM2-i-1,2.
+                        Adding the next variable follows this logic: if SM3-i reacts with substances SM1-1 and SM2-1-1,
+                        notation should be as follows:
+                        SM3-1-1 (the last digit corresponds to the ordinal number of SM2);
+                        if the said substance reacts with pairs SM1-1/SM2-2-1, SM1-2/SM2-3-2 - SM3-3-2,3;
+                        if the substance reacts in all possible combinations - SM3-4. </p>
+                    <p class="lead">So, each combination is formed by a sequence of graph's nodes
+                        from parent element to the last child.</p>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <div class="d-grid gap-2">
+                <button class="btn btn-success" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapse_example"
+                        aria-expanded="true" aria-controls="collapse_example">
+                    Sample files
+                </button>
+            </div>
+
+            <div class="collapse show" id="collapse_example">
+                <div class="card card-body">
+                    <p class="fw-normal fs-6">For one
+                        <a href="{{ url_for('download_file', filename='fast_1.txt') }}" class="link-danger">chart</a>
+                    </p>
+
+                    <p class="fw-normal fs-6">For some
+                        <a href="{{ url_for('download_file', filename='fast_2.txt') }}" class="link-danger">charts</a>
+                    </p>
+
+                    <p class="fw-normal fs-6">For reaction
+                        <a href="{{ url_for('download_file', filename='suzuki_1.txt') }}" class="link-danger">Suzuki</a>
+                    </p>
+
+                    <p class="fw-normal fs-6">For reaction
+                        <a href="{{ url_for('download_file', filename='suzuki_2.txt') }}" class="link-danger">Suzuki
+                            2</a>
+                    </p>
+
+                    <p class="fw-normal fs-6">For a complex
+                        <a href="{{ url_for('download_file', filename='abstract.txt') }}" class="link-danger">chart</a>
+                    </p>
+
+
+                </div>
             </div>
         </div>
     </div>
-
-    <div class="mb-3">
-        <div class="d-grid gap-2">
-            <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_notation"
-                    aria-expanded="false" aria-controls="collapse_notation">
-                Designation of substances
-            </button>
-        </div>
-
-        <div class="collapse" id="collapse_notation">
-            <div class="card card-body">
-                <p class="fw-bold fs-3">General information</p>
-                <p class="lead">Each substance has its own role in the reaction, conditionally reflected in the
-                    variable's name.
-                    For example, for a constant reagent, you can use the notation SMi or Ri (or any other that's
-                    convenient for you).
-                    If you want to vary the SMi substance, it's necessary to denote substances of this group in the
-                    following way:
-                </p>
-                <p class="fw-bold">SMi-1, SMi-2, etc.</p>
-                <p class="lead">This information is sufficient for the case of independent variables
-                    (when you want to use simple Cartesian product).</p>
-
-
-                <p class="fw-bold fs-3">Product notation</p>
-                <p class="lead">Variable name: Pi, or BPi, or any convenient designation for you.
-                    Product notation is determined by the variables specified in the "Product variables" row.
-                    For example, if the product depends on the variables: SM1, SM2, SM3, then the general product
-                    notation
-                    will look as follows:</p>
-                <p class="fw-bold">Pi-k-l-m</p>
-                <p class="fw-normal">where i is the ordinal number of the product; k,l,m are the ordinal numbers of
-                    substances,
-                    on which the product depends (SM1-k, SM2-l, SM3-m).</p>
-                <p class="lead">If a product does not depend on any of the variables, instead of the ordinal number it's
-                    necessary to specify "0":</p>
-                <p class="fw-bold">Pi-k-0-m (product does not depend on variable SM2)</p>
-                <p class="lead">In a more difficult case, when the same product can be formed
-                    with different combinations of reagents, product should be denoted as follows:</p>
-                <p class="fw-bold">Pi-k-l/n-m (the same product is formed both in case of SM2-l and SM2-n)</p>
-
-
-                <p class="fw-bold fs-3">Case of dependent variables</p>
-                <p class="lead">More complex is the situation of dependent variables. General notation for a
-                    substance:</p>
-                <p class="fw-bold">SMi-j-k,l,m,…</p>
-                <p class="fw-normal">where i is the reagent type number, j is the ordinal number of the reagent of this
-                    type,
-                    and k,l,m are the ordinal numbers of SMi-1 with which the considered substance reacts.</p>
-                <p class="lead">This can be seen as sequentially pulling things out of several boxes:
-                    if you pull out any element from the first element, you can't take any element from the second
-                    and subsequent ones. This is a useful metaphor for multicomponent chemical reactions.
-                    The easiest way to understand this is from the following graph:</p>
-                <img src="{{ url_for('static', filename='images/tree_example.png') }}" class="img-fluid">
-                <p class="font-italic text-center">The substance combination tree. In each frame, notation to the
-                    right</p>
-                <p class="lead">In this case, the notation becomes more complex and the data should form a head-to-tail
-                    structure:
-                    if you have several first type reagent: SM1-1, SM1-2, …,
-                    the second reagents need to be numbered as follows: SM2-i-1 – if this reagent reacts
-                    only with SM1-1; only with the second – SM2-i-2; with the two - SM2-i-1,2.
-                    Adding the next variable follows this logic: if SM3-i reacts with substances SM1-1 and SM2-1-1,
-                    notation should be as follows:
-                    SM3-1-1 (the last digit corresponds to the ordinal number of SM2);
-                    if the said substance reacts with pairs SM1-1/SM2-2-1, SM1-2/SM2-3-2 - SM3-3-2,3;
-                    if the substance reacts in all possible combinations - SM3-4. </p>
-                <p class="lead">So, each combination is formed by a sequence of graph's nodes
-                    from parent element to the extreme child.</p>
-
-            </div>
-        </div>
-    </div>
-
-    <div class="mb-3">
-        <div class="d-grid gap-2">
-            <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_example"
-                    aria-expanded="false" aria-controls="collapse_example">
-                Demo Files
-            </button>
-        </div>
-
-        <div class="collapse" id="collapse_example">
-            <div class="card card-body">
-                <p class="fw-normal fs-6">For one
-                    <a href="{{ url_for('download_file', filename='fast_1.txt') }}" class="link-danger">chart</a>
-                </p>
-
-                <p class="fw-normal fs-6">For some
-                    <a href="{{ url_for('download_file', filename='fast_2.txt') }}" class="link-danger">charts</a>
-                </p>
-
-                <p class="fw-normal fs-6">For reaction
-                    <a href="{{ url_for('download_file', filename='suzuki_1.txt') }}" class="link-danger">Suzuki</a>
-                </p>
-
-                <p class="fw-normal fs-6">For reaction
-                    <a href="{{ url_for('download_file', filename='suzuki_2.txt') }}" class="link-danger">Suzuki 2</a>
-                </p>
-
-                <p class="fw-normal fs-6">For a complex
-                    <a href="{{ url_for('download_file', filename='abstract.txt') }}" class="link-danger">chart</a>
-                </p>
-
-
-            </div>
-        </div>
-    </div>
-</div>
 
 {% endblock %}
