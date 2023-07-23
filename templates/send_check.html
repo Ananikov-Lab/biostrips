@@ -11,8 +11,12 @@
                 {{ form.filename.label }}
                 {{ form.filename(placeholder=form.filename.description, class="form-control") }}
             </div>
+                     <p class="fw-bold fs-3" style="margin-bottom: -0.25em;">Our library</p>
+                     {% for exp in exps %}
+                        <a href="{{ url_for('output_file', filename=exp) }}" class="link-danger" style="font-size: 20px;margin-left: 0.5em">{{ exp }}</a><br>
+                     {% endfor %}
 
-            <div class="mb-3">
+            <div class="mb-3" style="margin-top: 0.5em">
                 <button name='send_check' class="btn btn-primary" type="submit">Send</button>
             </div>
         </form>

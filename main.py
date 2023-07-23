@@ -92,14 +92,15 @@ def about():
 @app.route('/send_check', methods=['POST', 'GET'])
 def check_file_in_system():
     form = CheckFile()
+    all_experiments = os.listdir(path_figures)
     if 'send_check' in request.form:
         filename = form.filename.data
         filename = filename + '.txt'
         if filename in os.listdir(path_data):
             return redirect(url_for('output_file', filename=filename.rsplit(".")[0]), 302)
         else:
-            return redirect(url_for('create_chart'), 302)
-    return render_template('send_check.html', menu=menu, form=form)
+            return redirect(url_for('create_chart', filename=filename.rsplit(".")[0]), 302)
+    return render_template('send_check.html', menu=menu, form=form, exps=all_experiments)
 
 
 @app.route("/output_file/<filename>", methods=['POST', 'GET'])
@@ -115,14 +116,13 @@ def output_file(filename):
     return render_template('output_file.html', menu=menu, number=number_of_combs, colormap=colormap, filename=filename, top_combinations=top_combinations, cyt_potential=cyt_potential)
 
 
-@app.route('/create_chart', methods=['POST', 'GET'])
-def create_chart():
+@app.route('/create_chart/<filename>', methods=['POST', 'GET'])
+def create_chart(filename):
     form = OneChartForm()
     form.colormap.choices = [(el["name"], el["name"]) for el in colormap_list]
     form.cyt_potential.choices = [(el["name"], el["name"]) for el in cyt_potentials_list]
     print(request.form)
     if 'send_create' in request.form:
-        filename = form.filename.data
         meta_filename = filename + '.txt'
         if meta_filename in os.listdir(path_data):
             flash('Sorry, this name is taken. Try another filename')
@@ -152,16 +152,13 @@ def create_chart():
         file = request.files['file']
         # If the user does not select a file, the browser submits an
         # empty file without a filename.
-        if file.filename in os.listdir(path_data):
-            flash('Sorry, this name is taken. Try another filename')
-            return redirect(request.url)
         if file.filename == '':
             flash('No selected file')
             return redirect(request.url)
         if file and allowed_file(file.filename):
             upload_filename = secure_filename(file.filename)
             extension_upload = upload_filename.rsplit('.')[-1]
-            filename = request.form.get('filename').replace('"', '') + '.' + extension_upload
+            filename = filename + '.' + extension_upload
             if filename in os.listdir(path_data):
                 flash('Sorry, this name is taken. Try another filename')
                 return redirect(url_for('create_chart'))
