@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {{ super() }}
+
+    <div class="container mt-3">
+
+        <p class="lead">A bio-Strip of a chemical reaction is a multi-sectioned strip (Figure 1),
+            in which the length of the sections corresponds to the “normalized cytotoxicity” (NC)
+            of the substances:</p>
+
+        $$NC = {n \over CC_{50}}\ (1)$$
+
+        <p class="fw-normal">where n is the amount (mmol) of a given substance in a given reaction, and
+            CC50 (mmol/L) is a half-maximal cytotoxicity concentration of a given substance measured
+            in a given cell line. Since lower CC50 values reflect higher cytotoxicity, longer sections
+            in the bio-Strip imply higher contributions of such substances to the “overall cytotoxicity”
+            of the reaction.</p>
+
+        <p class="lead">The color of the sections in bio-Strips corresponds to the CC50 of a given
+            substance in a given cell line. The substance with the lowest CC50 value (highest cytotoxicity)
+            is colored red, the substance with the highest CC50 value (lowest cytotoxicity) is colored
+            green, and all the other substances are colored intermediate shades of red, orange, yellow,
+            and green. The color distribution in the cytotoxicity scale can correspond to the percentile
+            distribution of the CC50 values or to the linear distribution of the CC50 values
+            (the former variant is more artificial but it allows producing more “colorful” bio-Strips
+            with a higher diversity of section colors).</p>
+
+        <p class="lead">In Figure 1, the reaction is shown above the bio-Strips, whereas the cytotoxicity
+            scale and explanations of the reaction name and abbreviations are shown below. Each bio-Strip
+            is supplied with a bio-Factor (BF), which shows the change of the “overall cytotoxicity”
+            of a particular reaction upon its course:</p>
+        $$BF = {\sum NC_{out} \over \sum NC_{in}} = {\sum {n \over CC_{50}(out)} \over \sum {n \over CC_{50}(in)}}\
+        (2)$$
+        <p class="fw-normal">Where in and out designate the substances entering (starting materials,
+            catalysts, solvents and other reagents) or leaving (products, byproducts and chemicals that
+            can be recycled, such as catalysts and solvents) the reaction, accordingly. BF >1 corresponds
+            to an increased “overall cytotoxicity”, whereas BF < 1 corresponds to a decreased overall
+            cytotoxicity”.</p>
+
+        <p class="lead">Figure 1 shows bio-Strips for six exemplary routes of synthesis of
+            4-nitro-1,1’-biphenyl. In these six reactions, the same starting material 2 (SM2, iodobenzene)
+            and reagent (R, K2CO3) is used, as reflected by the first and third letters (A) in the
+            reaction name, whereas the catalyst (CT) and solvent (S) vary: CT = Pd(OAc)2 (A), PdCl2 (B),
+            or Pd(acac)2 (C) (the second letter in the reaction name), and S = ethanol (A) or NMP (B)
+            (the fourth letter in the reaction name). These bio-Strips readily demonstrate that catalysts A
+            (Pd(OAc)2) and B (PdCl2) and solvent (A) (ethanol) are preferable from the viewpoint of the
+            “overall cytotoxicity” of these synthetic routes.</p>
+
+
+        <img src="{{ url_for('static', filename='images/figure_1_intro.png') }}" width="600"
+             class="img-fluid rounded mx-auto d-block">
+        <p class="text-center fw-normal">Figure 1.<span class="text_center fw-light"> bio-Strips
+    for synthesis of 4-nitro-1,1’-biphenyl upon varying starting material 2
+    (SM2: 4-iodonitrobenzene (A), 4-bromonitrobenzene (B), or 4-cholobenzene (C)),
+    catalyst (CT: Pd(OAc)2 (A), PdCl2 (B), or Pd(acac)2 (C)), reagent (R: Na2CO3 (A),
+    K2CO3 (B), or Cs2CO3 (C)), and solvent (S: ethanol (A) or NMP (B)).
+    The reaction is shown above the bio-Strips, whereas the cytotoxicity scale and
+    explanations of the reaction name and abbreviations are shown below. In the bio-Strips,
+    the length of the sections corresponds to the “normalized cytotoxicity” (NC) of the substances,
+    and the color of the sections corresponds to the CC50 value of a given substance in a given
+    cell line (in this case - CaCo-2). Note that here, the cytotoxicity scale is colored
+    in accordance with the percentile distribution of the CC50 values. bio-Factors (BFs)
+    are provided below the bio-Strips. Only 6 out of 36 bio-Strips are shown for clarity.</span></p>
+
+        <p class="lead">In addition to BFs, cytotoxicity potentials for each bio-Strip are calculated:
+            CPi (initial cytotoxicity potential, or CP of the substances entering the reaction);
+            CPf (final cytotoxicity potential, or CP of the substances leaving the reaction),
+            and CPf_rel (relative final cytotoxicity potential, or CP of the substances leaving
+            the reaction except for the target product). In essence, CPs show the quantity of
+            the liters of the cell media that can be “poisoned” by the corresponding substances:</p>
+
+        $$CP_i = {\sum NC_{in}}\ (3)$$
+        $$CP_f = {\sum NC_{out}}\ (4)$$
+        $$CP_{f\_rel} = {\sum NC_{out} - NC_{product}}\ (5)$$
+
+        <p class="lead">In the case of CPs, lower values correspond to reactions with lower
+            “overall cytotoxicity”. Thus, by looking at the initial and final CPs of various
+            synthetic routes for a particular target product, we can suggest the safer ones without
+            looking at CC50 values of the individual substances involved.</p>
+
+        <p class='lead fw-bold'>Click
+            <a href="/send_check">here</a>
+            to build bio-Strips for your own chemical processes using your own data on biological
+            activity.</p>
+
+        <p class="lead">A detailed step-by-step description of the procedure is provided
+            in the Manual tab.</p>
+
+    </div>
+
+{% endblock %}

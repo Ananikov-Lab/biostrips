@@ -3,133 +3,142 @@
 {% block content %}
     {{ super() }}
 
-{% for cat, msg in get_flashed_messages(True) %}
-    {% if cat == 'success' %}
-        <div class="alert alert-success" role="alert">{{ msg }}</div>
-    {% else %}
-        <div class="alert alert-danger" role="alert">{{ msg }}</div>
-    {% endif %}
-{% endfor %}
+    {% for cat, msg in get_flashed_messages(True) %}
+        {% if cat == 'success' %}
+            <div class="alert alert-success" role="alert">{{ msg }}</div>
+        {% else %}
+            <div class="alert alert-danger" role="alert">{{ msg }}</div>
+        {% endif %}
+    {% endfor %}
 
 
-<div class="container mt-3">
+    <div class="container mt-3">
 
-    <div class="my-4">
-        <button class="btn btn-primary" id="toggle-btn-form">create file</button>
+        <div class="my-4">
+            <button class="btn btn-primary" id="toggle-btn-form">create file</button>
+        </div>
+
+        <div class="alert alert-primary" id='create-file-form' style="display:none;">
+            <p class="fw-bold fs-3">Enter data for plotting</p>
+
+            <form method="POST">
+                {{ form.hidden_tag() }}
+
+
+                <div class="mb-3">
+                    {{ form.cell_name.label }}
+                    {{ form.cell_name(placeholder=form.cell_name.description, class="form-control") }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.colormap.label }}
+                    {{ form.colormap(placeholder=form.colormap.description, class="form-select") }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.cyt_potential.label }}
+                    {{ form.cyt_potential(placeholder=form.cyt_potential.description, class="form-select") }}
+                </div>
+
+                <table id="reagents_info" name="reagents_info">
+                    <tr>
+                        <th>Reagent name</th>
+                        <th>Role</th>
+                        <th>Molar mass</th>
+                        <th>Mass</th>
+                        <th>CC50</th>
+                    </tr>
+
+                    {% for reagent_info in form.reagents_info %}
+                        <tr>
+                            {% for el in reagent_info %}
+                                <td>{{ el(class="form-control") }}</td>
+                            {% endfor %}
+                            <td>
+                                <button class="btn disabled btn-sm" type="button">delete</button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+
+
+                <div class="my-4">
+                    <button class='btn btn-success' id="add-reagent-field" type="button">Add new reagent</button>
+                </div>
+
+
+                <table id="products_info" name="products_info">
+                    <tr>
+                        <th>Product name</th>
+                        <th>Role</th>
+                        <th>Molar mass</th>
+                        <th>Mass</th>
+                        <th>CC50</th>
+                    </tr>
+
+                    {% for product_info in form.products_info %}
+                        <tr>
+                            {% for el in product_info %}
+                                <td>{{ el(class="form-control") }}</td>
+                            {% endfor %}
+                            <td>
+                                <button class="btn disabled btn-sm" type="button">delete</button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+
+                <div class="my-4">
+                    <button class='btn btn-success' id="add-product-field" type="button">Add new product</button>
+                </div>
+
+
+                <div class="mb-3">
+                    <button name='send_create' class="btn btn-primary" type="submit">Send</button>
+                </div>
+
+            </form>
+        </div>
+
+        <div class="alert alert-primary" id='upload-file-form' style="display:block;">
+            <form method="post" class="was-validated" enctype="multipart/form-data">
+                <p class="fw-bold fs-3">Upload file and select options</p>
+
+                <div class="mb-3">
+                    <input type="file" name="file" class="form-control" aria-label="file example" required>
+                </div>
+                <div class="mb-3">
+                    <select name="colormap" id="colormap" class="form-select" required aria-label="select example">
+                        <option value="">Select a colormap</option>
+                        {% for colormap in colormap_list %}
+                            <li>
+                                <option name="colormap" id="colormap">"{{ colormap.name }}"</option>
+                            </li>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <select name="cyt_potential" id="cyt_potential" class="form-select" required
+                            aria-label="select example">
+                        <option value="">Select cytotoxic potential</option>
+                        {% for cyt_potential in cyt_potentials_list %}
+                            <li>
+                                <option name="cyt_potential" id="cyt_potential">"{{ cyt_potential.name }}"</option>
+                            </li>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <button name='send_upload' class="btn btn-primary" type="submit">Send</button>
+                </div>
+            </form>
+        </div>
+
     </div>
 
-    <div class="alert alert-primary" id='create-file-form' style="display:none;">
-        <p class="fw-bold fs-3">Enter data for plotting</p>
 
-        <form method="POST">
-            {{ form.hidden_tag() }}
-
-
-            <div class="mb-3">
-                {{ form.cell_name.label }}
-                {{ form.cell_name(placeholder=form.cell_name.description, class="form-control") }}
-            </div>
-
-            <div class="mb-3">
-                {{ form.colormap.label }}
-                {{ form.colormap(placeholder=form.colormap.description, class="form-select") }}
-            </div>
-
-            <div class="mb-3">
-                {{ form.cyt_potential.label }}
-                {{ form.cyt_potential(placeholder=form.cyt_potential.description, class="form-select") }}
-            </div>
-
-            <table id="reagents_info" name="reagents_info">
-                <tr>
-                    <th>Reagent name</th>
-                    <th>Role</th>
-                    <th>Molar mass</th>
-                    <th>Mass</th>
-                    <th>CC50</th>
-                </tr>
-
-                {% for reagent_info in form.reagents_info %}
-                <tr>
-                    {% for el in reagent_info %}
-                        <td>{{ el(class="form-control") }}</td>
-                    {% endfor %}
-                    <td><button class="btn disabled btn-sm" type="button">delete</button></td>
-                </tr>
-                {% endfor %}
-            </table>
-
-
-            <div class="my-4">
-                <button class='btn btn-success' id="add-reagent-field" type="button">Add new reagent</button>
-            </div>
-
-
-            <table id="products_info" name="products_info">
-                <tr>
-                    <th>Product name</th>
-                    <th>Role</th>
-                    <th>Molar mass</th>
-                    <th>Mass</th>
-                    <th>CC50</th>
-                </tr>
-
-                {% for product_info in form.products_info %}
-                <tr>
-                    {% for el in product_info %}
-                        <td>{{ el(class="form-control") }}</td>
-                    {% endfor %}
-                    <td><button class="btn disabled btn-sm" type="button">delete</button></td>
-                </tr>
-                {% endfor %}
-            </table>
-
-            <div class="my-4">
-                <button class='btn btn-success' id="add-product-field" type="button">Add new product</button>
-            </div>
-
-
-            <div class="mb-3">
-                <button name='send_create' class="btn btn-primary" type="submit">Send</button>
-            </div>
-
-        </form>
-    </div>
-
-    <div class="alert alert-primary" id='upload-file-form' style="display:block;">
-        <form method = "post" class="was-validated" enctype = "multipart/form-data">
-            <p class="fw-bold fs-3">Upload file and select options</p>
-
-            <div class="mb-3">
-                <input type="file" name = "file" class="form-control" aria-label="file example" required>
-            </div>
-            <div class="mb-3">
-                <select name="colormap" id="colormap" class="form-select" required aria-label="select example">
-                    <option value="">Select a colormap</option>
-                    {% for colormap in colormap_list %}
-                        <li><option name="colormap" id="colormap">"{{ colormap.name }}"</option></li>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <select name="cyt_potential" id="cyt_potential" class="form-select" required aria-label="select example">
-                    <option value="">Select cytotoxic potential</option>
-                    {% for cyt_potential in cyt_potentials_list %}
-                        <li><option name="cyt_potential" id="cyt_potential">"{{ cyt_potential.name }}"</option></li>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <button name='send_upload' class="btn btn-primary" type="submit">Send</button>
-            </div>
-        </form>
-    </div>
-
-</div>
-
-
-<script src="{{ url_for('static', filename='javascript/update_form.js') }}"></script>
+    <script src="{{ url_for('static', filename='javascript/update_form.js') }}"></script>
 
 {% endblock %}

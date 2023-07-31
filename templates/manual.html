@@ -6,28 +6,40 @@
     <div class="container mt-3">
 
         <div class="mb-3">
-            <p class="fw-normal fs-6">To build charts, you need to prepare data according to this
-                <a href="{{ url_for('download_file', filename='sample.xlsx') }}" class="link-danger">template</a>
-                and save it in the format "txt" (separator - tab) or "csv" (separator - ;)</p>
+            <p class="fw-bold">A STEP-BY-STEP MANUAL FOR BUILDING BIO-STRIPS OF YOUR CHEMICAL REACTION</p>
+            <p class="fw-normal fs-6">Note that for building bio-Strips that would allow a reliable
+                estimation of possible harmful impact of your reaction on living organisms,
+                the cytotoxicity of all the compounds participating in this reaction should be measured
+                in the same cell line at the same exposure time by using the same experimental assay.
+                Only in this case, the comparison would be informative.</p>
         </div>
 
         <div class="mb-3">
             <div class="d-grid gap-2">
-                <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_table"
-                        aria-expanded="true" aria-controls="collapse_table">
-                    Input format overview
+                <button class="btn btn-success" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapse_create_biostrips" aria-controls="collapse_create_biostrips">
+                    How to create a source file for building bio-Strips of my reaction
                 </button>
             </div>
 
-            <div class="collapse show" id="collapse_table">
+            <div class="collapse show" id="collapse_create_biostrips">
                 <div class="card card-body">
-                    <p class="lead">First line — cell name.</p>
-                    <p class="lead">Second line — list of variable reagents.</p>
-                    <p class="lead">Third line — list of variable products.</p>
-                    <p class="lead">Then a table with information about the name of the substance, symbol of the
-                        substance,
-                        molar mass (g / mol),
-                        weight (g), CC50 (mM).</p>
+                    <p class="lead">The source file is a file in a .txt or .csv format that contains
+                        the data required for building bio-Strips for a given chemical reaction.
+                        In particular, these data include: 1) the cell line, in which the cytotoxicity
+                        (half-maximal cytotoxicity concentration, CC50) was assayed; 2) the reagents being
+                        varied in the reaction; 3) the variable reagents, upon which the resulting
+                        (by)products depend; and 4) a list of all the substances entering or leaving
+                        the reaction, including their role, molecular weight, mass used in the reaction,
+                        and CC50 in the corresponding cell line.</p>
+                    <p class="lead">There are two ways to create a source file: by using a dedicated
+                        form in the “Built Chart” tab (the “create file” button) and by completing the
+                        .xlsx template (provided in the “Manual” tab) and subsequently saving it
+                        in a .txt (tabulation-separated, UTF-8) or .csv (semi-colon-separated, UTF-8)
+                        format. The detailed instructions are provided below.</p>
+                    <p class="lead fw-normal">You can download the .xlsx template for filling in the data
+                        <a href="{{ url_for('download_file', filename='sample.xlsx') }}" class="link-danger">here</a>.
+                    </p>
                 </div>
             </div>
         </div>
@@ -35,72 +47,90 @@
         <div class="mb-3">
             <div class="d-grid gap-2">
                 <button class="btn btn-success" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapse_notation"
-                        aria-expanded="true" aria-controls="collapse_notation">
-                    Substrance label format
+                        data-bs-target="#collapse_notation" aria-controls="collapse_notation">
+                    Substance notation
                 </button>
             </div>
 
             <div class="collapse show" id="collapse_notation">
                 <div class="card card-body">
                     <p class="fw-bold fs-3">General information</p>
-                    <p class="lead">Each substance has its own role in the reaction, reflected in the
-                        variable's name.
-                        For example, for a constant reagent, you can use the notation SMi or Ri (or any other that's
-                        convenient for you).
-                        If you want to vary the SMi substance, it's necessary to denote substances of this group in the
-                        following way:
-                    </p>
-                    <p class="fw-bold">SMi-1, SMi-2, etc.</p>
-                    <p class="lead">This information is sufficient for the case of independent variables
-                        (when you want to use simple Cartesian product).</p>
+
+                    <p class="lead">Whether you are using the form or creating the source file manually,
+                        the most important step of the process is to designate the substances correctly.
+                        The correct designation of the substances allows calculating all the possible combinations
+                        of the reaction correctly. Usually, numerous ways of synthesizing a particular target product
+                        upon varying particular reaction compounds are considered.</p>
+
+                    <p class="lead">Each substance plays its own role in the reaction, and this role is encoded
+                        by its abbreviated title:</p>
+                    <p class="fw-bold text-center">SM (starting material), CT (catalyst), R (reagent), S (solvent),
+                        P (product), and BP (byproduct)</p>
+
+                    <p class="lead">For constant substances (those that are not varied in the ways of synthesis of a
+                        particular
+                        product), the following notation is used:</p>
+                    <p class="fw-bold text-center">Ni (e.g. SM1, SM2, R, S etc.)</p>
+                    <p class="fw-normal">where i is the order number.</p>
+
+                    <p class="lead">If the substance is being varied, the following notation should be employed:</p>
+                    <p class="fw-bold text-center">Ni-k or N-i (e.g. SM1-1, SM1-2, SM2-1, SM2-2, R-1, R-2, S-1, S-2,
+                        etc.)</p>
+
+                    <p class="lead">If there is only one substance with a particular role in the reaction
+                        (for example, one catalyst or one solvent), it is designated as N (for constant substances;
+                        e.g. R, S) or N-i (for variable substance; e.g. R-1, R-2, S-1, S-2).</p>
+
+                    <p class="lead">Usually, there is one target product in the reaction, and it does not depend on
+                        the variable substances. Therefore, the product is designated as P. However, the variable
+                        substances decide the byproducts being formed:</p>
+                    <p class="fw-bold text-center">BPi-k-l-m-…</p>
+                    <p class="fw-normal">where i is the order number of the byproduct, and k, l, m, etc.
+                        are the order numbers of the substances upon which the product depends
+                        (e.g. SM1-k, SM2-l, SM3-m, etc.).</p>
+
+                    <p class="lead"> If a particular byproduct does not depend on
+                        a particular variable, 0 is used instead of the corresponding order number:</p>
+                    <p class="fw-bold text-center">BPi-k-0-m-… (the byproduct does not depend on the variable SM2)</p>
+
+                    <p class="lead">In a more complex case, when one byproduct can be formed upon using various
+                        combinations of reagents, the following notation should be used:</p>
+                    <p class="fw-bold text-center">BPi-k-l/n-m-… (the same byproduct is formed upon using SM2-l or
+                        SM2-n)</p>
 
 
-                    <p class="fw-bold fs-3">Product notation</p>
-                    <p class="lead">Variable name: Pi, or BPi, or any convenient designation for you.
-                        Product notation is determined by the variables specified in the "Product variables" row.
-                        For example, if the product depends on the variables: SM1, SM2, SM3, then the general product
-                        notation
-                        will look as follows:</p>
-                    <p class="fw-bold">Pi-k-l-m</p>
-                    <p class="fw-normal">where i is the index of the product; k,l,m are the indexes of
-                        substances,
-                        on which the product depends (SM1-k, SM2-l, SM3-m).</p>
-                    <p class="lead">If a product does not depend on any of the variables, instead of the index
-                        "0" must be used:</p>
-                    <p class="fw-bold">Pi-k-0-m (product does not depend on variable SM2)</p>
-                    <p class="lead">In a more difficult case, when the same product can be formed
-                        with different combinations of reagents, product should be denoted as follows:</p>
-                    <p class="fw-bold">Pi-k-l/n-m (the same product is formed both in case of SM2-l and SM2-n)</p>
+                    <p class="fw-bold fs-3">Dependent variables: general case</p>
 
+                    <p class="lead">Here, starting materials (SM) are used as an example but the scheme is valid
+                        for reaction substances with other roles (CT, R, S, etc.). In a general form, the notation
+                        of a starting material looks as follows:</p>
 
-                    <p class="fw-bold fs-3">Case of dependent variables</p>
-                    <p class="lead">More complex is the situation of dependent variables. General notation for a
-                        substance:</p>
-                    <p class="fw-bold">SMi-j-k,l,m,…</p>
-                    <p class="fw-normal">where i is the reagent type index, j is the index of the reagent of this
-                        type,
-                        and k,l,m are the indexes of SMi-1 with which the considered substance reacts.</p>
-                    <p class="lead">This can be seen as sequentially pulling things out of several boxes:
-                        if you pull out any element from the first element, you can't take any element from the second
-                        and subsequent ones. This is a useful metaphor for multicomponent chemical reactions.
-                        The easiest way to understand this is from the following graph:</p>
+                    <p class="fw-bold text-center">SMi-j-k,l,m,…</p>
+                    <p class="fw-normal">where i is the order number of the type of a given reagent, j is
+                        the order number of the reagent of this type, and k, l, m, etc. are the order numbers
+                        of substances SMi-1, with which this substance reacts (Figure 1).</p>
+
+                    <p class="lead">In this case, the data should form a head-to-tail structure: if you have several
+                        reagents of
+                        type 1 (SM1-1, SM1-2, etc.), then reagents of type 2 should be designated as follows:</p>
+                    <p class="fw-bold text-center">SM2-i-1 (if this reagent reacts only with SM1-1), SM2-i-2 (if this
+                        reagent reacts only with SM1-2),
+                        or SM2-i-1,2 (if this reagent reacts with both SM1-1 and SM1-2)</p>
+
+                    <p class="lead">Accordingly, reagents of the next type should have the following notation:</p>
+                    <p class="fw-bold text-center">SM3-i-1
+                        (if this reagent reacts with SM1-1 and SM2-1-1), SM3-i-2,3 (if this reagent reacts with the
+                        pairs SM1-1/SM2-2-1 and SM1-2/SM2-3-2), or SM3-i-1,2,3,4 = SM3-4
+                        (if the reagent reacts in all possible combinations).</p>
+
+                    <p class="lead">Thus, each combination represents the sequence of graph nodes from the parent
+                        element to the terminal daughter element, whereas the notation of a particular substance
+                        is the summation of all the combinations available for this substance.</p>
+
                     <img src="{{ url_for('static', filename='images/tree_example.png') }}" class="img-fluid">
-                    <p class="font-italic text-center">The substance combination tree. In each frame, notation to the
-                        right</p>
-                    <p class="lead">In this case, the notation becomes more complex and the data should form a
-                        head-to-tail
-                        structure:
-                        if you have several first type reagents: SM1-1, SM1-2, …,
-                        the second reagents need to be numbered as follows: SM2-i-1 – if this reagent reacts
-                        only with SM1-1; only with the second – SM2-i-2; with the two - SM2-i-1,2.
-                        Adding the next variable follows this logic: if SM3-i reacts with substances SM1-1 and SM2-1-1,
-                        notation should be as follows:
-                        SM3-1-1 (the last digit corresponds to the ordinal number of SM2);
-                        if the said substance reacts with pairs SM1-1/SM2-2-1, SM1-2/SM2-3-2 - SM3-3-2,3;
-                        if the substance reacts in all possible combinations - SM3-4. </p>
-                    <p class="lead">So, each combination is formed by a sequence of graph's nodes
-                        from parent element to the last child.</p>
+                    <p class="text-center fw-normal">Figure 1.<span class="text_center fw-light"> A tree of combinations of substances in a three-component reaction.
+                    The substances of the same type are shown by the same color; their notations are given on the right.</span>
+                    </p>
 
                 </div>
             </div>
@@ -109,33 +139,312 @@
         <div class="mb-3">
             <div class="d-grid gap-2">
                 <button class="btn btn-success" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapse_example"
-                        aria-expanded="true" aria-controls="collapse_example">
-                    Sample files
+                        data-bs-target="#collapse_create_file" aria-controls="collapse_create_file">
+                    How to create a source file manually
+                </button>
+            </div>
+
+            <div class="collapse show" id="collapse_create_file">
+                <div class="card card-body">
+
+                    <p class="lead">Here, we will explain the creation of a source file by example of synthesis of
+                        4-nitro-1,1’-biphenyl (Figure 2). In this example: the following substances are being varied:
+                        starting material 2 (SM2: 4-iodonitrobenzene (A), 4-bromonitrobenzene (B),
+                        or 4-chloronitrobenzene (C)), catalyst (CT: Pd(OAc)2 (A), PdCl2 (B), or Pd(acac)2 (C)),
+                        reagent (R: Na2CO3 (A), K2CO3 (B), or Cs2CO3 (C)), and solvent (S: ethanol (A) or NMP (B)).
+                        Accordingly, the first, second, third, and fourth letters in the reaction name correspond
+                        to the type of starting material 2 (SM2), catalyst (CT), reagent (R), and solvent (S) being
+                        used:</p>
+
+                    <p class="fw-bold text-center">SM2-CT-R-S</p>
+
+                    <img src="{{ url_for('static', filename='images/figure_2.png') }}" width="600"
+                         class="img-fluid rounded mx-auto d-block">
+                    <p class="text-center fw-normal">Figure 2.<span class="text_center fw-light"> Scheme of synthesis of 4-nitro-1,1’-biphenyl. The first,
+                    second, third, and fourth letters in the reaction name correspond to the following variable
+                    substances: starting material 2 (SM2: 4-iodonitrobenzene (A), 4-bromonitrobenzene (B),
+                    or 4-chloronitrobenzene (C)), catalyst (CT: Pd(OAc)2 (A), PdCl2 (B), or Pd(acac)2 (C)),
+                    reagent (R: Na2CO3 (A), K2CO3 (B), or Cs2CO3 (C)), and solvent (S: ethanol (A) or NMP (B)).</span>
+                    </p>
+
+                    <p class="lead">We find it convenient to create an .xlsx template first and then convert it to
+                        the .txt or .csv format. Figure 3 shows the corresponding template for the reaction provided
+                        in Figure 2. Here, the first line (field “Cell”) contains the name of the cell line,
+                        in which CC50 of the substances was determined; the second line (field “Variables”) contains
+                        the reagents being varied in the reaction (in this case – SM2, CT, R, and S); and the third
+                        line (field “Product variables”) contains the variable reagents (SM2, R), upon which the
+                        resulting byproducts depend. Below is the table containing the information about all the
+                        substances participating in the reaction, distributed into groups in accordance with their role.
+                        This information includes their name (field “Samples”), role in the reaction
+                        (field “Abbreviation”: starting material (SM), catalyst (CT), reagent (R), solvent (S),
+                        product (P), or byproduct (BP)), molecular weight (Mr, g/mol), mass (g) used in the reaction,
+                        and CC50 (mM) in the corresponding cell line.</p>
+                    <p class="lead">The substances participating in the reaction or forming upon its course are
+                        designated in accordance with the above-mentioned rules (see column “Abbreviation” in Figure
+                        3)</p>
+
+                    <img src="{{ url_for('static', filename='images/figure_3.png') }}" width="600"
+                         class="img-fluid rounded mx-auto d-block">
+                    <p class="text-center fw-normal">Figure 3.<span class="text_center fw-light"> An .xlsx template used for creating a .txt source file for
+                    synthesis of 4-nitro-1,1’-biphenyl. The first line contains the name of the cell line,
+                    in which CC50 was determined; the second line contains the reagents being varied in
+                    the reaction (in this case – SM2, CT, R, and S); and the third line contains the variable
+                    reagents (SM2, R), upon which the resulting byproducts depend. Below is the table containing
+                    the information about all the substances participating in the reaction. This information
+                    includes their role in the reaction (starting material (SM), catalyst (CT), reagent (R),
+                    solvent (S), product (P), or byproduct (BP), molecular weight (g/mol), mass (g) used in
+                    the reaction, and CC50 (mM) in the corresponding cell line.</span></p>
+
+                    <p class="fw-bold fs-3">Starting materials</p>
+                    <p class="lead">There are two types of starting materials in this reaction: the constant
+                        substance SM1 (phenylboronic acid) and the variable substance SM2. The latter implies
+                        4-iodonitrobenzene, 4-bromonitrobenzene, and 4-chloronitrobenzene, which are designated,
+                        correspondingly, SM2-1, SM2-2, and SM2-3.</p>
+
+                    <p class="fw-bold fs-3">Catalysts, reagents, and solvents</p>
+                    <p class="lead">There is one type of catalyst in the reaction, and this substance is variable;
+                        therefore, it is designated as CT-1 (Pd(OAc)2), CT-2 (PdCl2), or CT-3 (Pd(acac)2), respectively.
+                        The same is true for the reagents (R-1, Na2CO3; R-2, K2CO3; and R-3, Cs2CO3) and solvents
+                        (S-1, C2H5OH; and S-2, NMP).</p>
+
+                    <p class="fw-bold fs-3">Products</p>
+                    <p class="lead">The target product 4-nitro-1,1’-biphenyl is designated P.</p>
+
+                    <p class="fw-bold fs-3">Byproducts</p>
+                    <p class="lead">In this reaction, three types of byproducts are produced: (1) halides of sodium,
+                        potassium or cesium, (2) tetraborates of sodium, potassium or cesium, and (3) boric acid.
+                        The first type of byproducts depends on both the type of starting material 2 (SM2)
+                        and the reagent (R) being used and thus is designated as follows: BP1-k-l,
+                        where k corresponds to the order number of SM2 (1 = SM2-1 = 4-iodonitrobenzene;
+                        2 = SM2-2 = 4-bromonitrobenzene; and 3 = SM2-3 = 4-chloronitrobenzene) and l corresponds
+                        to the order number of R (1 = R-1 = Na2CO3; 2 = R-2 = K2CO3; and 3 = R-3 = Cs2CO3).
+                        In whole, there are nine BP1 possible in this reaction: NaI (BP1-1-1), NaBr (BP1-2-1),
+                        NaCl (BP1-3-1), KI (BP1-1-2), KBr (BP1-2-2), NaCl (BP1-3-2), CsI (BP1-1-3), CsBr (BP1-2-3),
+                        and CsCl (BP1-3-3).</p>
+                    <p class="lead">The second type of byproducts depends only on the type of the reagent being used
+                        and thus is designated as follows: BP2-0-l, where l corresponds to the order number
+                        of R (1 = R-1 = Na2CO3; 2 = R-2 = K2CO3; and 3 = R-3 = Cs2CO3). There are three BP2 possible:
+                        Na2B4O7*10H2O (BP2-0-1), K2B4O7*4H2O (BP2-0-2), and Cs2B4O7*5H2O (BP2-0-3).</p>
+                    <p class="lead">Finally, the third byproduct (BP3) is produced independently of the reagents used
+                        in the current example and thus is designated BP3-0-0.</p>
+
+                    <p class="lead">The columns “Mr, g/mol”, “Mass, g”, and “CC50, mM” contain the molecular weight
+                        (g/mol),
+                        mass (g) used in the reaction, and CC50 (mM) for each substance.</p>
+
+                    <p class="lead">The completed template can be subsequently saved in a .txt (tabulation-separated,
+                        UTF-8)
+                        or .csv (semi-colon-separated, UTF-8) format, which can be directly uploaded to the server
+                        for building bio-Strips by following the instructions in the “Built Chart” tab. The detailed
+                        explanation of the procedure is given below in the “How to build bio-Strips for my reaction”
+                        section. Figure 4 shows an overview of a .txt source file created from the template provided
+                        in Figure 3.</p>
+
+                    <img src="{{ url_for('static', filename='images/figure_4.png') }}" width="500"
+                         class="img-fluid rounded mx-auto d-block">
+                    <p class="text-center fw-normal">Figure 4.<span class="text_center fw-light"> An exemplary .txt source file
+                    for bio-Strips for synthesis of 4-nitro-1,1’-biphenyl. The first line contains the name of the cell line,
+                    in which CC50 was determined; the second line contains the reagents being varied in the reaction;
+                    and the third line contains the variable reagents, upon which the resulting byproducts depend.
+                    Below is the table containing the information about all the substances participating in the reaction.</span>
+                    </p>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <div class="d-grid gap-2">
+                <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_form"
+                        aria-controls="collapse_form">
+                    How to create a source file by using a dedicated form
+                </button>
+            </div>
+
+            <div class="collapse show" id="collapse_form">
+                <div class="card card-body">
+
+                    <p class="lead">You can also create a source file by using a dedicated form provided in
+                        the “Built Chart” tab (the “create file” button). An overview of this form is shown
+                        in Figure 5. The top part of the form is common for all the reactions being considered.
+                        It contains the following fields:</p>
+
+
+                    <p class="lead fw-bold">“Filename”<span class='lead'> – any user-defined name for the file with the results.</span>
+                    </p>
+                    <p class="lead fw-bold">“Cell name”<span class='lead'> – the name of the cell culture, in which CC50
+                    values were measured.</span></p>
+                    <p class="lead fw-bold">“Colormap”<span class='lead'> – the type of coloration used in the resulting bio-Strips;
+                    currently, two colormaps are available: percentile (the cytotoxicity scale is colored
+                    in accordance with the percentile distribution of the CC50 values, where the midpoint
+                    corresponds to the 50th percentile) and linear (the cytotoxicity scale is colored in
+                    accordance with the distribution of the CC50 values, where the midpoint corresponds to the mean value).</span>
+                    </p>
+                    <p class="lead fw-bold">“Cytotoxic potential”<span class='lead'> – the type of the cytotoxicity metrics by which
+                    the obtained bio-Strips are evaluated and the five top variants are selected. The following metrics
+                    are available: BF (bio-Factor, shows the change of the “overall cytotoxicity” of a given reaction
+                    during its course; it is considered increased if BF > 1 or decreased if BF < 1);
+                    CPi (initial cytotoxicity potential, or CP of the substances entering the reaction);
+                    CPf (final cytotoxicity potential, or CP of the substances leaving the reaction), and
+                    CPf_rel (relative final cytotoxicity potential, or CP of the substances leaving the reaction
+                    except for the target product). In essence, CPs show the quantity of the liters of the cell
+                    media that can be “poisoned” by the corresponding substances. The formulas for calculating
+                    the metrics are provided below. NC is a “normalized cytotoxicity” of a particular substance,
+                    n is the amount (mmol) of a particular substance in a given reaction, and CC50 is a half-maximal
+                    cytotoxicity concentration of a given substance measured in a particular cell line;
+                    in and out designate the substances entering (starting materials, catalysts, solvents and other reagents)
+                    or leaving (products, byproducts and chemicals that can be recycled, such as catalysts and solvents)
+                    the reaction, accordingly.</span></p>
+
+                    $$NC = {n \over CC_{50}}\ (1)$$
+                    $$BF = {\sum NC_{out} \over \sum NC_{in}} = {\sum {n \over CC_{50}(out)} \over \sum {n \over
+                    CC_{50}(in)}}\ (2)$$
+                    $$CP_i = {\sum NC_{in}}\ (3)$$
+                    $$CP_f = {\sum NC_{out}}\ (4)$$
+                    $$CP_{f\_rel} = {\sum NC_{out} - NC_{product}}\ (5)$$
+
+                    <p class="lead">The bottom part of the form shown in Figure 5 includes the information on the
+                        particular substances participating in the reaction under consideration. For each of the
+                        compounds entering
+                        or leaving the reaction, the following fields should be completed: “Reagent name”, “Role”,
+                        “Molar mass”,
+                        “Mass”, and “CC50”. These fields correspond to the fields in the table shown in Figure 3 and
+                        include
+                        the name of the substances, their role in the reaction (starting material (SM), catalyst (CT),
+                        reagent (R),
+                        solvent (S), product (P), or byproduct (BP), molecular weight (g/mol), mass (g) used in the
+                        reaction,
+                        and CC50 (mM) in the corresponding cell line. There are two separate forms, first of which is
+                        completed
+                        for starting materials, catalysts, reagents, and solvents, and the second is for products and
+                        byproducts.
+                        Additional substances can be added by pressing the “Add new reagent” or “Add new product”
+                        button.</p>
+
+
+                    <img src="{{ url_for('static', filename='images/figure_5.png') }}" width="600"
+                         class="img-fluid rounded mx-auto d-block">
+                    <p class="text-center fw-normal">Figure 5.<span class="text_center fw-light"> An overview of the
+                    form for creating a source file.</span></p>
+
+                    <p class="lead">Figure 6 shows the completed form for synthesis of 4-nitro-1,1’-biphenyl provided
+                        in Figure 2. For considerations used for the designation of substances, see the section
+                        “How to create a source file manually”. Pressing the “Send” button starts the process of
+                        calculating all possible reaction combinations. After this, bio-Strips are ready to be
+                        built.</p>
+                    <img src="{{ url_for('static', filename='images/figure_6.png') }}" width="600"
+                         class="img-fluid rounded mx-auto d-block">
+                    <p class="text-center fw-normal">Figure 6.<span class="text_center fw-light"> An overview of
+                    the form completed for synthesis of 4-nitro-1,1’-biphenyl (see Figure 2).</span></p>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <div class="d-grid gap-2">
+                <button class="btn btn-success" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapse_build_biostrips" aria-controls="collapse_notation">
+                    How to build bio-Strips for my reaction
+                </button>
+            </div>
+
+            <div class="collapse show" id="collapse_build_biostrips">
+                <div class="card card-body">
+                    <p class="lead">Here, we will describe the process when using the manually created .txt or .csv
+                        source file. When using the dedicated form, it is essentially the same but the source file
+                        is generated and uploaded to the server automatically.</p>
+                    <p class="lead">To upload the source file to the server, go to the “Upload file and select options”
+                        form in the “Build Chart” tab and provide the information required: choose the source file and
+                        select the colormap and the cytotoxic potential (the detailed description of the last two
+                        parameters
+                        is provided in the section “How to create a source file by using a dedicated form”) (Figure 7,
+                        top form).
+                        Then press the “Send” button. After this, if the source file does not contain any errors,
+                        the “Build charts” form will show the following information: “Filename” (in this
+                        case – suzuki_4-nitrobiphenyl_hek293t.txt), “Colormap” (percentile), “Metric” (CPi),
+                        and “Number of combinations”. The latter reflects the number of possible ways of synthesis
+                        of a particular product in accordance with the data provided in the source file. For calculating
+                        this number, press the “Find all combinations” button.</p>
+
+                    <img src="{{ url_for('static', filename='images/figure_7.png') }}" width="600"
+                         class="img-fluid rounded mx-auto d-block">
+                    <p class="text-center fw-normal">Figure 7.<span class="text_center fw-light"> An overview of the form
+                    for uploading a manually created source file. In this case, “percentile” and “CPi”
+                    are selected as the colormap and cytotoxic potential, respectively.</span></p>
+
+                    <p class="lead">Pressing the “Build charts” button will start the process of building the bio-Strips
+                        themselves. Figure 8 shows a part of the resulting page with bio-Strips for 54 ways of synthesis
+                        of 4-nitro-1,1’-biphenyl, in accordance with the source file provided in Figure 4. The five
+                        top combinations with the lowest CPi are shown above (in this case, all these CPi equal 0.44).
+                        The cytotoxicity scale colored in accordance with the percentile distribution of the CC50
+                        values is also provided. The bio-Strips are supplied with the reaction title and BF.</p>
+                    <img src="{{ url_for('static', filename='images/figure_8.png') }}" width="600"
+                         class="img-fluid rounded mx-auto d-block">
+                    <p class="text-center fw-normal">Figure 8.<span class="text_center fw-light"> A part of the resulting
+                    page with bio-Strips for 54 ways of synthesis of 4-nitro-1,1’-biphenyl, in accordance with
+                    the source file provided in Figure 4. The five top combinations with the lowest CPi and the
+                    cytotoxicity scale colored in accordance with the percentile distribution of the CC50 values
+                    are shown above. The length of the sections in the bars corresponds to the “normalized cytotoxicity”
+                    (NC) of the substances, whereas their color corresponds to CC50 measured in the HEK293T cell line.
+                    The bio-Strips are supplied with the reaction title and BF. Only two of 54 bio-Strips are shown
+                    for clarity.</span></p>
+
+                    <p class="lead">Pressing the “Download” button allows downloading a .zip archive of the results
+                        which
+                        contains the separate bio-Strips in .pdf, .png, and .svg formats, and a .csv file with the
+                        calculated
+                        cytotoxicity metrics (BF, CPi, CPf, and CPf_rel) (Figure 9).</p>
+                    <img src="{{ url_for('static', filename='images/figure_9.png') }}" width="400"
+                         class="img-fluid rounded mx-auto d-block">
+                    <p class="text-center fw-normal">Figure 9.<span class="text_center fw-light"> A part of the resulting .csv
+                    file with the calculated metrics for the above-considered reactions.</span></p>
+
+                    <p class="lead">The separate bio-Strips can be subsequently combined for illustration purposes
+                        (see an example provided in Figure 10).</p>
+                    <img src="{{ url_for('static', filename='images/figure_10.png') }}" width="900"
+                         class="img-fluid rounded mx-auto d-block">
+                    <p class="text-center fw-normal">Figure 10.<span class="text_center fw-light"> bio-Strips of 36 ways of
+                    synthesis of 4-nitro-1,1’-biphenyl upon varying starting material 2 (SM2: 4-iodonitrobenzene (A),
+                    4-bromonitrobenzene (B), or 4-cholobenzene (C)), catalyst (CT: Pd(OAc)2 (A), PdCl2 (B),
+                    or Pd(acac)2 (C)), reagent (R: Na2CO3 (A), K2CO3 (B), or Cs2CO3 (C)), and solvent (S:
+                    ethanol (A) or NMP (B)). CC50 values are measured in the HEK293T cell line.</span></p>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <div class="d-grid gap-2">
+                <button class="btn btn-success" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapse_example" aria-controls="collapse_example">
+                    Sample input files
                 </button>
             </div>
 
             <div class="collapse show" id="collapse_example">
                 <div class="card card-body">
-                    <p class="fw-normal fs-6">For one
-                        <a href="{{ url_for('download_file', filename='fast_1.txt') }}" class="link-danger">chart</a>
+                    <p class="fw-normal fs-6">One chart
+                        <a href="{{ url_for('download_file', filename='fast_1.txt') }}" class="link-danger">sample</a>
                     </p>
 
-                    <p class="fw-normal fs-6">For some
-                        <a href="{{ url_for('download_file', filename='fast_2.txt') }}" class="link-danger">charts</a>
+                    <p class="fw-normal fs-6">Multiple charts
+                        <a href="{{ url_for('download_file', filename='fast_2.txt') }}" class="link-danger">sample</a>
                     </p>
 
-                    <p class="fw-normal fs-6">For reaction
-                        <a href="{{ url_for('download_file', filename='suzuki_1.txt') }}" class="link-danger">Suzuki</a>
+                    <p class="fw-normal fs-6">Suzuki reaction charts
+                        <a href="{{ url_for('download_file', filename='suzuki_1.txt') }}" class="link-danger">sample
+                            1</a>
                     </p>
 
-                    <p class="fw-normal fs-6">For reaction
-                        <a href="{{ url_for('download_file', filename='suzuki_2.txt') }}" class="link-danger">Suzuki
+                    <p class="fw-normal fs-6">Suzuki reaction charts
+                        <a href="{{ url_for('download_file', filename='suzuki_2.txt') }}" class="link-danger">sample
                             2</a>
                     </p>
 
-                    <p class="fw-normal fs-6">For a complex
-                        <a href="{{ url_for('download_file', filename='abstract.txt') }}" class="link-danger">chart</a>
+                    <p class="fw-normal fs-6"><a href="{{ url_for('download_file', filename='abstract.txt') }}"
+                                                 class="link-danger">Sample</a> for
+                        building a complex charts
                     </p>
 
 

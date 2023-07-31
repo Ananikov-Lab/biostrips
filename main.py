@@ -14,7 +14,6 @@ import logging
 from logging.handlers import RotatingFileHandler
 import pickle as pkl
 
-
 path_data = 'data'
 path_meta = 'metadata'
 path_results = 'results'
@@ -33,6 +32,7 @@ with open(os.path.join(path_meta, 'secret_key.txt'), 'r') as f:
     app.config['SECRET_KEY'] = f.read()
 
 menu = [{"name": "Main", "url": "/"},
+        {"name": "Introduction to biostrips", "url": '/intro_to_biostrips'},
         {"name": "About Us", "url": "/about"},
         {"name": "Tutorial", "url": "/tutorial"},
         {"name": "Build Chart", "url": "/send_check"}]
@@ -84,6 +84,11 @@ def manual():
     return render_template('manual.html', menu=menu)
 
 
+@app.route('/intro_to_biostrips')
+def intro():
+    return render_template('intro_to_bio.html', menu=menu)
+
+
 @app.route('/about')
 def about():
     return render_template('About.html', menu=menu)
@@ -92,7 +97,6 @@ def about():
 @app.route('/send_check', methods=['POST', 'GET'])
 def check_file_in_system():
     form = CheckFile()
-    all_experiments = os.listdir(path_figures)
     if 'send_check' in request.form:
         filename = form.filename.data
         filename = filename + '.txt'
@@ -100,7 +104,7 @@ def check_file_in_system():
             return redirect(url_for('output_file', filename=filename.rsplit(".")[0]), 302)
         else:
             return redirect(url_for('create_chart', filename=filename.rsplit(".")[0]), 302)
-    return render_template('send_check.html', menu=menu, form=form, exps=all_experiments)
+    return render_template('send_check.html', menu=menu, form=form)
 
 
 @app.route("/output_file/<filename>", methods=['POST', 'GET'])
@@ -112,8 +116,9 @@ def output_file(filename):
         cyt_potential = lines[2].strip()
         number_of_combs = lines[3].strip()
     with open(f'static/figures/{filename.rsplit(".")[0]}/file_info.pkl', 'rb') as f:
-                 top_combinations = pkl.load(f)
-    return render_template('output_file.html', menu=menu, number=number_of_combs, colormap=colormap, filename=filename, top_combinations=top_combinations, cyt_potential=cyt_potential)
+        top_combinations = pkl.load(f)
+    return render_template('output_file.html', menu=menu, number=number_of_combs, colormap=colormap, filename=filename,
+                           top_combinations=top_combinations, cyt_potential=cyt_potential)
 
 
 @app.route('/create_chart/<filename>', methods=['POST', 'GET'])
@@ -136,19 +141,19 @@ def create_chart(filename):
         colormap_name = request.form.get('colormap').replace('"', '')
         cyt_potential_name = request.form.get('cyt_potential').replace('"', '')
         file_info = {'title': meta_filename, 'colormap': colormap_name,
-                    'cyt_potential': cyt_potential_name}
+                     'cyt_potential': cyt_potential_name}
         path_table, number_of_combinations = calc_combinations(file_info)
         top_combinations = make_chart(file_info, path_table)
         with open(f'static/figures/{filename}/top_combinations.txt', 'wt') as f:
             text = f'{filename}\n{colormap_name}\n{cyt_potential_name}\n{number_of_combinations}\n'
             f.write(text)
         with open(f'static/figures/{filename}/file_info.pkl', 'wb') as f:
-             pkl.dump(top_combinations, f)
+            pkl.dump(top_combinations, f)
         return redirect(url_for('output_file', filename=filename.rsplit(".")[0]), 302)
     elif 'send_upload' in request.form:
         if 'file' not in request.files:
-             flash('No file part')
-             return redirect(request.url)
+            flash('No file part')
+            return redirect(request.url)
         file = request.files['file']
         # If the user does not select a file, the browser submits an
         # empty file without a filename.
@@ -166,7 +171,7 @@ def create_chart(filename):
             colormap_name = request.form.get('colormap').replace('"', '')
             cyt_potential_name = request.form.get('cyt_potential').replace('"', '')
             file_info = {'title': filename, 'colormap': colormap_name,
-                        'cyt_potential': cyt_potential_name}
+                         'cyt_potential': cyt_potential_name}
             path_table, number_of_combinations = calc_combinations(file_info)
             top_combinations = make_chart(file_info, path_table)
             with open(f'static/figures/{filename.rsplit(".")[0]}/top_combinations.txt', 'wt') as f:
@@ -272,8 +277,10 @@ def display_chart(filename):
         cyt_potential = lines[2].strip()
         number_of_combs = lines[3].strip()
     with open(f'static/figures/{filename.rsplit(".")[0]}/file_info.pkl', 'rb') as f:
-                 top_combinations = pkl.load(f)
-    return render_template('display_chart.html', menu=menu, number=number_of_combs, colormap=colormap, filename=filename, top_combinations=top_combinations, cyt_potential=cyt_potential, graphs=graphs)
+        top_combinations = pkl.load(f)
+    return render_template('display_chart.html', menu=menu, number=number_of_combs, colormap=colormap,
+                           filename=filename, top_combinations=top_combinations, cyt_potential=cyt_potential,
+                           graphs=graphs)
 
 
 @app.route("/download/<path:filename>")
@@ -291,6 +298,7 @@ def download(filename):
     directory = os.path.join(app.root_path, path_results)
     return send_from_directory(directory, zip_name)
 
+
 @app.route("/download_file/<path:filename>", methods=['GET', 'POST'])
 def download_file(filename):
     directory = os.path.join(app.root_path, path_examples)
@@ -301,6 +309,7 @@ def download_file(filename):
 def allowed_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 
 @app.errorhandler(404)
 def pageNotFound(error):
@@ -322,5 +331,4 @@ if __name__ == '__main__':
     file_handler.setFormatter(formatter)
     app.logger.addHandler(file_handler)
 
-    app.run(host="0.0.0.0", port=8080)
-
+    app.run(host="0.0.0.0", port=8998)
