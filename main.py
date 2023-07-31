@@ -313,13 +313,14 @@ def allowed_file(filename):
 
 @app.errorhandler(404)
 def pageNotFound(error):
+    app.logger.error(error)
     return render_template('page404.html', title="Page 404", menu=menu), 404
 
 
 @app.errorhandler(500)
 def internal_error(exception):
     app.logger.error(exception)
-    return render_template('500.html'), 500
+    return render_template('page404.html', title="Page 404", menu=menu), 500
 
 
 if __name__ == '__main__':
@@ -331,4 +332,4 @@ if __name__ == '__main__':
     file_handler.setFormatter(formatter)
     app.logger.addHandler(file_handler)
 
-    app.run(host="0.0.0.0", port=8998)
+    app.run(host="0.0.0.0", port=8080)
