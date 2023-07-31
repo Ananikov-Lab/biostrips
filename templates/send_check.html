@@ -6,11 +6,19 @@
     <div class="alert alert-primary" id='check' style="display:block;margin-top: 1em;margin-bottom: 1em;">
         <form method = "post" class="was-validated" enctype = "multipart/form-data">
             {{ form.hidden_tag() }}
-            <p class="fw-bold fs-3">Try to find a file in our library</p>
+            <p class="fw-bold fs-3">Create new run</p>
             <div class="mb-3">
                 {{ form.filename.label }}
                 {{ form.filename(placeholder=form.filename.description, class="form-control") }}
             </div>
+<<<<<<< HEAD
+=======
+                     <p class="fw-bold fs-3" style="margin-bottom: -0.25em;">Previous runs</p>
+                     {% for exp in exps %}
+                        <a href="{{ url_for('output_file', filename=exp) }}" class="link-danger" style="font-size: 20px;margin-left: 0.5em">{{ exp }}</a><br>
+                     {% endfor %}
+
+>>>>>>> 27b02f9a83e7ab736b5bcbc4c8433ceea71fe9b4
             <div class="mb-3" style="margin-top: 0.5em">
                 <button name='send_check' class="btn btn-primary" type="submit">Send</button>
             </div>
