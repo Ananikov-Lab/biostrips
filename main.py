@@ -13,6 +13,7 @@ from flask_bootstrap import Bootstrap
 import logging
 from logging.handlers import RotatingFileHandler
 import pickle as pkl
+import uuid
 
 path_data = 'data'
 path_meta = 'metadata'
@@ -99,6 +100,7 @@ def check_file_in_system():
     form = CheckFile()
     if 'send_check' in request.form:
         filename = form.filename.data
+        filename = str(uuid.uuid4())
         filename = filename + '.txt'
         if filename in os.listdir(path_data):
             return redirect(url_for('output_file', filename=filename.rsplit(".")[0]), 302)
@@ -126,7 +128,6 @@ def create_chart(filename):
     form = OneChartForm()
     form.colormap.choices = [(el["name"], el["name"]) for el in colormap_list]
     form.cyt_potential.choices = [(el["name"], el["name"]) for el in cyt_potentials_list]
-    print(request.form)
     if 'send_create' in request.form:
         meta_filename = filename + '.txt'
         if meta_filename in os.listdir(path_data):
