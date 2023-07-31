@@ -100,11 +100,11 @@ def check_file_in_system():
     form = CheckFile()
     if 'send_check' in request.form:
         filename = form.filename.data
-        filename = str(uuid.uuid4())
         filename = filename + '.txt'
         if filename in os.listdir(path_data):
             return redirect(url_for('output_file', filename=filename.rsplit(".")[0]), 302)
         else:
+            filename = str(uuid.uuid4())
             return redirect(url_for('create_chart', filename=filename.rsplit(".")[0]), 302)
     return render_template('send_check.html', menu=menu, form=form)
 
