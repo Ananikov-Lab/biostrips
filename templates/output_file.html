@@ -4,10 +4,6 @@
     {{ super() }}
     <div class="container mt-3">
         <div class="alert alert-primary" id='check' style="display:block;margin-top: 1em;margin-bottom: 1em;">
-<<<<<<< HEAD
-            <p class="fw-bold fs-3">Congratulations, your file in our library</p>
-=======
->>>>>>> 27b02f9a83e7ab736b5bcbc4c8433ceea71fe9b4
             <div class="alert alert-primary">
                 <div class="mb-3">
                     <span class="fw-normal fs-6">Filename: </span>
@@ -16,11 +12,7 @@
 
                 <div class="container">
                     <form method="post">
-<<<<<<< HEAD
-                        <a href="{{ url_for('display_chart', filename=filename) }}" class="btn btn-outline-dark btn-sm">Build
-=======
                         <a href="{{ url_for('display_chart', filename=filename) }}" class="btn btn-outline-dark btn-sm">Display
->>>>>>> 27b02f9a83e7ab736b5bcbc4c8433ceea71fe9b4
                             charts</a>
                         <a href="{{ url_for('download', filename=filename) }}" class="btn btn-outline-dark btn-sm">Download</a>
                     </form>
