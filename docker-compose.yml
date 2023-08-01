@@ -2,6 +2,7 @@ version: '3'
 services:
   flask:
     build: .
+    mem_limit: 3g
     container_name: biostrips
     restart: always
     volumes:
