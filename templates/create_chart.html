@@ -46,7 +46,7 @@
                         <th>Role</th>
                         <th>Molar mass</th>
                         <th>Mass</th>
-                        <th>CC50</th>
+                        <th>CC<sub>50</sub></th>
                     </tr>
 
                     {% for reagent_info in form.reagents_info %}
@@ -73,7 +73,7 @@
                         <th>Role</th>
                         <th>Molar mass</th>
                         <th>Mass</th>
-                        <th>CC50</th>
+                        <th>CC<sub>50</sub></th>
                     </tr>
 
                     {% for product_info in form.products_info %}
@@ -109,7 +109,7 @@
                 </div>
                 <div class="mb-3">
                     <select name="colormap" id="colormap" class="form-select" required aria-label="select example">
-                        <option value="">Select a colormap</option>
+                        <option value="">Select colormap</option>
                         {% for colormap in colormap_list %}
                             <li>
                                 <option name="colormap" id="colormap">"{{ colormap.name }}"</option>

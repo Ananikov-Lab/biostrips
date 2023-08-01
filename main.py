@@ -33,10 +33,10 @@ with open(os.path.join(path_meta, 'secret_key.txt'), 'r') as f:
     app.config['SECRET_KEY'] = f.read()
 
 menu = [{"name": "Main", "url": "/"},
-        {"name": "Introduction to biostrips", "url": '/intro_to_biostrips'},
-        {"name": "About Us", "url": "/about"},
-        {"name": "Tutorial", "url": "/tutorial"},
-        {"name": "Build Chart", "url": "/send_check"}]
+        {"name": "Intro to bio-Strips", "url": '/intro_to_biostrips'},
+        {"name": "Build Charts", "url": "/send_check"},
+        {"name": "Manual", "url": "/manual"},
+        {"name": "About", "url": "/about"}]
 
 colormap_list = [{'name': 'percentile'},
                  {'name': 'linear'}]
@@ -71,7 +71,7 @@ class OneChartForm(FlaskForm):
 
 
 class CheckFile(FlaskForm):
-    filename = StringField("Enter filename: ", validators=[DataRequired()], description="Filename")
+    filename = StringField("Enter filename: ", description="Filename")
 
 
 @app.route('/')
@@ -80,7 +80,7 @@ def main():
     return render_template('main.html', menu=menu)
 
 
-@app.route('/tutorial')
+@app.route('/manual')
 def manual():
     return render_template('manual.html', menu=menu)
 
@@ -104,9 +104,11 @@ def check_file_in_system():
         if filename in os.listdir(path_data):
             return redirect(url_for('output_file', filename=filename.rsplit(".")[0]), 302)
         else:
-            filename = str(uuid.uuid4())
-            return redirect(url_for('create_chart', filename=filename.rsplit(".")[0]), 302)
-    return render_template('send_check.html', menu=menu, form=form)
+            return render_template('send_check.html', menu=menu, form=form, text='This file was not found')
+    elif 'new_exp' in request.form:
+        filename = str(uuid.uuid4())
+        return redirect(url_for('create_chart', filename=filename.rsplit(".")[0]), 302)
+    return render_template('send_check.html', menu=menu, form=form, text='')
 
 
 @app.route("/output_file/<filename>", methods=['POST', 'GET'])
