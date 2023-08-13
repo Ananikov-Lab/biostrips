@@ -370,3 +370,4 @@ def restore_full_products(product_indices, raw_data):
             full_products.append([new_label, index])
 
     return full_products
+

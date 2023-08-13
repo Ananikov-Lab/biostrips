@@ -39,7 +39,15 @@
                     {{ form.cyt_potential.label }}
                     {{ form.cyt_potential(placeholder=form.cyt_potential.description, class="form-select") }}
                 </div>
+                <div class="mb-3">
+                    {{ form.variables.label }}
+                    {{ form.variables(placeholder=form.variables.description, class="form-control") }}
+                </div>
 
+                <div class="mb-3">
+                    {{ form.products_variables.label }}
+                    {{ form.products_variables(placeholder=form.products_variables.description, class="form-control") }}
+                </div>
                 <table id="reagents_info" name="reagents_info">
                     <tr>
                         <th>Reagent name</th>

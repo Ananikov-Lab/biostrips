@@ -54,10 +54,10 @@ class ReagentLineForm(Form):
                               validators=[DataRequired(), NumberRange(0)],
                               description="Molar mass")
     mass = DecimalField("Mass: ",
-                        validators=[DataRequired(), NumberRange(0)],
+                        validators=[DataRequired(), NumberRange(0.0000000001)],
                         description="Mass")
     cc50 = DecimalField("CC50: ",
-                        validators=[DataRequired(), NumberRange(0.00001)],
+                        validators=[DataRequired(), NumberRange(0.0000000001)],
                         description="CC50")
 
 
@@ -68,6 +68,8 @@ class OneChartForm(FlaskForm):
     products_info = FieldList(FormField(ReagentLineForm), min_entries=1)
     colormap = SelectField("Choose colormap: ")
     cyt_potential = SelectField("Choose cytotoxic potential: ")
+    variables = StringField("Enter variables separated by commas: ", description="Variables")
+    products_variables = StringField("Enter product variables separated by commas: ", description="Products variables")
 
 
 class CheckFile(FlaskForm):
@@ -140,7 +142,10 @@ def create_chart(filename):
         cyt_potential = form.cyt_potential.data
         reagents_info = form.reagents_info.data
         products_info = form.products_info.data
-        save_chart_data(filename, cell_name, reagents_info, products_info)
+        variables = form.variables.data
+        products_variables = form.products_variables.data
+
+        save_chart_data(filename, cell_name, reagents_info, products_info, variables, products_variables)
         colormap_name = request.form.get('colormap').replace('"', '')
         cyt_potential_name = request.form.get('cyt_potential').replace('"', '')
         file_info = {'title': meta_filename, 'colormap': colormap_name,
@@ -199,13 +204,13 @@ def create_chart(filename):
 
 
 @app.route('/save_chart_data')
-def save_chart_data(filename, cell_name, reagents_info, products_info):
+def save_chart_data(filename, cell_name, reagents_info, products_info, variables, products_variables):
     path_file = os.path.join(path_data, filename + '.txt')
 
     with open(path_file, "w", encoding='utf-8') as out_file:
         print("Cell", cell_name, sep='\t', end='\n', file=out_file)
-        print("Variables", end='\n', file=out_file)
-        print("Product variables", end='\n', file=out_file)
+        print("Variables", variables, sep='\t', end='\n', file=out_file)
+        print("Product variables", products_variables, sep='\t', end='\n', file=out_file)
         print("Samples", "Abbreviation", "Mr, g*mol-1", "Mass, g", "CC50, mM", sep='\t', end='\n', file=out_file)
         print("Starting materials", end='\n', file=out_file)
 

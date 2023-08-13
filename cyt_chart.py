@@ -25,6 +25,7 @@ def read_data(path_file):
         generic_names = []
         normal_cytotoxicity = []
         cytotoxicity = []
+        full_data_flag = 0
 
         for count_line, line in enumerate(lines):
             if count_line == 0:
@@ -35,7 +36,13 @@ def read_data(path_file):
                     reactions.append(cell_name)
                 else:
                     count_reaction = -1
-                    reactions.append([reaction_name, molecules, generic_names,
+
+                    if full_data_flag == 0:
+                        full_data_line = "enough data"
+                    else:
+                        full_data_line = "not enough data"
+
+                    reactions.append([full_data_line, reaction_name, molecules, generic_names,
                                       np.array(normal_cytotoxicity), cytotoxicity])
                     molecules = []
                     generic_names = []
@@ -46,18 +53,25 @@ def read_data(path_file):
                 if count_reaction == 0:
                     reaction_name = line
                 else:
-                    for count_el, el in enumerate(line):
-                        if count_el == 0:
-                            molecules.append(el)
-                        elif count_el == 1:
-                            generic_names.append(el)
-                        elif count_el == 2:
-                            normal_cytotoxicity.append(float(el.replace(',', '.')))
-                        else:
-                            cytotoxicity.append(float(el.replace(',', '.')))
+                    if line[2].lower() == 'na' or line[3].lower() == 'na':
+                        full_data_flag = 1
+                    else:
+                        for count_el, el in enumerate(line):
+                            if count_el == 0:
+                                molecules.append(el)
+                            elif count_el == 1:
+                                generic_names.append(el)
+                            elif count_el == 2:
+                                normal_cytotoxicity.append(float(el.replace(',', '.')))
+                            else:
+                                cytotoxicity.append(float(el.replace(',', '.')))
 
                 if count_line == len_lines - 1:
-                    reactions.append([reaction_name, molecules, generic_names,
+                    if full_data_flag == 0:
+                        full_data_line = "enough data"
+                    else:
+                        full_data_line = "not enough data"
+                    reactions.append([full_data_line, reaction_name, molecules, generic_names,
                                       np.array(normal_cytotoxicity), cytotoxicity])
 
             count_reaction += 1
@@ -82,19 +96,18 @@ def fill_colors(data, category_colors, cytotoxity_scale):
     return colors
 
 
-def cyt_chart(path_graph, reaction_name, molecules, generic_names, normal_cytotoxicity, biofactor, colors, formats, scale_coef):
+def cyt_chart(path_graph, full_data, reaction_name, molecules, generic_names, normal_cytotoxicity, biofactor, colors, formats, scale_coef):
     data_cum = normal_cytotoxicity.cumsum(axis=0)
     len_graph = data_cum[len(molecules) - 1]
 
     width = 25 * len_graph/scale_coef
     height = 2
+    cyt_median = 1.2 * scale_coef * np.median(normal_cytotoxicity)
 
     fig, ax = plt.subplots(figsize=(width, height))
     ax.invert_yaxis()
     ax.xaxis.set_visible(False)
     ax.yaxis.set_visible(False)
-
-    cyt_median = np.median(normal_cytotoxicity)
     count_decrease_cyt = 0
     cycle_len = len(normal_cytotoxicity)
 
@@ -162,6 +175,9 @@ def cyt_chart(path_graph, reaction_name, molecules, generic_names, normal_cytoto
     ax.text(0, 0.5, 'BF = ' + str(biofactor), color='black', fontsize=50, horizontalalignment='left',
             verticalalignment='top')
 
+    if full_data == 'not enough data':
+        ax.text(0, 1.0, 'not enough data!', color='red', fontsize=50, horizontalalignment='left',
+                verticalalignment='top')
 
     for i in range(len(formats)):
         plt.savefig(path_graph[i] + '.' + formats[i], bbox_inches='tight')
@@ -205,7 +221,7 @@ def get_all_cytotoxity(reactions):
         if count == 0:
             continue
         else:
-            for el in reaction[4]:
+            for el in reaction[5]:
                 if el not in cytotoxity_array:
                     cytotoxity_array.append(el)
 
@@ -335,7 +351,7 @@ def calc_scaling_coef(reactions):
         if count == 0:
             continue
         else:
-            NC_len_el = np.sum(el[3])
+            NC_len_el = np.sum(el[4])
 
             if NC_len_el > NC_len_max:
                 NC_len_max = NC_len_el
