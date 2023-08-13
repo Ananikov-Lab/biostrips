@@ -23,14 +23,20 @@
 {% block content -%}
     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
         <div class="container">
-            <a href="{{ url_for('main') }}" class="navbar-brand">Duild-bio-Strip</a>
+            <a href="{{ url_for('main') }}" class="navbar-brand">Build-a-bio-Strip</a>
 
             <div class="collapse navbar-collapse" id="navbarContent">
                 <ul class="nav navbar-nav">
                     {% for m in menu %}
-                        <li class="nav-item">
-                            <a href="{{ m.url }}" class="nav-link">{{ m.name }}</a>
-                        </li>
+                        {% if m.name == 'Build Charts' %}
+                            <li class="nav-item">
+                                <a href="{{ m.url }}" class="nav-link" style="color:red;">{{ m.name }}</a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a href="{{ m.url }}" class="nav-link">{{ m.name }}</a>
+                            </li>
+                        {% endif %}
                     {% endfor %}
                 </ul>
             </div>

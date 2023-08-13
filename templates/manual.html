@@ -7,18 +7,18 @@
 
         <div class="mb-3">
             <p class="fw-bold">A STEP-BY-STEP MANUAL FOR BUILDING BIO-STRIPS OF YOUR CHEMICAL REACTION</p>
-            <p class="fw-normal fs-6">Note that for building bio-Strips that would allow a reliable
+            <p class="fw-normal fs-6" style="color:red;"><b>Note that for building bio-Strips that would allow a reliable
                 estimation of possible harmful impact of your reaction on living organisms,
                 the cytotoxicity of all the compounds participating in this reaction should be measured
                 in the same cell line at the same exposure time by using the same experimental assay.
-                Only in this case, the comparison would be informative.</p>
+                Only in this case, the comparison would be informative.</b></p>
         </div>
 
         <div class="mb-3">
             <div class="d-grid gap-2">
                 <button class="btn btn-success" type="button" data-bs-toggle="collapse"
                         data-bs-target="#collapse_create_biostrips" aria-controls="collapse_create_biostrips">
-                    How to create a source file for building bio-Strips of my reaction
+                    How to create a source file for building bio-Strips of your reaction
                 </button>
             </div>
 
@@ -27,14 +27,14 @@
                     <p class="lead">The source file is a file in a .txt or .csv format that contains
                         the data required for building bio-Strips for a given chemical reaction.
                         In particular, these data include: 1) the cell line, in which the cytotoxicity
-                        (half-maximal cytotoxicity concentration, CC50) was assayed; 2) the reagents being
+                        (half-maximal cytotoxicity concentration, CC<sub>50</sub>) was assayed; 2) the reagents being
                         varied in the reaction; 3) the variable reagents, upon which the resulting
                         (by)products depend; and 4) a list of all the substances entering or leaving
                         the reaction, including their role, molecular weight, mass used in the reaction,
-                        and CC50 in the corresponding cell line.</p>
+                        and CC<sub>50</sub> in the corresponding cell line.</p>
                     <p class="lead">There are two ways to create a source file: by using a dedicated
-                        form in the “Built Chart” tab (the “create file” button) and by completing the
-                        .xlsx template (provided in the “Manual” tab) and subsequently saving it
+                        form in the “<a href="/send_check">Build Charts</a>” tab (the “create file” button) and by completing the
+                        .xlsx template (provided in the “<a href="/manual">Manual</a>” tab) and subsequently saving it
                         in a .txt (tabulation-separated, UTF-8) or .csv (semi-colon-separated, UTF-8)
                         format. The detailed instructions are provided below.</p>
                     <p class="lead fw-normal">You can download the .xlsx template for filling in the data
@@ -149,9 +149,9 @@
 
                     <p class="lead">Here, we will explain the creation of a source file by example of synthesis of
                         4-nitro-1,1’-biphenyl (Figure 2). In this example: the following substances are being varied:
-                        starting material 2 (SM2: 4-iodonitrobenzene (A), 4-bromonitrobenzene (B),
-                        or 4-chloronitrobenzene (C)), catalyst (CT: Pd(OAc)2 (A), PdCl2 (B), or Pd(acac)2 (C)),
-                        reagent (R: Na2CO3 (A), K2CO3 (B), or Cs2CO3 (C)), and solvent (S: ethanol (A) or NMP (B)).
+                        starting material 2 (SM2: 1-iodo-4-nitrobenzene (A), 1-bromo-4-nitrobenzene (B),
+                        or 1-chloro-4-nitrobenzene (C)), catalyst (CT: Pd(OAc)<sub>2</sub> (A), PdCl<sub>2</sub> (B), or Pd(acac)<sub>2</sub> (C)),
+                        reagent (R: Na<sub>2</sub>CO<sub>3</sub> (A), K<sub>2</sub>CO<sub>3</sub> (B), or Cs<sub>2</sub>CO<sub>3</sub> (C)), and solvent (S: ethanol (A) or NMP (B)).
                         Accordingly, the first, second, third, and fourth letters in the reaction name correspond
                         to the type of starting material 2 (SM2), catalyst (CT), reagent (R), and solvent (S) being
                         used:</p>
@@ -162,15 +162,15 @@
                          class="img-fluid rounded mx-auto d-block">
                     <p class="text-center fw-normal">Figure 2.<span class="text_center fw-light"> Scheme of synthesis of 4-nitro-1,1’-biphenyl. The first,
                     second, third, and fourth letters in the reaction name correspond to the following variable
-                    substances: starting material 2 (SM2: 4-iodonitrobenzene (A), 4-bromonitrobenzene (B),
-                    or 4-chloronitrobenzene (C)), catalyst (CT: Pd(OAc)2 (A), PdCl2 (B), or Pd(acac)2 (C)),
-                    reagent (R: Na2CO3 (A), K2CO3 (B), or Cs2CO3 (C)), and solvent (S: ethanol (A) or NMP (B)).</span>
+                    substances: starting material 2 (SM2: 1-iodo-4-nitrobenzene (A), 1-bromo-4-nitrobenzene (B),
+                    or 1-chloro-4-nitrobenzene (C)), catalyst (CT: Pd(OAc)<sub>2</sub> (A), PdCl<sub>2</sub> (B), or Pd(acac)<sub>2</sub> (C)),
+                    reagent (R: Na<sub>2</sub>CO<sub>3</sub> (A), K<sub>2</sub>CO<sub>3</sub> (B), or Cs<sub>2</sub>CO<sub>3</sub> (C)), and solvent (S: ethanol (A) or NMP (B)).</span>
                     </p>
 
                     <p class="lead">We find it convenient to create an .xlsx template first and then convert it to
                         the .txt or .csv format. Figure 3 shows the corresponding template for the reaction provided
                         in Figure 2. Here, the first line (field “Cell”) contains the name of the cell line,
-                        in which CC50 of the substances was determined; the second line (field “Variables”) contains
+                        in which CC<sub>50</sub> of the substances was determined; the second line (field “Variables”) contains
                         the reagents being varied in the reaction (in this case – SM2, CT, R, and S); and the third
                         line (field “Product variables”) contains the variable reagents (SM2, R), upon which the
                         resulting byproducts depend. Below is the table containing the information about all the
@@ -178,7 +178,7 @@
                         This information includes their name (field “Samples”), role in the reaction
                         (field “Abbreviation”: starting material (SM), catalyst (CT), reagent (R), solvent (S),
                         product (P), or byproduct (BP)), molecular weight (Mr, g/mol), mass (g) used in the reaction,
-                        and CC50 (mM) in the corresponding cell line.</p>
+                        and CC<sub>50</sub> (mM) in the corresponding cell line.</p>
                     <p class="lead">The substances participating in the reaction or forming upon its course are
                         designated in accordance with the above-mentioned rules (see column “Abbreviation” in Figure
                         3)</p>
@@ -187,25 +187,25 @@
                          class="img-fluid rounded mx-auto d-block">
                     <p class="text-center fw-normal">Figure 3.<span class="text_center fw-light"> An .xlsx template used for creating a .txt source file for
                     synthesis of 4-nitro-1,1’-biphenyl. The first line contains the name of the cell line,
-                    in which CC50 was determined; the second line contains the reagents being varied in
+                    in which CC<sub>50</sub> was determined; the second line contains the reagents being varied in
                     the reaction (in this case – SM2, CT, R, and S); and the third line contains the variable
                     reagents (SM2, R), upon which the resulting byproducts depend. Below is the table containing
                     the information about all the substances participating in the reaction. This information
                     includes their role in the reaction (starting material (SM), catalyst (CT), reagent (R),
                     solvent (S), product (P), or byproduct (BP), molecular weight (g/mol), mass (g) used in
-                    the reaction, and CC50 (mM) in the corresponding cell line.</span></p>
+                    the reaction, and CC<sub>50</sub> (mM) in the corresponding cell line.</span></p>
 
                     <p class="fw-bold fs-3">Starting materials</p>
                     <p class="lead">There are two types of starting materials in this reaction: the constant
                         substance SM1 (phenylboronic acid) and the variable substance SM2. The latter implies
-                        4-iodonitrobenzene, 4-bromonitrobenzene, and 4-chloronitrobenzene, which are designated,
+                        1-iodo-4-nitrobenzene, 1-bromo-4-nitrobenzene, and 1-chloro-4-nitrobenzene, which are designated,
                         correspondingly, SM2-1, SM2-2, and SM2-3.</p>
 
                     <p class="fw-bold fs-3">Catalysts, reagents, and solvents</p>
                     <p class="lead">There is one type of catalyst in the reaction, and this substance is variable;
-                        therefore, it is designated as CT-1 (Pd(OAc)2), CT-2 (PdCl2), or CT-3 (Pd(acac)2), respectively.
-                        The same is true for the reagents (R-1, Na2CO3; R-2, K2CO3; and R-3, Cs2CO3) and solvents
-                        (S-1, C2H5OH; and S-2, NMP).</p>
+                        therefore, it is designated as CT-1 (Pd(OAc)<sub>2</sub>), CT-2 (PdCl<sub>2</sub>), or CT-3 (Pd(acac)<sub>2</sub>), respectively.
+                        The same is true for the reagents (R-1, Na<sub>2</sub>CO<sub>3</sub>; R-2, K<sub>2</sub>CO<sub>3</sub>; and R-3, Cs<sub>2</sub>CO<sub>3</sub>) and solvents
+                        (S-1, C<sub>2</sub>H<sub>5</sub>OH; and S-2, NMP).</p>
 
                     <p class="fw-bold fs-3">Products</p>
                     <p class="lead">The target product 4-nitro-1,1’-biphenyl is designated P.</p>
@@ -215,28 +215,28 @@
                         potassium or cesium, (2) tetraborates of sodium, potassium or cesium, and (3) boric acid.
                         The first type of byproducts depends on both the type of starting material 2 (SM2)
                         and the reagent (R) being used and thus is designated as follows: BP1-k-l,
-                        where k corresponds to the order number of SM2 (1 = SM2-1 = 4-iodonitrobenzene;
-                        2 = SM2-2 = 4-bromonitrobenzene; and 3 = SM2-3 = 4-chloronitrobenzene) and l corresponds
-                        to the order number of R (1 = R-1 = Na2CO3; 2 = R-2 = K2CO3; and 3 = R-3 = Cs2CO3).
+                        where k corresponds to the order number of SM2 (1 = SM2-1 = 1-iodo-4-nitrobenzene;
+                        2 = SM2-2 = 1-bromo-4-nitrobenzene; and 3 = SM2-3 = 1-chloro-4-nitrobenzene) and l corresponds
+                        to the order number of R (1 = R-1 = Na<sub>2</sub>CO<sub>3</sub>; 2 = R-2 = K<sub>2</sub>CO<sub>3</sub>; and 3 = R-3 = Cs<sub>2</sub>CO<sub>3</sub>).
                         In whole, there are nine BP1 possible in this reaction: NaI (BP1-1-1), NaBr (BP1-2-1),
                         NaCl (BP1-3-1), KI (BP1-1-2), KBr (BP1-2-2), NaCl (BP1-3-2), CsI (BP1-1-3), CsBr (BP1-2-3),
                         and CsCl (BP1-3-3).</p>
                     <p class="lead">The second type of byproducts depends only on the type of the reagent being used
                         and thus is designated as follows: BP2-0-l, where l corresponds to the order number
-                        of R (1 = R-1 = Na2CO3; 2 = R-2 = K2CO3; and 3 = R-3 = Cs2CO3). There are three BP2 possible:
-                        Na2B4O7*10H2O (BP2-0-1), K2B4O7*4H2O (BP2-0-2), and Cs2B4O7*5H2O (BP2-0-3).</p>
+                        of R (1 = R-1 = Na<sub>2</sub>CO<sub>3</sub>; 2 = R-2 = K<sub>2</sub>CO<sub>3</sub>; and 3 = R-3 = Cs<sub>2</sub>CO<sub>3</sub>). There are three BP2 possible:
+                        Na<sub>2</sub>B<sub>4</sub>O<sub>7</sub>*10H<sub>2</sub>O (BP2-0-1), K<sub>2</sub>B<sub>4</sub>O<sub>7</sub>*4H<sub>2</sub>O (BP2-0-2), and Cs<sub>2</sub>B<sub>4</sub>O<sub>7</sub>*5H<sub>2</sub>O (BP2-0-3).</p>
                     <p class="lead">Finally, the third byproduct (BP3) is produced independently of the reagents used
                         in the current example and thus is designated BP3-0-0.</p>
 
-                    <p class="lead">The columns “Mr, g/mol”, “Mass, g”, and “CC50, mM” contain the molecular weight
+                    <p class="lead">The columns “Mr, g/mol”, “Mass, g”, and “CC<sub>50</sub>, mM” contain the molecular weight
                         (g/mol),
-                        mass (g) used in the reaction, and CC50 (mM) for each substance.</p>
+                        mass (g) used in the reaction, and CC<sub>50</sub> (mM) for each substance.</p>
 
                     <p class="lead">The completed template can be subsequently saved in a .txt (tabulation-separated,
                         UTF-8)
                         or .csv (semi-colon-separated, UTF-8) format, which can be directly uploaded to the server
-                        for building bio-Strips by following the instructions in the “Built Chart” tab. The detailed
-                        explanation of the procedure is given below in the “How to build bio-Strips for my reaction”
+                        for building bio-Strips by following the instructions in the “<a href="/send_check">Build Charts</a>” tab. The detailed
+                        explanation of the procedure is given below in the “How to build bio-Strips for your reaction”
                         section. Figure 4 shows an overview of a .txt source file created from the template provided
                         in Figure 3.</p>
 
@@ -244,7 +244,7 @@
                          class="img-fluid rounded mx-auto d-block">
                     <p class="text-center fw-normal">Figure 4.<span class="text_center fw-light"> An exemplary .txt source file
                     for bio-Strips for synthesis of 4-nitro-1,1’-biphenyl. The first line contains the name of the cell line,
-                    in which CC50 was determined; the second line contains the reagents being varied in the reaction;
+                    in which CC<sub>50</sub> was determined; the second line contains the reagents being varied in the reaction;
                     and the third line contains the variable reagents, upon which the resulting byproducts depend.
                     Below is the table containing the information about all the substances participating in the reaction.</span>
                     </p>
@@ -265,32 +265,32 @@
                 <div class="card card-body">
 
                     <p class="lead">You can also create a source file by using a dedicated form provided in
-                        the “Built Chart” tab (the “create file” button). An overview of this form is shown
+                        the “<a href="/send_check">Build Charts</a>” tab (the “create file” button). An overview of this form is shown
                         in Figure 5. The top part of the form is common for all the reactions being considered.
                         It contains the following fields:</p>
 
 
                     <p class="lead fw-bold">“Filename”<span class='lead'> – any user-defined name for the file with the results.</span>
                     </p>
-                    <p class="lead fw-bold">“Cell name”<span class='lead'> – the name of the cell culture, in which CC50
+                    <p class="lead fw-bold">“Cell name”<span class='lead'> – the name of the cell culture, in which CC<sub>50</sub>
                     values were measured.</span></p>
                     <p class="lead fw-bold">“Colormap”<span class='lead'> – the type of coloration used in the resulting bio-Strips;
                     currently, two colormaps are available: percentile (the cytotoxicity scale is colored
-                    in accordance with the percentile distribution of the CC50 values, where the midpoint
+                    in accordance with the percentile distribution of the CC<sub>50</sub> values, where the midpoint
                     corresponds to the 50th percentile) and linear (the cytotoxicity scale is colored in
-                    accordance with the distribution of the CC50 values, where the midpoint corresponds to the mean value).</span>
+                    accordance with the distribution of the CC<sub>50</sub> values, where the midpoint corresponds to the mean value).</span>
                     </p>
                     <p class="lead fw-bold">“Cytotoxic potential”<span class='lead'> – the type of the cytotoxicity metrics by which
                     the obtained bio-Strips are evaluated and the five top variants are selected. The following metrics
                     are available: BF (bio-Factor, shows the change of the “overall cytotoxicity” of a given reaction
                     during its course; it is considered increased if BF > 1 or decreased if BF < 1);
-                    CPi (initial cytotoxicity potential, or CP of the substances entering the reaction);
-                    CPf (final cytotoxicity potential, or CP of the substances leaving the reaction), and
-                    CPf_rel (relative final cytotoxicity potential, or CP of the substances leaving the reaction
+                    CP<sub>i</sub> (initial cytotoxicity potential, or CP of the substances entering the reaction);
+                    CP<sub>f</sub> (final cytotoxicity potential, or CP of the substances leaving the reaction), and
+                    CP<sub>f_rel</sub> (relative final cytotoxicity potential, or CP of the substances leaving the reaction
                     except for the target product). In essence, CPs show the quantity of the liters of the cell
                     media that can be “poisoned” by the corresponding substances. The formulas for calculating
                     the metrics are provided below. NC is a “normalized cytotoxicity” of a particular substance,
-                    n is the amount (mmol) of a particular substance in a given reaction, and CC50 is a half-maximal
+                    n is the amount (mmol) of a particular substance in a given reaction, and CC<sub>50</sub> is a half-maximal
                     cytotoxicity concentration of a given substance measured in a particular cell line;
                     in and out designate the substances entering (starting materials, catalysts, solvents and other reagents)
                     or leaving (products, byproducts and chemicals that can be recycled, such as catalysts and solvents)
@@ -308,13 +308,13 @@
                         compounds entering
                         or leaving the reaction, the following fields should be completed: “Reagent name”, “Role”,
                         “Molar mass”,
-                        “Mass”, and “CC50”. These fields correspond to the fields in the table shown in Figure 3 and
+                        “Mass”, and “CC<sub>50</sub>”. These fields correspond to the fields in the table shown in Figure 3 and
                         include
                         the name of the substances, their role in the reaction (starting material (SM), catalyst (CT),
                         reagent (R),
                         solvent (S), product (P), or byproduct (BP), molecular weight (g/mol), mass (g) used in the
                         reaction,
-                        and CC50 (mM) in the corresponding cell line. There are two separate forms, first of which is
+                        and CC<sub>50</sub> (mM) in the corresponding cell line. There are two separate forms, first of which is
                         completed
                         for starting materials, catalysts, reagents, and solvents, and the second is for products and
                         byproducts.
@@ -345,7 +345,7 @@
             <div class="d-grid gap-2">
                 <button class="btn btn-success" type="button" data-bs-toggle="collapse"
                         data-bs-target="#collapse_build_biostrips" aria-controls="collapse_notation">
-                    How to build bio-Strips for my reaction
+                    How to build bio-Strips for your reaction
                 </button>
             </div>
 
@@ -355,14 +355,14 @@
                         source file. When using the dedicated form, it is essentially the same but the source file
                         is generated and uploaded to the server automatically.</p>
                     <p class="lead">To upload the source file to the server, go to the “Upload file and select options”
-                        form in the “Build Chart” tab and provide the information required: choose the source file and
+                        form in the “<a href="/send_check">Build Charts</a>” tab and provide the information required: choose the source file and
                         select the colormap and the cytotoxic potential (the detailed description of the last two
                         parameters
                         is provided in the section “How to create a source file by using a dedicated form”) (Figure 7,
                         top form).
                         Then press the “Send” button. After this, if the source file does not contain any errors,
-                        the “Build charts” form will show the following information: “Filename” (in this
-                        case – suzuki_4-nitrobiphenyl_hek293t.txt), “Colormap” (percentile), “Metric” (CPi),
+                        the “<a href="/send_check">Build Charts</a>” form will show the following information: “Filename” (in this
+                        case – suzuki_4-nitrobiphenyl_hek293t.txt), “Colormap” (percentile), “Metric” (CP<sub>i</sub>),
                         and “Number of combinations”. The latter reflects the number of possible ways of synthesis
                         of a particular product in accordance with the data provided in the source file. For calculating
                         this number, press the “Find all combinations” button.</p>
@@ -370,23 +370,23 @@
                     <img src="{{ url_for('static', filename='images/figure_7.png') }}" width="600"
                          class="img-fluid rounded mx-auto d-block">
                     <p class="text-center fw-normal">Figure 7.<span class="text_center fw-light"> An overview of the form
-                    for uploading a manually created source file. In this case, “percentile” and “CPi”
+                    for uploading a manually created source file. In this case, “percentile” and “CP<sub>i</sub>”
                     are selected as the colormap and cytotoxic potential, respectively.</span></p>
 
-                    <p class="lead">Pressing the “Build charts” button will start the process of building the bio-Strips
+                    <p class="lead">Pressing the “<a href="/send_check">Build Charts</a>” button will start the process of building the bio-Strips
                         themselves. Figure 8 shows a part of the resulting page with bio-Strips for 54 ways of synthesis
                         of 4-nitro-1,1’-biphenyl, in accordance with the source file provided in Figure 4. The five
-                        top combinations with the lowest CPi are shown above (in this case, all these CPi equal 0.44).
-                        The cytotoxicity scale colored in accordance with the percentile distribution of the CC50
+                        top combinations with the lowest CP<sub>i</sub> are shown above (in this case, all these CP<sub>i</sub> equal 0.44).
+                        The cytotoxicity scale colored in accordance with the percentile distribution of the CC<sub>50</sub>
                         values is also provided. The bio-Strips are supplied with the reaction title and BF.</p>
                     <img src="{{ url_for('static', filename='images/figure_8.png') }}" width="600"
                          class="img-fluid rounded mx-auto d-block">
                     <p class="text-center fw-normal">Figure 8.<span class="text_center fw-light"> A part of the resulting
                     page with bio-Strips for 54 ways of synthesis of 4-nitro-1,1’-biphenyl, in accordance with
-                    the source file provided in Figure 4. The five top combinations with the lowest CPi and the
-                    cytotoxicity scale colored in accordance with the percentile distribution of the CC50 values
+                    the source file provided in Figure 4. The five top combinations with the lowest CP<sub>i</sub> and the
+                    cytotoxicity scale colored in accordance with the percentile distribution of the CC<sub>50</sub> values
                     are shown above. The length of the sections in the bars corresponds to the “normalized cytotoxicity”
-                    (NC) of the substances, whereas their color corresponds to CC50 measured in the HEK293T cell line.
+                    (NC) of the substances, whereas their color corresponds to CC<sub>50</sub> measured in the HEK293T cell line.
                     The bio-Strips are supplied with the reaction title and BF. Only two of 54 bio-Strips are shown
                     for clarity.</span></p>
 
@@ -394,7 +394,7 @@
                         which
                         contains the separate bio-Strips in .pdf, .png, and .svg formats, and a .csv file with the
                         calculated
-                        cytotoxicity metrics (BF, CPi, CPf, and CPf_rel) (Figure 9).</p>
+                        cytotoxicity metrics (BF, CP<sub>i</sub>, CP<sub>f</sub>, and CP<sub>f_rel</sub>) (Figure 9).</p>
                     <img src="{{ url_for('static', filename='images/figure_9.png') }}" width="400"
                          class="img-fluid rounded mx-auto d-block">
                     <p class="text-center fw-normal">Figure 9.<span class="text_center fw-light"> A part of the resulting .csv
@@ -405,10 +405,10 @@
                     <img src="{{ url_for('static', filename='images/figure_10.png') }}" width="900"
                          class="img-fluid rounded mx-auto d-block">
                     <p class="text-center fw-normal">Figure 10.<span class="text_center fw-light"> bio-Strips of 36 ways of
-                    synthesis of 4-nitro-1,1’-biphenyl upon varying starting material 2 (SM2: 4-iodonitrobenzene (A),
-                    4-bromonitrobenzene (B), or 4-cholobenzene (C)), catalyst (CT: Pd(OAc)2 (A), PdCl2 (B),
-                    or Pd(acac)2 (C)), reagent (R: Na2CO3 (A), K2CO3 (B), or Cs2CO3 (C)), and solvent (S:
-                    ethanol (A) or NMP (B)). CC50 values are measured in the HEK293T cell line.</span></p>
+                    synthesis of 4-nitro-1,1’-biphenyl upon varying starting material 2 (SM2: 1-iodo-4-nitrobenzene (A),
+                    1-bromo-4-nitrobenzene (B), or 1-chloro-4-nitrobenzene (C)), catalyst (CT: Pd(OAc)<sub>2</sub> (A), PdCl<sub>2</sub> (B),
+                    or Pd(acac)<sub>2</sub> (C)), reagent (R: Na<sub>2</sub>CO<sub>3</sub> (A), K<sub>2</sub>CO<sub>3</sub> (B), or Cs<sub>2</sub>CO<sub>3</sub> (C)), and solvent (S:
+                    ethanol (A) or NMP (B)). CC<sub>50</sub> values are measured in the HEK293T cell line.</span></p>
 
                 </div>
             </div>
