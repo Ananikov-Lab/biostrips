@@ -50,13 +50,13 @@ cyt_potentials_list = [{'name': 'BF'},
 class ReagentLineForm(Form):
     reagent_name = StringField("Reagent name: ", validators=[DataRequired()], description="Reagent name")
     reagent_role = StringField("Reagent role: ", validators=[DataRequired()], description="Reagent role")
-    molar_mass = DecimalField("Molar mass: ",
-                              validators=[DataRequired(), NumberRange(0)],
+    molar_mass = DecimalField("Molar mass: ", places=3,
+                              validators=[DataRequired(), NumberRange(0.001)],
                               description="Molar mass")
-    mass = DecimalField("Mass: ",
+    mass = DecimalField("Mass: ", places=10,
                         validators=[DataRequired(), NumberRange(0.0000000001)],
                         description="Mass")
-    cc50 = DecimalField("CC50: ",
+    cc50 = DecimalField("CC50: ", places=10,
                         validators=[DataRequired(), NumberRange(0.0000000001)],
                         description="CC50")
 
