@@ -86,12 +86,12 @@
                         substances decide the byproducts being formed:</p>
                     <p class="fw-bold text-center">BPi-k-l-m-…</p>
                     <p class="lead">where <i>i</i> is the order number of the byproduct, and <i>k</i>, <i>l</i>, <i>m</i>, etc.
-                        are the order numbers of the substances upon which the product depends
+                        are the order numbers of the substances upon which the byproduct depends
                         (e.g. SM1-k, SM2-l, SM3-m, etc.).</p>
 
                     <p class="lead"> If a particular byproduct does not depend on
                         a particular variable, 0 is used instead of the corresponding order number:</p>
-                    <p class="fw-bold text-center">BPi-k-0-m-… (the byproduct does not depend on the variable SM2)</p>
+                    <p class="fw-bold text-center">BPi-k-0-m-… (the byproduct does not depend on variable SM2)</p>
 
                     <p class="lead">In a more complex case, when one byproduct can be formed upon using various
                         combinations of reagents, the following notation should be used:</p>
@@ -106,7 +106,7 @@
                         of a starting material looks as follows:</p>
 
                     <p class="fw-bold text-center">SMi-j-k,l,m,…</p>
-                    <p class="lead">where <i>i</i> is the order number of the type of a given reagent, j is
+                    <p class="lead">where <i>i</i> is the order number of the type of a given reagent, <i>j</i> is
                         the order number of the reagent of this type, and <i>k</i>, <i>l</i>, <i>m</i>, etc. are the order numbers
                         of substances SMi-1, with which this substance reacts (Figure 1).</p>
 
@@ -154,9 +154,7 @@
                         reagent (R: Na<sub>2</sub>CO<sub>3</sub> (A), K<sub>2</sub>CO<sub>3</sub> (B), or Cs<sub>2</sub>CO<sub>3</sub> (C)), and solvent (S: ethanol (A) or NMP (B)).
                         Accordingly, the first, second, third, and fourth letters in the reaction name correspond
                         to the type of starting material 2 (SM2), catalyst (CT), reagent (R), and solvent (S) being
-                        used:</p>
-
-                    <p class="fw-bold text-center">SM2-CT-R-S</p>
+                        used: SM2-CT-R-S.</p>
 
                     <img src="{{ url_for('static', filename='images/figure_2.png') }}" width="600"
                          class="img-fluid rounded mx-auto d-block">
