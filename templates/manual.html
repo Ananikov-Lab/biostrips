@@ -360,7 +360,7 @@
                         top form).
                         Then press the “Send” button. After this, if the source file does not contain any errors,
                         the “<a href="/send_check">Build Charts</a>” form will show the following information: “Filename” (in this
-                        case – suzuki_4-nitrobiphenyl_hek293t.txt), “Colormap” (percentile), “Metric” (CP<sub>i</sub>),
+                        <a href="{{ url_for('download_file', filename='suzuki_4-nitrobiphenyl_hek293t.xlsx') }}" class="link-danger">case</a>), “Colormap” (percentile), “Metric” (CP<sub>i</sub>),
                         and “Number of combinations”. The latter reflects the number of possible ways of synthesis
                         of a particular product in accordance with the data provided in the source file. For calculating
                         this number, press the “Find all combinations” button.</p>
@@ -402,7 +402,7 @@
                         (see an example provided in Figure 10).</p>
                     <img src="{{ url_for('static', filename='images/figure_10.png') }}" width="900"
                          class="img-fluid rounded mx-auto d-block">
-                    <p class="text-center fw-normal">Figure 10.<span class="text_center fw-light"> bio-Strips of 36 ways of
+                    <p class="text-center fw-normal">Figure 10.<span class="text_center fw-light"> bio-Strips of 54 ways of
                     synthesis of 4-nitro-1,1’-biphenyl upon varying starting material 2 (SM2: 1-iodo-4-nitrobenzene (A),
                     1-bromo-4-nitrobenzene (B), or 1-chloro-4-nitrobenzene (C)), catalyst (CT: Pd(OAc)<sub>2</sub> (A), PdCl<sub>2</sub> (B),
                     or Pd(acac)<sub>2</sub> (C)), reagent (R: Na<sub>2</sub>CO<sub>3</sub> (A), K<sub>2</sub>CO<sub>3</sub> (B), or Cs<sub>2</sub>CO<sub>3</sub> (C)), and solvent (S:
@@ -439,7 +439,9 @@
                         <a href="{{ url_for('download_file', filename='suzuki_2.txt') }}" class="link-danger">sample
                             2</a>
                     </p>
-
+                    <p class="fw-normal fs-6">Suzuki 4-nitrobiphenyl HEK293T
+                      <a href="{{ url_for('download_file', filename='suzuki_4-nitrobiphenyl_hek293t.xlsx') }}" class="link-danger">sample (.xlsx)</a> or <a href="{{ url_for('download_file', filename='suzuki_4-nitrobiphenyl_hek293t.txt') }}" class="link-danger">sample (.txt)</a>
+                    </p>
                     <p class="fw-normal fs-6"><a href="{{ url_for('download_file', filename='abstract.txt') }}"
                                                  class="link-danger">Sample</a> for
                         building a complex charts
