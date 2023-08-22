@@ -34,7 +34,8 @@ with open(os.path.join(path_meta, 'secret_key.txt'), 'r') as f:
 
 menu = [{"name": "Main", "url": "/"},
         {"name": "Intro to bio-Strips", "url": '/intro_to_biostrips'},
-        {"name": "Build Charts", "url": "/send_check"},
+        {"name": "Build Charts", "url": "/create_chart"},
+        {"name": "Previous runs", "url": "/send_check"},
         {"name": "Manual", "url": "/manual"},
         {"name": "About", "url": "/about"}]
 
@@ -73,7 +74,7 @@ class OneChartForm(FlaskForm):
 
 
 class CheckFile(FlaskForm):
-    filename = StringField("Enter filename: ", description="Filename")
+    filename = StringField("Enter access code: ", description="Access code")
 
 
 @app.route('/')
@@ -108,8 +109,7 @@ def check_file_in_system():
         else:
             return render_template('send_check.html', menu=menu, form=form, text='This file was not found')
     elif 'new_exp' in request.form:
-        filename = str(uuid.uuid4())
-        return redirect(url_for('create_chart', filename=filename.rsplit(".")[0]), 302)
+        return redirect(url_for('create_chart'), 302)
     return render_template('send_check.html', menu=menu, form=form, text='')
 
 
@@ -127,8 +127,9 @@ def output_file(filename):
                            top_combinations=top_combinations, cyt_potential=cyt_potential)
 
 
-@app.route('/create_chart/<filename>', methods=['POST', 'GET'])
-def create_chart(filename):
+@app.route('/create_chart', methods=['POST', 'GET'])
+def create_chart():
+    filename = str(uuid.uuid4())
     form = OneChartForm()
     form.colormap.choices = [(el["name"], el["name"]) for el in colormap_list]
     form.cyt_potential.choices = [(el["name"], el["name"]) for el in cyt_potentials_list]
@@ -300,9 +301,17 @@ def download(filename):
 
     with ZipFile(zip_path, "w") as zip_arch:
         for dirpath, _, filenames in os.walk(path_folder):
-            for filename in filenames:
-                zip_arch.write(os.path.join(dirpath, filename))
-
+            for filename_path in filenames:
+                print(filename_path)
+                if filename_path.split('_')[-1].split('.')[0] == 'comb':
+                    filename_path_txt = filename_path.split('_')[0] + '.txt'
+                    filename_path_csv = filename_path.split('_')[0] + '.csv'
+                    if filename_path_csv in os.listdir('data'):
+                        zip_arch.write(f'data/{filename_path_csv}')
+                    else:
+                        zip_arch.write(f'data/{filename_path_txt}')
+                else:
+                    zip_arch.write(os.path.join(dirpath, filename_path))
     directory = os.path.join(app.root_path, path_results)
     return send_from_directory(directory, zip_name)
 
