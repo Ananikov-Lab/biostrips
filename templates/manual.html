@@ -11,7 +11,7 @@
                 estimation of possible harmful impact of your reaction on living organisms,
                 the cytotoxicity of all the compounds participating in this reaction should be measured
                 in the same cell line at the same exposure time by using the same experimental assay.
-                Only in this case, the comparison would be informative.</b></p>
+                Only in this case, the comparison will be informative.</b></p>
         </div>
 
         <div class="mb-3">
@@ -24,7 +24,7 @@
 
             <div class="collapse show" id="collapse_create_biostrips">
                 <div class="card card-body">
-                    <p class="lead">The source file is a file in a .txt or .csv format that contains
+                    <p class="lead">The source file is a file in a .txt format that contains
                         the data required for building bio-Strips for a given chemical reaction.
                         In particular, these data include: 1) the cell line, in which the cytotoxicity
                         (half-maximal cytotoxicity concentration, CC<sub>50</sub>) was assayed; 2) the reagents being
@@ -33,10 +33,9 @@
                         the reaction, including their role, molecular weight, mass used in the reaction,
                         and CC<sub>50</sub> in the corresponding cell line.</p>
                     <p class="lead">There are two ways to create a source file: by using a dedicated
-                        form in the “<a href="/send_check">Build Charts</a>” tab (click “Create new experiment” and then "create file" for opening the corresponding form) and by completing the
+                        form in the “<a href="/create_chart">Build Charts</a>” tab (click "create file" for opening the corresponding form) and by completing the
                         .xlsx template (provided in the “<a href="/manual">Manual</a>” tab) and subsequently saving it
-                        in a .txt (tabulation-separated, UTF-8) or .csv (semi-colon-separated, UTF-8)
-                        format. The detailed instructions are provided below.</p>
+                        in a .txt (tabulation-separated, UTF-8) format. The detailed instructions are provided below.</p>
                     <p class="lead fw-normal">You can download the .xlsx template for filling in the data
                         <a href="{{ url_for('download_file', filename='sample.xlsx') }}" class="link-danger">here</a>.
                     </p>
@@ -166,7 +165,7 @@
                     </p>
 
                     <p class="lead">We find it convenient to create an .xlsx template first and then convert it to
-                        the .txt or .csv format. Figure 3 shows the corresponding template for the reaction provided
+                        the .txt format. Figure 3 shows the corresponding template for the reaction provided
                         in Figure 2. Here, the first line (field “Cell”) contains the name of the cell line,
                         in which CC<sub>50</sub> of the substances was determined; the second line (field “Variables”) contains
                         the reagents being varied in the reaction (in this case – SM2, CT, R, and S); and the third
@@ -231,9 +230,8 @@
                         mass (g) used in the reaction, and CC<sub>50</sub> (mM) for each substance.</p>
 
                     <p class="lead">The completed template can be subsequently saved in a .txt (tabulation-separated,
-                        UTF-8)
-                        or .csv (semi-colon-separated, UTF-8) format, which can be directly uploaded to the server
-                        for building bio-Strips by following the instructions in the “<a href="/send_check">Build Charts</a>” tab. The detailed
+                        UTF-8) format, which can be directly uploaded to the server
+                        for building bio-Strips by following the instructions in the “<a href="/create_chart">Build Charts</a>” tab. The detailed
                         explanation of the procedure is given below in the “How to build bio-Strips for your reaction”
                         section. Figure 4 shows an overview of a .txt source file created from the template provided
                         in Figure 3.</p>
@@ -263,13 +261,11 @@
                 <div class="card card-body">
 
                     <p class="lead">You can also create a source file by using a dedicated form provided in
-                        the “<a href="/send_check">Build Charts</a>” tab (click “Create new experiment” and then "create file" for opening the corresponding form). An overview of this form is shown
+                        the “<a href="/create_chart">Build Charts</a>” tab (click "create file" for opening the corresponding form). An overview of this form is shown
                         in Figure 5. The top part of the form is common for all the reactions being considered.
                         It contains the following fields:</p>
 
 
-                    <p class="lead fw-bold">“Filename”<span class='lead'> – any user-defined name for the file with the results.</span>
-                    </p>
                     <p class="lead fw-bold">“Cell name”<span class='lead'> – the name of the cell culture, in which CC<sub>50</sub>
                     values were measured.</span></p>
                     <p class="lead fw-bold">“Colormap”<span class='lead'> – the type of coloration used in the resulting bio-Strips;
@@ -349,21 +345,20 @@
 
             <div class="collapse show" id="collapse_build_biostrips">
                 <div class="card card-body">
-                    <p class="lead">Here, we will describe the process when using the manually created .txt or .csv
+                    <p class="lead">Here, we will describe the process when using the manually created .txt
                         source file. When using the dedicated form, it is essentially the same but the source file
                         is generated and uploaded to the server automatically.</p>
                     <p class="lead">To upload the source file to the server, go to the “Upload file and select options”
-                        form in the “<a href="/send_check">Build Charts</a>” tab and provide the information required: choose the source file and
+                        form in the “<a href="/create_chart">Build Charts</a>” tab and provide the information required: choose the source file and
                         select the colormap and the cytotoxic potential (the detailed description of the last two
                         parameters
                         is provided in the section “How to create a source file by using a dedicated form”) (Figure 7,
                         top form).
                         Then press the “Send” button. After this, if the source file does not contain any errors,
-                        the “<a href="/send_check">Build Charts</a>” form will show the following information: “Filename” (in this
-                        <a href="{{ url_for('download_file', filename='suzuki_4-nitrobiphenyl_hek293t.xlsx') }}" class="link-danger">case</a>), “Colormap” (percentile), “Metric” (CP<sub>i</sub>),
-                        and “Number of combinations”. The latter reflects the number of possible ways of synthesis
-                        of a particular product in accordance with the data provided in the source file. For calculating
-                        this number, press the “Find all combinations” button.</p>
+                        the “<a href="/create_chart">Build Charts</a>” form will show the will show the
+                        “Filename” - a unique id, which can be subsequently used for retrieving this run
+                        quickly (see the “Previous runs” tab in the menu).
+                        </p>
 
                     <img src="{{ url_for('static', filename='images/figure_7.png') }}" width="600"
                          class="img-fluid rounded mx-auto d-block">
@@ -371,8 +366,8 @@
                     for uploading a manually created source file. In this case, “percentile” and “CP<sub>i</sub>”
                     are selected as the colormap and cytotoxic potential, respectively.</span></p>
 
-                    <p class="lead">Pressing the “<a href="/send_check">Build Charts</a>” button will start the process of building the bio-Strips
-                        themselves. Figure 8 shows a part of the resulting page with bio-Strips for 54 ways of synthesis
+                    <p class="lead">Pressing the “Display charts” button will show the resulting bio-Strips. 
+                    Figure 8 shows a part of the resulting page with bio-Strips for 54 ways of synthesis
                         of 4-nitro-1,1’-biphenyl, in accordance with the source file provided in Figure 4. The five
                         top combinations with the lowest CP<sub>i</sub> are shown above (in this case, all these CP<sub>i</sub> equal 0.44).
                         The cytotoxicity scale colored in accordance with the percentile distribution of the CC<sub>50</sub>
@@ -385,17 +380,17 @@
                     cytotoxicity scale colored in accordance with the percentile distribution of the CC<sub>50</sub> values
                     are shown above. The length of the sections in the bars corresponds to the “normalized cytotoxicity”
                     (NC) of the substances, whereas their color corresponds to CC<sub>50</sub> measured in the HEK293T cell line.
-                    The bio-Strips are supplied with the reaction title and BF. Only two of 54 bio-Strips are shown
+                    The bio-Strips are supplied with the reaction title and BF. Only three of 54 bio-Strips are shown
                     for clarity.</span></p>
 
                     <p class="lead">Pressing the “Download” button allows downloading a .zip archive of the results
                         which
-                        contains the separate bio-Strips in .pdf, .png, and .svg formats, and a .csv file with the
+                        contains the separate bio-Strips in .pdf, .png, and .svg formats, and a .xlsx file with the
                         calculated
                         cytotoxicity metrics (BF, CP<sub>i</sub>, CP<sub>f</sub>, and CP<sub>f_rel</sub>) (Figure 9).</p>
                     <img src="{{ url_for('static', filename='images/figure_9.png') }}" width="400"
                          class="img-fluid rounded mx-auto d-block">
-                    <p class="text-center fw-normal">Figure 9.<span class="text_center fw-light"> A part of the resulting .csv
+                    <p class="text-center fw-normal">Figure 9.<span class="text_center fw-light"> A part of the resulting .xlsx
                     file with the calculated metrics for the above-considered reactions.</span></p>
 
                     <p class="lead">The separate bio-Strips can be subsequently combined for illustration purposes

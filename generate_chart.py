@@ -61,7 +61,7 @@ def generate_charts(path_file, path_data, colormap, cyt_potential):
     path_table = os.path.join(path_results, table_name)
 
     with open(path_table, "w", encoding="utf-8") as out_file:
-        print('combinations;biofactor;CPi (initial CP);CPf (final CP);CPf_rel (relative final CP)', file=out_file)
+        print('combinations,BF (bio-Factor),CPi (initial CP),CPf (final CP),CPf_rel (relative final CP)', file=out_file)
         for el in all_cyt_metrics.items():
             print(el[0], end=',', file=out_file)
 
