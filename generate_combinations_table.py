@@ -14,9 +14,19 @@ def generate_table(path_input):
 
     inverse_variables_dict = {variable: number for number, variable in variables_dict.items()}
 
-    combinations = cytcomb.generate_combinations(raw_data, variables_names, inverse_letters_dict)
+    combinations, legend = cytcomb.generate_combinations(raw_data, variables_names, inverse_letters_dict)
 
     path_out = cytcomb.generate_outtable(path_input, raw_data, combinations, labels, products_labels, variables_dict, product_variables_names, letters_dict, inverse_variables_dict,)
+    with open(path_out.split('.')[0] + 'out' + '.csv', "w", encoding="utf-8") as out_file:
+        text = ''
+        for variable in variables_names:
+            text += variable + '-'
+        text = text[:-1]
+        first_string = print(f'Reaction name:, {text}', file=out_file)
+        for name, values in legend.items():
+            print(name, file=out_file)
+            for name_val, val in values.items():
+                print(f'{name_val},{list(val.keys())[0]}, {list(val.values())[0]}', file=out_file)
 
     number_of_combinations = len(combinations)
 
