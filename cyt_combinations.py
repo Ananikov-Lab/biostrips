@@ -266,12 +266,10 @@ def generate_combinations(raw_data, variables_names, inverse_letters_dict):
     if len(variables_names) == 0:
         combinations = inverse_letters_dict[1]
     else:
-
         combinations = []
         combinations_copy = []
         flag_start = 0
         flag_start_label = 0
-
         for count_line, line in enumerate(raw_data[2]):
             label = line.split('-')
             label_origin = label[0]
@@ -319,7 +317,26 @@ def generate_combinations(raw_data, variables_names, inverse_letters_dict):
             combination_result = '-'.join(combination_letters)
             combinations.append(combination_result)
 
-    return sorted(combinations)
+    role_dict = {}
+    flag = ''
+    for role in raw_data[2]:
+        index = raw_data[2].index(role)
+        true_role = role.split('-')[0]
+        if true_role in variables_names:
+            if flag == '':
+                flag = true_role
+                role_for_dict = {}
+            if flag != true_role:
+                role_dict[flag] = role_for_dict
+                role_for_dict = {}
+                flag = true_role
+            true_letter = inverse_letters_dict[int(role.split('-')[1])]
+            true_role_dict = {}
+            true_role_dict[role] = true_letter
+            role_for_dict[raw_data[1][index]] = true_role_dict
+        else:
+            pass
+    return sorted(combinations), role_dict
 
 
 def find_indices_of_element(combinations, number):

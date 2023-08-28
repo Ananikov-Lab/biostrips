@@ -305,11 +305,13 @@ def download(filename):
                 print(filename_path)
                 if filename_path.split('_')[-1].split('.')[0] == 'comb':
                     filename_path_txt = filename_path.split('_')[0] + '.txt'
+                    filename_path_legend = filename_path.split('_')[0] + '_combout.csv'
                     filename_path_csv = filename_path.split('_')[0] + '.csv'
                     if filename_path_csv in os.listdir('data'):
                         zip_arch.write(f'data/{filename_path_csv}')
                     else:
                         zip_arch.write(f'data/{filename_path_txt}')
+                        zip_arch.write(f'data/{filename_path_legend}')
                 else:
                     zip_arch.write(os.path.join(dirpath, filename_path))
     directory = os.path.join(app.root_path, path_results)
