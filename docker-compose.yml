@@ -1,0 +1,13 @@
+version: '2'
+services:
+  flask:
+    build: .
+    mem_limit: 3g
+    container_name: biostrips
+    restart: always
+    volumes:
+      - .:/src
+    ports:
+      - "8998:8080"
+    command: python main.py
+

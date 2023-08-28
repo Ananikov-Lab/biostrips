@@ -47,6 +47,8 @@ def parsing_and_preparation_data(path_file):
 
             if count_line == 0 or count_line == 1 or count_line == 2 or count_line == 3 or count_line == 4:
                 continue
+            elif len(line) <= 1:
+                continue
             elif name_string in roles_of_molecules:
                 if name_string == 'products':
                     product_flag = 1
@@ -64,8 +66,11 @@ def parsing_and_preparation_data(path_file):
                 cytotoxicity.append(line[4].replace(',', '.'))
 
                 # calculation of normalized cytotoxicity
-                NC = 1000 * float(line[3].replace(',', '.')) / (
-                            float(line[2].replace(',', '.')) * float(line[4].replace(',', '.')))
+                if line[2].lower() == 'na' or line[3].lower() == 'na' or line[4].lower() == 'na':
+                    NC = 'NA'
+                else:
+                    NC = 1000*float(line[3].replace(',', '.'))/(
+                            float(line[2].replace(',', '.'))*float(line[4].replace(',', '.')))
                 normal_cytotoxicity.append(NC)
 
         # creating a dictionary of variables
@@ -365,3 +370,4 @@ def restore_full_products(product_indices, raw_data):
             full_products.append([new_label, index])
 
     return full_products
+

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import Flask, render_template, request, flash, redirect, url_for, send_from_directory, session
+from flask import Flask, render_template, request, flash, redirect, url_for, send_from_directory
 from werkzeug.utils import secure_filename
 from zipfile import ZipFile
 import os
@@ -12,6 +12,8 @@ from wtforms.validators import DataRequired, Optional, NumberRange
 from flask_bootstrap import Bootstrap
 import logging
 from logging.handlers import RotatingFileHandler
+import pickle as pkl
+import uuid
 
 path_data = 'data'
 path_meta = 'metadata'
@@ -19,7 +21,6 @@ path_results = 'results'
 path_examples = 'examples'
 path_new_chart_json = os.path.join(path_meta, 'new_chart.json')
 path_figures = os.path.join('static', 'figures')
-
 
 ALLOWED_EXTENSIONS = ['txt', 'csv']
 
@@ -32,7 +33,9 @@ with open(os.path.join(path_meta, 'secret_key.txt'), 'r') as f:
     app.config['SECRET_KEY'] = f.read()
 
 menu = [{"name": "Main", "url": "/"},
-        {"name": "Built Chart", "url": "/create-chart"},
+        {"name": "Intro to bio-Strips", "url": '/intro_to_biostrips'},
+        {"name": "Build Charts", "url": "/create_chart"},
+        {"name": "Previous runs", "url": "/send_check"},
         {"name": "Manual", "url": "/manual"},
         {"name": "About", "url": "/about"}]
 
@@ -48,29 +51,15 @@ cyt_potentials_list = [{'name': 'BF'},
 class ReagentLineForm(Form):
     reagent_name = StringField("Reagent name: ", validators=[DataRequired()], description="Reagent name")
     reagent_role = StringField("Reagent role: ", validators=[DataRequired()], description="Reagent role")
-    molar_mass = DecimalField("Molar mass: ",
-                              validators=[DataRequired(), NumberRange(0)],
+    molar_mass = DecimalField("Molar mass: ", places=3,
+                              validators=[DataRequired(), NumberRange(0.001)],
                               description="Molar mass")
-    mass = DecimalField("Mass: ",
-                       validators=[DataRequired(), NumberRange(0)],
-                       description="Mass")
-    cc50 = DecimalField("CC50: ",
-                       validators=[DataRequired(), NumberRange(0.00001)],
-                       description="CC50")
-    # 0,0000...1???
-
-    # def validate(self):
-    #     if not Form.validate(self):
-    #         return False
-    #     result = True
-    #     seen = set()
-    #     for field in self.reagent_role:
-    #         if field.data in seen:
-    #             field.errors.append('This notation has already been specified!')
-    #             result = False
-    #         else:
-    #             seen.add(field.data)
-    #     return result
+    mass = DecimalField("Mass: ", places=10,
+                        validators=[DataRequired(), NumberRange(0.0000000001)],
+                        description="Mass")
+    cc50 = DecimalField("CC50: ", places=10,
+                        validators=[DataRequired(), NumberRange(0.0000000001)],
+                        description="CC50")
 
 
 class OneChartForm(FlaskForm):
@@ -80,20 +69,18 @@ class OneChartForm(FlaskForm):
     products_info = FieldList(FormField(ReagentLineForm), min_entries=1)
     colormap = SelectField("Choose colormap: ")
     cyt_potential = SelectField("Choose cytotoxic potential: ")
+    variables = StringField("Enter variables separated by commas: ", description="Variables")
+    products_variables = StringField("Enter product variables separated by commas: ", description="Products variables")
+
+
+class CheckFile(FlaskForm):
+    filename = StringField("Enter access code: ", description="Access code")
 
 
 @app.route('/')
 @app.route('/home')
 def main():
-    path_references = os.path.join(path_meta, 'references.txt')
-    try:
-        with open(path_references, 'r') as file:
-            references = [line.replace('\n', '') for line in file.readlines()]
-
-    except:
-        references = ''
-
-    return render_template('main.html', menu=menu, references=references)
+    return render_template('main.html', menu=menu)
 
 
 @app.route('/manual')
@@ -101,83 +88,136 @@ def manual():
     return render_template('manual.html', menu=menu)
 
 
-@app.route('/create-chart', methods=['POST', 'GET'])
+@app.route('/intro_to_biostrips')
+def intro():
+    return render_template('intro_to_bio.html', menu=menu)
+
+
+@app.route('/about')
+def about():
+    return render_template('About.html', menu=menu)
+
+
+@app.route('/send_check', methods=['POST', 'GET'])
+def check_file_in_system():
+    form = CheckFile()
+    if 'send_check' in request.form:
+        filename = form.filename.data
+        filename = filename + '.txt'
+        if filename in os.listdir(path_data):
+            return redirect(url_for('output_file', filename=filename.rsplit(".")[0]), 302)
+        else:
+            return render_template('send_check.html', menu=menu, form=form, text='This file was not found')
+    elif 'new_exp' in request.form:
+        return redirect(url_for('create_chart'), 302)
+    return render_template('send_check.html', menu=menu, form=form, text='')
+
+
+@app.route("/output_file/<filename>", methods=['POST', 'GET'])
+def output_file(filename):
+    with open(f'static/figures/{filename.rsplit(".")[0]}/top_combinations.txt', 'rt') as f:
+        lines = f.readlines()
+        filename = lines[0].strip()
+        colormap = lines[1].strip()
+        cyt_potential = lines[2].strip()
+        number_of_combs = lines[3].strip()
+    with open(f'static/figures/{filename.rsplit(".")[0]}/file_info.pkl', 'rb') as f:
+        top_combinations = pkl.load(f)
+    return render_template('output_file.html', menu=menu, number=number_of_combs, colormap=colormap, filename=filename,
+                           top_combinations=top_combinations, cyt_potential=cyt_potential)
+
+
+@app.route('/create_chart', methods=['POST', 'GET'])
 def create_chart():
+    filename = str(uuid.uuid4())
     form = OneChartForm()
     form.colormap.choices = [(el["name"], el["name"]) for el in colormap_list]
     form.cyt_potential.choices = [(el["name"], el["name"]) for el in cyt_potentials_list]
-
     if 'send_create' in request.form:
-        filename = form.filename.data
+        meta_filename = filename + '.txt'
+        if meta_filename in os.listdir(path_data):
+            flash('Sorry, this name is taken. Try another filename')
+            return redirect(url_for('create_chart'), 302)
         cell_name = form.cell_name.data
         colormap = form.colormap.data
         cyt_potential = form.cyt_potential.data
         reagents_info = form.reagents_info.data
         products_info = form.products_info.data
+        variables = form.variables.data
+        products_variables = form.products_variables.data
 
-        save_chart_data(filename, cell_name, reagents_info, products_info)
-
-        session["filename"] = filename + '.txt'
-        session["colormap"] = colormap
-        session["cyt_potential"] = cyt_potential
-        session["data_upload"] = 1
-
-    elif "data_upload" in session:
-        if 'send_upload' in request.form:
-            session["data_upload"] = 1
-    else:
-        session["data_upload"] = 0
-        session["graphs"] = []
-
-    if session["data_upload"] == 1:
-        file_info = {'title': session["filename"], 'colormap': session["colormap"], 'cyt_potential': session["cyt_potential"]}
-        filename = file_info['title']
-
-        if 'gencombs' in request.form:
-            message = data_validation(file_info)
-
-            if message == 'SUCCESS':
-                filename = session["filename"]
-                path_table, number_of_combinations = calc_combinations(file_info)
-                session["path_table"] = path_table
-                session["number_of_combinations"] = number_of_combinations
-                session["combs_found"] = 1
-            else:
-                flash(message)
-
-        if 'gencharts' in request.form:
-            path_table = session["path_table"]
-
+        save_chart_data(filename, cell_name, reagents_info, products_info, variables, products_variables)
+        colormap_name = request.form.get('colormap').replace('"', '')
+        cyt_potential_name = request.form.get('cyt_potential').replace('"', '')
+        file_info = {'title': meta_filename, 'colormap': colormap_name,
+                     'cyt_potential': cyt_potential_name}
+        path_table, number_of_combinations = calc_combinations(file_info)
+        top_combinations = make_chart(file_info, path_table)
+        with open(f'static/figures/{filename}/top_combinations.txt', 'wt') as f:
+            text = f'{filename}\n{colormap_name}\n{cyt_potential_name}\n{number_of_combinations}\n'
+            f.write(text)
+        with open(f'static/figures/{filename}/file_info.pkl', 'wb') as f:
+            pkl.dump(top_combinations, f)
+        return redirect(url_for('output_file', filename=filename.rsplit(".")[0]), 302)
+    elif 'send_upload' in request.form:
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        # If the user does not select a file, the browser submits an
+        # empty file without a filename.
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            upload_filename = secure_filename(file.filename)
+            extension_upload = upload_filename.rsplit('.')[-1]
+            filename = filename + '.' + extension_upload
+            if filename in os.listdir(path_data):
+                flash('Sorry, this name is taken. Try another filename')
+                return redirect(url_for('create_chart'))
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            colormap_name = request.form.get('colormap').replace('"', '')
+            cyt_potential_name = request.form.get('cyt_potential').replace('"', '')
+            file_info = {'title': filename, 'colormap': colormap_name,
+                         'cyt_potential': cyt_potential_name}
+            path_table, number_of_combinations = calc_combinations(file_info)
             top_combinations = make_chart(file_info, path_table)
-            graphs = display_chart(filename)
+            with open(f'static/figures/{filename.rsplit(".")[0]}/top_combinations.txt', 'wt') as f:
+                text = f'{filename.rsplit(".")[0]}\n{colormap_name}\n{cyt_potential_name}\n{number_of_combinations}'
+                f.write(text)
 
-            session["graphs"] = graphs
-            session["charts_built"] = 1
-            session["combs_found"] = 1
-            session["top_combinations"] = top_combinations
+            with open(f'static/figures/{filename.rsplit(".")[0]}/file_info.pkl', 'wb') as f:
+                pkl.dump(top_combinations, f)
+            return redirect(url_for('output_file', filename=filename.rsplit(".")[0]), 302)
+        else:
+            extensions = 'Invalid file extension! The file must have one of the following extensions: '
+            len_extensions = len(ALLOWED_EXTENSIONS)
+            for count, extension in enumerate(ALLOWED_EXTENSIONS):
+                if count == len_extensions - 1:
+                    extensions += extension
+                else:
+                    extensions += extension + ','
 
-    else:
-        file_info = {'title': 'NONE', 'colormap': 'NONE', 'cyt_potential': 'NONE'}
-        reset_session()
-
-    return render_template('create-chart.html', menu=menu, colormap_list=colormap_list,
-                           cyt_potentials_list=cyt_potentials_list, json=file_info, session=session, form=form)
+            flash(extensions)
+    return render_template('create_chart.html', menu=menu, colormap_list=colormap_list,
+                           cyt_potentials_list=cyt_potentials_list, form=form)
 
 
 @app.route('/save_chart_data')
-def save_chart_data(filename, cell_name, reagents_info, products_info):
+def save_chart_data(filename, cell_name, reagents_info, products_info, variables, products_variables):
     path_file = os.path.join(path_data, filename + '.txt')
 
     with open(path_file, "w", encoding='utf-8') as out_file:
         print("Cell", cell_name, sep='\t', end='\n', file=out_file)
-        print("Variables", end='\n', file=out_file)
-        print("Product variables", end='\n', file=out_file)
+        print("Variables", variables, sep='\t', end='\n', file=out_file)
+        print("Product variables", products_variables, sep='\t', end='\n', file=out_file)
         print("Samples", "Abbreviation", "Mr, g*mol-1", "Mass, g", "CC50, mM", sep='\t', end='\n', file=out_file)
         print("Starting materials", end='\n', file=out_file)
 
         for el in reagents_info:
             print(el["reagent_name"], end='\t', file=out_file)
-            print(el["reagent_role"], end = '\t', file = out_file)
+            print(el["reagent_role"], end='\t', file=out_file)
             print(el["molar_mass"], end='\t', file=out_file)
             print(el["mass"], end='\t', file=out_file)
             print(el["cc50"], end='\n', file=out_file)
@@ -226,7 +266,7 @@ def make_chart(metadata, path_table):
     return top_combinations
 
 
-@app.route('/display_chart')
+@app.route('/display_chart/<filename>')
 def display_chart(filename):
     dir_name = filename.rsplit('.', 1)[0]
     path_graphs = os.path.join(path_figures, dir_name)
@@ -237,10 +277,19 @@ def display_chart(filename):
     for el in os.listdir(path_graphs):
         if el == 'colormap.png':
             continue
-        else:
+        elif el.split('.')[-1] not in ('pkl', 'txt'):
             graphs.append('figures/' + dir_name + '/' + el)
-
-    return graphs
+    with open(f'static/figures/{filename.rsplit(".")[0]}/top_combinations.txt', 'rt') as f:
+        lines = f.readlines()
+        filename = lines[0].strip()
+        colormap = lines[1].strip()
+        cyt_potential = lines[2].strip()
+        number_of_combs = lines[3].strip()
+    with open(f'static/figures/{filename.rsplit(".")[0]}/file_info.pkl', 'rb') as f:
+        top_combinations = pkl.load(f)
+    return render_template('display_chart.html', menu=menu, number=number_of_combs, colormap=colormap,
+                           filename=filename, top_combinations=top_combinations, cyt_potential=cyt_potential,
+                           graphs=graphs)
 
 
 @app.route("/download/<path:filename>")
@@ -252,28 +301,19 @@ def download(filename):
 
     with ZipFile(zip_path, "w") as zip_arch:
         for dirpath, _, filenames in os.walk(path_folder):
-            for filename in filenames:
-                zip_arch.write(os.path.join(dirpath, filename))
-
+            for filename_path in filenames:
+                print(filename_path)
+                if filename_path.split('_')[-1].split('.')[0] == 'comb':
+                    filename_path_txt = filename_path.split('_')[0] + '.txt'
+                    filename_path_csv = filename_path.split('_')[0] + '.csv'
+                    if filename_path_csv in os.listdir('data'):
+                        zip_arch.write(f'data/{filename_path_csv}')
+                    else:
+                        zip_arch.write(f'data/{filename_path_txt}')
+                else:
+                    zip_arch.write(os.path.join(dirpath, filename_path))
     directory = os.path.join(app.root_path, path_results)
-
-    reset_session()
-
     return send_from_directory(directory, zip_name)
-
-
-@app.route("/reset_session")
-def reset_session():
-    session["data_upload"] = 0
-    session["graphs"] = []
-    session["filename"] = ''
-    session["colormap"] = ''
-    session["cyt_potential"] = ''
-    session["combs_found"] = 0
-    session["path_table"] = ''
-    session["charts_built"] = 0
-    session["top_combinations"] = ''
-    session["number_of_combinations"] = 0
 
 
 @app.route("/download_file/<path:filename>", methods=['GET', 'POST'])
@@ -285,57 +325,19 @@ def download_file(filename):
 
 def allowed_file(filename):
     return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-
-@app.route('/uploader', methods=['GET', 'POST'])
-def uploader():
-    if request.method == 'POST':
-        # check if the post request has the file part
-        if 'file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
-        file = request.files['file']
-        # If the user does not select a file, the browser submits an
-        # empty file without a filename.
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-
-            colormap_name = request.form.get('colormap').replace('"', '')
-            cyt_potential_name = request.form.get('cyt_potential').replace('"', '')
-
-            session["filename"] = filename
-            session["colormap"] = colormap_name
-            session["cyt_potential"] = cyt_potential_name
-            session["data_upload"] = 1
-        else:
-            extensions = 'Invalid file extension! The file must have one of the following extensions: '
-            len_extensions = len(ALLOWED_EXTENSIONS)
-            for count, extension in enumerate(ALLOWED_EXTENSIONS):
-                if count == len_extensions - 1:
-                    extensions += extension
-                else:
-                    extensions += extension + ','
-
-            flash(extensions)
-
-            return redirect(url_for('create_chart'))
-    return redirect(url_for('create_chart'))
+        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 @app.errorhandler(404)
 def pageNotFound(error):
-    return render_template('page404.html', title="Страница не найдена", menu=menu), 404
+    app.logger.error(error)
+    return render_template('page404.html', title="Page 404", menu=menu), 404
 
 
 @app.errorhandler(500)
 def internal_error(exception):
     app.logger.error(exception)
-    return render_template('500.html'), 500
+    return render_template('page404.html', title="Page 404", menu=menu), 500
 
 
 if __name__ == '__main__':
