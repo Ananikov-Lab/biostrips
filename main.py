@@ -5,6 +5,7 @@ from zipfile import ZipFile
 import os
 import generate_chart as gench
 import generate_combinations_table as gentab
+from model import get_ld50
 import input_validation as inpval
 from flask_wtf import FlaskForm
 from wtforms import StringField, FormField, FieldList, SelectField, Form, DecimalField
@@ -60,7 +61,7 @@ class ReagentLineForm(Form):
     cc50 = DecimalField("CC50: ", places=10,
                         validators=[DataRequired(), NumberRange(0.0000000001)],
                         description="CC50")
-
+    smiles = StringField("SMILES: ", validators=[DataRequired()], description="SMILES")
 
 class OneChartForm(FlaskForm):
     filename = StringField("Enter filename: ", validators=[DataRequired()], description="Filename")
@@ -212,7 +213,7 @@ def save_chart_data(filename, cell_name, reagents_info, products_info, variables
         print("Cell", cell_name, sep='\t', end='\n', file=out_file)
         print("Variables", variables, sep='\t', end='\n', file=out_file)
         print("Product variables", products_variables, sep='\t', end='\n', file=out_file)
-        print("Samples", "Abbreviation", "Mr, g*mol-1", "Mass, g", "CC50, mM", sep='\t', end='\n', file=out_file)
+        print("Samples", "Abbreviation", "Mr, g*mol-1", "Mass, g", "CC50, mM", "LD50", sep='\t', end='\n', file=out_file)
         print("Starting materials", end='\n', file=out_file)
 
         for el in reagents_info:
@@ -220,7 +221,8 @@ def save_chart_data(filename, cell_name, reagents_info, products_info, variables
             print(el["reagent_role"], end='\t', file=out_file)
             print(el["molar_mass"], end='\t', file=out_file)
             print(el["mass"], end='\t', file=out_file)
-            print(el["cc50"], end='\n', file=out_file)
+            print(el["cc50"], end='\t', file=out_file)
+            print(get_ld50([el["smiles"]]), end='\n', file=out_file)
 
         print("Products", end='\n', file=out_file)
 
@@ -229,7 +231,8 @@ def save_chart_data(filename, cell_name, reagents_info, products_info, variables
             print(el["reagent_role"], end='\t', file=out_file)
             print(el["molar_mass"], end='\t', file=out_file)
             print(el["mass"], end='\t', file=out_file)
-            print(el["cc50"], end='\n', file=out_file)
+            print(el["cc50"], end='\t', file=out_file)
+            print(get_ld50([el["smiles"]]), end='\n', file=out_file)
 
     return 0
 
