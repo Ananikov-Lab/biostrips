@@ -161,11 +161,17 @@ def get_product_combinations(variables_list, inverse_variables_dict, product_var
     for number in numbers_variables:
         products_var_num.append(['0', str(variables_to_num[number])])
 
-    for i in range(len(products_var_num) - 1):
-        if i == 0:
-            products_combinations = ['-'.join(j) for j in list(product(products_var_num[i], products_var_num[i + 1]))]
-        else:
-            products_combinations = ['-'.join(j) for j in list(product(products_combinations, products_var_num[i + 1]))]
+    products_combinations = []
+
+    if len(products_var_num) == 1:
+        for el in products_var_num[0]:
+            products_combinations.append(el)
+    else:
+        for i in range(len(products_var_num) - 1):
+        	if i == 0:
+            		products_combinations = ['-'.join(j) for j in list(product(products_var_num[i], products_var_num[i + 1]))]
+        	else:
+            		products_combinations = ['-'.join(j) for j in list(product(products_combinations, products_var_num[i + 1]))]
 
     products_combinations = ['-' + product for product in products_combinations]
 
@@ -374,14 +380,16 @@ def restore_full_products(product_indices, raw_data):
                 numbers = el.split('/')
                 variable_numbers.append(numbers)
 
-        for i in range(len(variable_numbers) - 1):
-            if i == 0:
-                products_combinations = ['-'.join(j) for j in
-                                         list(product(variable_numbers[i], variable_numbers[i + 1]))]
-            else:
-                products_combinations = ['-'.join(j) for j in
-                                         list(product(products_combinations, variable_numbers[i + 1]))]
-
+        if len(variable_numbers) == 1:
+            products_combinations = variable_numbers[0]
+        else:
+            for i in range(len(variable_numbers) - 1):
+                if i == 0:
+                    products_combinations = ['-'.join(j) for j in
+                                             list(product(variable_numbers[i], variable_numbers[i + 1]))]
+                else:
+                    products_combinations = ['-'.join(j) for j in
+                                             list(product(products_combinations, variable_numbers[i + 1]))]
         for combination in products_combinations:
             new_label = label_list[0] + '-' + combination
             full_products.append([new_label, index])
