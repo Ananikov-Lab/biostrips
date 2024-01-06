@@ -16,6 +16,7 @@ from logging.handlers import RotatingFileHandler
 import pickle as pkl
 import uuid
 
+
 path_data = 'data'
 path_meta = 'metadata'
 path_results = 'results'
@@ -347,11 +348,11 @@ def internal_error(exception):
 
 if __name__ == '__main__':
     log_file = 'flask.log'
-
+    
     file_handler = RotatingFileHandler(log_file, maxBytes=1024 * 1024 * 100, backupCount=20)
     file_handler.setLevel(logging.ERROR)
     formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
     file_handler.setFormatter(formatter)
     app.logger.addHandler(file_handler)
 
-    app.run(host="0.0.0.0", port=8080)
+    app.run(host="0.0.0.0", port=8881)

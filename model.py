@@ -35,7 +35,7 @@ def get_ld50(smiles_list):
     
     fn = 'rf_mordred' + str(0) + '_' + sampling_type
     mordred_rf = _benchmarks['rf_mordred']['model']()
-    mordred_rf.load_weights('../../data/benchmark-models/chkpts/%s.chkpt' % fn)
+    mordred_rf.load_weights('src/%s.chkpt' % fn)
     
     with open('./src/mordred_cols.pkl', 'rb') as f:
         m_new = pkl.load(f)
