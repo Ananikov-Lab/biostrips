@@ -63,12 +63,11 @@ def parsing_and_preparation_data(path_file):
                 labels = add_label(label, labels)
                 if product_flag:
                     products_labels = add_label(label, products_labels)
-
                 molecules.append(line[0])
                 generic_names.append(line[1])
                 cytotoxicity.append(line[4].replace(',', '.'))
                 smiles_dict[line[0]] = line[-1]
-                ld50_dict[line[0]] = get_ld50(line[-1])
+                ld50_dict[line[0]] = get_ld50([line[-1]])
 
                 # calculation of normalized cytotoxicity
                 if line[2].lower() == 'na' or line[3].lower() == 'na' or line[4].lower() == 'na':

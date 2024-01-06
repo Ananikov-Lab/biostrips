@@ -27,7 +27,7 @@ def generate_table(path_input):
         for name, values in legend.items():
             print(name, file=out_file)
             for name_val, val in values.items():
-                print(f'{name_val},{list(val.keys())[0]},{list(val.values())[0]},{smiles_dict[name_val]},{ld50_dict[name_vale]}', file=out_file)
+                print(f'{name_val},{list(val.keys())[0]},{list(val.values())[0]},{smiles_dict[name_val]},{ld50_dict[name_val]}', file=out_file)
 
     number_of_combinations = len(combinations)
 

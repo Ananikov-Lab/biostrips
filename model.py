@@ -44,8 +44,16 @@ def get_ld50(smiles_list):
     calc_3d = Calculator(descriptors, ignore_3D=True)
     
     mols = [Chem.MolFromSmiles(smi) for smi in smiles_list]
-    
+    if mols[0] is None:
+        return 'unknown'
+
     df = calc_2d.pandas(mols)
     df_3d = calc_3d.pandas(mols)
+
+    with open('./src/scaler.pkl', 'rb') as f:
+        y_train = pkl.load(f)
+
+    y_train = experimental_setup.scaler.fit_transform(y_train)
+
     y_hat = experimental_setup.scaler.inverse_transform(mordred_rf.predict(df[m_new].to_numpy()))
     return y_hat[0][0]
