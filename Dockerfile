@@ -6,6 +6,5 @@ COPY . /src
 RUN apt-get update
 RUN conda env create -f env.yml
 RUN conda init bash
-RUN echo "conda activate biostrips" >> ~/.bashrc
-SHELL ["/bin/bash", "--login", "-c"]
-
+RUN echo "source activate biostrips" > ~/.bashrc
+ENV PATH /opt/conda/envs/biostrips/bin:$PATH
