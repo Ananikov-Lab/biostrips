@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+#!/home/nkolomoets/miniconda3/envs/biostrips/bin/python
 from flask import Flask, render_template, request, flash, redirect, url_for, send_from_directory
 from werkzeug.utils import secure_filename
 from zipfile import ZipFile
@@ -355,4 +355,4 @@ if __name__ == '__main__':
     file_handler.setFormatter(formatter)
     app.logger.addHandler(file_handler)
 
-    app.run(host="0.0.0.0", port=8080)
+    app.run(host="0.0.0.0", port=5001)

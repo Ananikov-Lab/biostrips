@@ -1,6 +1,6 @@
 version: '2'
 services:
-  flask:
+  web:
     build: .
     mem_limit: 3g
     container_name: biostrips
@@ -8,6 +8,6 @@ services:
     volumes:
       - .:/src
     ports:
-      - "8998:8080"
+      - "5001:5001"
     command: python main.py
 
