@@ -60,9 +60,9 @@ class ReagentLineForm(Form):
                         validators=[DataRequired(), NumberRange(0.0000000001)],
                         description="Mass")
     cc50 = DecimalField("CC50: ", places=10,
-                        validators=[DataRequired(), NumberRange(0.0000000001)],
+                        validators=[NumberRange(0.0000000001)],
                         description="CC50")
-    smiles = StringField("SMILES: ", validators=[DataRequired()], description="SMILES")
+    smiles = StringField("SMILES: ",  description="SMILES")
 
 class OneChartForm(FlaskForm):
     filename = StringField("Enter filename: ", validators=[DataRequired()], description="Filename")
@@ -147,7 +147,14 @@ def create_chart():
         products_info = form.products_info.data
         variables = form.variables.data
         products_variables = form.products_variables.data
-
+        for reag_info in reagents_info:
+            if reag_info['cc50'] is None and reag_info['smiles'] == '':
+                flash('Sorry, please enter at least one of two parameters (cc50 or smiles)')
+                return redirect(url_for('create_chart'), 302)
+        for prod_info in products_info:
+            if prod_info['cc50'] is None and prod_info['smiles'] == '':
+                flash('Sorry, please enter at least one of two parameters (cc50 or smiles)')
+                return redirect(url_for('create_chart'), 302)
         save_chart_data(filename, cell_name, reagents_info, products_info, variables, products_variables)
         colormap_name = request.form.get('colormap').replace('"', '')
         cyt_potential_name = request.form.get('cyt_potential').replace('"', '')
@@ -355,4 +362,4 @@ if __name__ == '__main__':
     file_handler.setFormatter(formatter)
     app.logger.addHandler(file_handler)
 
-    app.run(host="0.0.0.0", port=5001)
+    app.run(host="0.0.0.0", port=8080)
