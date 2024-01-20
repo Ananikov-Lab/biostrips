@@ -1,11 +1,12 @@
 #!/home/nkolomoets/miniconda3/envs/biostrips/bin/python
+from model import get_ld50
+# -*- coding: utf-8 -*-
 from flask import Flask, render_template, request, flash, redirect, url_for, send_from_directory
 from werkzeug.utils import secure_filename
 from zipfile import ZipFile
 import os
 import generate_chart as gench
 import generate_combinations_table as gentab
-from model import get_ld50
 import input_validation as inpval
 from flask_wtf import FlaskForm
 from wtforms import StringField, FormField, FieldList, SelectField, Form, DecimalField
@@ -15,7 +16,6 @@ import logging
 from logging.handlers import RotatingFileHandler
 import pickle as pkl
 import uuid
-
 
 path_data = 'data'
 path_meta = 'metadata'
@@ -60,9 +60,9 @@ class ReagentLineForm(Form):
                         validators=[DataRequired(), NumberRange(0.0000000001)],
                         description="Mass")
     cc50 = DecimalField("CC50: ", places=10,
-                        validators=[NumberRange(0.0000000001)],
+                        validators=[DataRequired(), NumberRange(0.0000000001)],
                         description="CC50")
-    smiles = StringField("SMILES: ",  description="SMILES")
+
 
 class OneChartForm(FlaskForm):
     filename = StringField("Enter filename: ", validators=[DataRequired()], description="Filename")
@@ -147,14 +147,7 @@ def create_chart():
         products_info = form.products_info.data
         variables = form.variables.data
         products_variables = form.products_variables.data
-        for reag_info in reagents_info:
-            if reag_info['cc50'] is None and reag_info['smiles'] == '':
-                flash('Sorry, please enter at least one of two parameters (cc50 or smiles)')
-                return redirect(url_for('create_chart'), 302)
-        for prod_info in products_info:
-            if prod_info['cc50'] is None and prod_info['smiles'] == '':
-                flash('Sorry, please enter at least one of two parameters (cc50 or smiles)')
-                return redirect(url_for('create_chart'), 302)
+
         save_chart_data(filename, cell_name, reagents_info, products_info, variables, products_variables)
         colormap_name = request.form.get('colormap').replace('"', '')
         cyt_potential_name = request.form.get('cyt_potential').replace('"', '')
@@ -221,7 +214,7 @@ def save_chart_data(filename, cell_name, reagents_info, products_info, variables
         print("Cell", cell_name, sep='\t', end='\n', file=out_file)
         print("Variables", variables, sep='\t', end='\n', file=out_file)
         print("Product variables", products_variables, sep='\t', end='\n', file=out_file)
-        print("Samples", "Abbreviation", "Mr, g*mol-1", "Mass, g", "CC50, mM", "LD50", sep='\t', end='\n', file=out_file)
+        print("Samples", "Abbreviation", "Mr, g*mol-1", "Mass, g", "CC50, mM", sep='\t', end='\n', file=out_file)
         print("Starting materials", end='\n', file=out_file)
 
         for el in reagents_info:
@@ -229,8 +222,7 @@ def save_chart_data(filename, cell_name, reagents_info, products_info, variables
             print(el["reagent_role"], end='\t', file=out_file)
             print(el["molar_mass"], end='\t', file=out_file)
             print(el["mass"], end='\t', file=out_file)
-            print(el["cc50"], end='\t', file=out_file)
-            print(get_ld50([el["smiles"]]), end='\n', file=out_file)
+            print(el["cc50"], end='\n', file=out_file)
 
         print("Products", end='\n', file=out_file)
 
@@ -239,8 +231,7 @@ def save_chart_data(filename, cell_name, reagents_info, products_info, variables
             print(el["reagent_role"], end='\t', file=out_file)
             print(el["molar_mass"], end='\t', file=out_file)
             print(el["mass"], end='\t', file=out_file)
-            print(el["cc50"], end='\t', file=out_file)
-            print(get_ld50([el["smiles"]]), end='\n', file=out_file)
+            print(el["cc50"], end='\n', file=out_file)
 
     return 0
 
@@ -355,7 +346,7 @@ def internal_error(exception):
 
 if __name__ == '__main__':
     log_file = 'flask.log'
-    
+
     file_handler = RotatingFileHandler(log_file, maxBytes=1024 * 1024 * 100, backupCount=20)
     file_handler.setLevel(logging.ERROR)
     formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
@@ -363,3 +354,4 @@ if __name__ == '__main__':
     app.logger.addHandler(file_handler)
 
     app.run(host="0.0.0.0", port=8080)
+

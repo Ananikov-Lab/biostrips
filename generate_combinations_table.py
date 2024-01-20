@@ -10,8 +10,7 @@ inverse_letters_dict = {number: letter for letter, number in letters_dict.items(
 
 def generate_table(path_input):
 
-    raw_data, variables_names, product_variables_names, variables_dict, labels, products_labels, smiles_dict, ld50_dict \
-    = cytcomb.parsing_and_preparation_data(path_input)
+    raw_data, variables_names, product_variables_names, variables_dict, labels, products_labels = cytcomb.parsing_and_preparation_data(path_input)
 
     inverse_variables_dict = {variable: number for number, variable in variables_dict.items()}
 
@@ -27,8 +26,9 @@ def generate_table(path_input):
         for name, values in legend.items():
             print(name, file=out_file)
             for name_val, val in values.items():
-                print(f'{name_val},{list(val.keys())[0]},{list(val.values())[0]},{smiles_dict[name_val]},{ld50_dict[name_val]}', file=out_file)
+                print(f'{name_val},{list(val.keys())[0]}, {list(val.values())[0]}', file=out_file)
 
     number_of_combinations = len(combinations)
 
     return path_out, number_of_combinations
+

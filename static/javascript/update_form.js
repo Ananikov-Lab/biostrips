@@ -41,7 +41,6 @@ function update_table(e){
     let newFieldName_mmass = `${type_field}-${Math.max(...ReagentInputIds) + 1}-molar_mass`;
     let newFieldName_mass = `${type_field}-${Math.max(...ReagentInputIds) + 1}-mass`;
     let newFieldName_cc = `${type_field}-${Math.max(...ReagentInputIds) + 1}-cc50`;
-    let newFieldName_smiles = `${type_field}-${Math.max(...ReagentInputIds) + 1}-smiles`;
 
     allTypeFieldWrapper.insertAdjacentHTML('beforeend',`
     <table class='din_table'>
@@ -50,8 +49,7 @@ function update_table(e){
         <td><input class="form-control" id="${newFieldName_role}" name="${newFieldName_role}" required type="text" value=""></td>
         <td><input class="form-control" id="${newFieldName_mmass}" name="${newFieldName_mmass}" required step="any" type="number" value=""></td>
         <td><input class="form-control" id="${newFieldName_mass}" name="${newFieldName_mass}" required step="any" type="number" value=""></td>
-        <td><input class="form-control" id="${newFieldName_cc}" name="${newFieldName_cc}" step="any" type="number" value=""></td>
-        <td><input class="form-control" id="${newFieldName_smiles}" name="${newFieldName_smiles}" type="text" value=""></td>
+        <td><input class="form-control" id="${newFieldName_cc}" name="${newFieldName_cc}" required type="text" value=""></td>
         <td><button class="btn btn-danger btn-sm">delete</button></td>
     </tr>
     </table>

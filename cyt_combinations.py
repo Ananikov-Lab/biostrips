@@ -1,5 +1,4 @@
 from itertools import product
-from model import get_ld50
 
 roles_of_molecules = ['starting materials', 'catalysts', 'reagents', 'solvents', 'products', 'byproducts']
 
@@ -26,8 +25,6 @@ def parsing_and_preparation_data(path_file):
         product_flag = 0
 
         cell = lines[0][1]
-        smiles_dict = {}
-        ld50_dict = {}
 
         # parsing variables
         if len(lines[1]) == 1:
@@ -63,11 +60,10 @@ def parsing_and_preparation_data(path_file):
                 labels = add_label(label, labels)
                 if product_flag:
                     products_labels = add_label(label, products_labels)
+
                 molecules.append(line[0])
                 generic_names.append(line[1])
                 cytotoxicity.append(line[4].replace(',', '.'))
-                smiles_dict[line[0]] = line[-1]
-                ld50_dict[line[0]] = get_ld50([line[-1]])
 
                 # calculation of normalized cytotoxicity
                 if line[2].lower() == 'na' or line[3].lower() == 'na' or line[4].lower() == 'na':
@@ -88,7 +84,7 @@ def parsing_and_preparation_data(path_file):
 
         raw_data = [cell, molecules_sort, generic_names_sort, normal_cytotoxicity_sort, cytotoxicity_sort]
 
-    return raw_data, variables_names, product_variables_names, variables_dict, labels, products_labels, smiles_dict, ld50_dict
+    return raw_data, variables_names, product_variables_names, variables_dict, labels, products_labels
 
 
 def add_label(label, labels):
@@ -399,4 +395,5 @@ def restore_full_products(product_indices, raw_data):
             full_products.append([new_label, index])
 
     return full_products
+
 
