@@ -58,7 +58,7 @@ class ReagentLineForm(Form):
     mass = DecimalField("Mass: ", places=10,
                         validators=[DataRequired(), NumberRange(0.0000000001)],
                         description="Mass")
-    cc50 = StringField("CC50 / SMILES: ",
+    cc50 = StringField("CC50: ",
                         validators=[DataRequired()],
                         description="CC50")
 
