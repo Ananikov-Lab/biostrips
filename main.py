@@ -1,6 +1,5 @@
 #!/home/nkolomoets/miniconda3/envs/biostrips/bin/python
 from model import get_ld50
-# -*- coding: utf-8 -*-
 from flask import Flask, render_template, request, flash, redirect, url_for, send_from_directory
 from werkzeug.utils import secure_filename
 from zipfile import ZipFile
@@ -59,8 +58,8 @@ class ReagentLineForm(Form):
     mass = DecimalField("Mass: ", places=10,
                         validators=[DataRequired(), NumberRange(0.0000000001)],
                         description="Mass")
-    cc50 = DecimalField("CC50: ", places=10,
-                        validators=[DataRequired(), NumberRange(0.0000000001)],
+    cc50 = StringField("CC50 / SMILES: ",
+                        validators=[DataRequired()],
                         description="CC50")
 
 
@@ -147,6 +146,18 @@ def create_chart():
         products_info = form.products_info.data
         variables = form.variables.data
         products_variables = form.products_variables.data
+
+        for reag_info in reagents_info:
+            try:
+                x = float(reag_info['cc50'].replace(',', '.'))
+            except:
+                reag_info['cc50'] = get_ld50(reag_info['cc50'])
+
+        for prod_info in products_info:
+            try:
+                x = float(prod_info['cc50'].replace(',', '.'))
+            except:
+                prod_info['cc50'] = get_ld50(prod_info['cc50'])
 
         save_chart_data(filename, cell_name, reagents_info, products_info, variables, products_variables)
         colormap_name = request.form.get('colormap').replace('"', '')

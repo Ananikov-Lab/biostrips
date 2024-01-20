@@ -1,4 +1,5 @@
 from itertools import product
+from model import get_ld50
 
 roles_of_molecules = ['starting materials', 'catalysts', 'reagents', 'solvents', 'products', 'byproducts']
 
@@ -63,6 +64,10 @@ def parsing_and_preparation_data(path_file):
 
                 molecules.append(line[0])
                 generic_names.append(line[1])
+                try:
+                    x = float(line[4].replace(',', '.'))
+                except:
+                    line[4] = get_ld50(line[4])
                 cytotoxicity.append(line[4].replace(',', '.'))
 
                 # calculation of normalized cytotoxicity

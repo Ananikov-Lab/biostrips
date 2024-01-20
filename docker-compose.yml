@@ -3,11 +3,11 @@ services:
   web:
     build: .
     mem_limit: 3g
-    container_name: biostrips
+    container_name: biostrips_test
     restart: always
     volumes:
       - .:/src
     ports:
-      - "5001:5001"
+      - "8080:8080"
     command: python main.py
 
