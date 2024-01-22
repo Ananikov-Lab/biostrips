@@ -43,7 +43,7 @@ def get_ld50(smiles_list):
     calc_2d = Calculator(descriptors, ignore_3D=False)
     calc_3d = Calculator(descriptors, ignore_3D=True)
     
-    mols = [Chem.MolFromSmiles(smi) for smi in smiles_list]
+    mols = [Chem.MolFromSmiles(Chem.MolToSmiles(Chem.MolFromSmiles(smi))) for smi in smiles_list]
     if mols[0] is None:
         return 'unknown'
 
