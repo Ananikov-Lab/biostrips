@@ -67,7 +67,7 @@ def parsing_and_preparation_data(path_file):
                 try:
                     x = float(line[4].replace(',', '.'))
                 except:
-                    line[4] = get_ld50(line[4])
+                    line[4] = get_ld50([line[4]])
                 cytotoxicity.append(line[4].replace(',', '.'))
 
                 # calculation of normalized cytotoxicity

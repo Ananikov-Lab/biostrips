@@ -151,13 +151,13 @@ def create_chart():
             try:
                 x = float(reag_info['cc50'].replace(',', '.'))
             except:
-                reag_info['cc50'] = get_ld50(reag_info['cc50'])
+                reag_info['cc50'] = get_ld50([reag_info['cc50']])
 
         for prod_info in products_info:
             try:
                 x = float(prod_info['cc50'].replace(',', '.'))
             except:
-                prod_info['cc50'] = get_ld50(prod_info['cc50'])
+                prod_info['cc50'] = get_ld50([prod_info['cc50']])
 
         save_chart_data(filename, cell_name, reagents_info, products_info, variables, products_variables)
         colormap_name = request.form.get('colormap').replace('"', '')
