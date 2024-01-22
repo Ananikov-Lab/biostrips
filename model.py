@@ -56,4 +56,4 @@ def get_ld50(smiles_list):
     y_train = experimental_setup.scaler.fit_transform(y_train)
 
     y_hat = experimental_setup.scaler.inverse_transform(mordred_rf.predict(df[m_new].to_numpy()))
-    return round(y_hat[0][0], 2)
+    return str(round(y_hat[0][0], 2))
