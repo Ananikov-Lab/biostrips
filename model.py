@@ -33,7 +33,7 @@ def get_ld50(smiles_list):
     
     converter = experimental_setup.LD50UnitConverter()
     
-    fn = 'rf_mordred' + str(0) + '_' + sampling_type
+    fn = 'rf_mordred' + str(4) + '_' + sampling_type
     mordred_rf = _benchmarks['rf_mordred']['model']()
     mordred_rf.load_weights('src/%s.chkpt' % fn)
     
