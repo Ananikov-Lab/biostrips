@@ -48,6 +48,8 @@ cyt_potentials_list = [{'name': 'BF'},
                        {'name': 'CPf'},
                        {'name': 'CPf_rel'}]
 
+mesure = ['mol', 'g']
+
 
 class ReagentLineForm(Form):
     reagent_name = StringField("Reagent name: ", validators=[DataRequired()], description="Reagent name")
@@ -72,7 +74,7 @@ class OneChartForm(FlaskForm):
     cyt_potential = SelectField("Choose cytotoxic potential: ")
     variables = StringField("Enter variables separated by commas: ", description="Variables")
     products_variables = StringField("Enter product variables separated by commas: ", description="Products variables")
-
+    type_mesure = SelectField("Select variable dimension: ")
 
 class CheckFile(FlaskForm):
     filename = StringField("Enter access code: ", description="Access code")
@@ -134,6 +136,7 @@ def create_chart():
     form = OneChartForm()
     form.colormap.choices = [(el["name"], el["name"]) for el in colormap_list]
     form.cyt_potential.choices = [(el["name"], el["name"]) for el in cyt_potentials_list]
+    form.type_mesure.choices = [(el, el) for el in mesure]
     if 'send_create' in request.form:
         meta_filename = filename + '.txt'
         if meta_filename in os.listdir(path_data):
@@ -146,24 +149,25 @@ def create_chart():
         products_info = form.products_info.data
         variables = form.variables.data
         products_variables = form.products_variables.data
-
+        mesure_variable = request.form.get('type_mesure').replace('"', '')
         for reag_info in reagents_info:
             try:
                 x = float(reag_info['cc50'].replace(',', '.'))
             except:
-                reag_info['cc50'] = get_ld50([reag_info['cc50']])
+                reag_info['cc50'] = get_ld50([reag_info['cc50']], mesure_variable)
 
         for prod_info in products_info:
             try:
                 x = float(prod_info['cc50'].replace(',', '.'))
             except:
-                prod_info['cc50'] = get_ld50([prod_info['cc50']])
+                prod_info['cc50'] = get_ld50([prod_info['cc50']], mesure_variable)
 
         save_chart_data(filename, cell_name, reagents_info, products_info, variables, products_variables)
         colormap_name = request.form.get('colormap').replace('"', '')
         cyt_potential_name = request.form.get('cyt_potential').replace('"', '')
         file_info = {'title': meta_filename, 'colormap': colormap_name,
-                     'cyt_potential': cyt_potential_name}
+                     'cyt_potential': cyt_potential_name,
+                     'mesure_type': mesure_variable}
         path_table, number_of_combinations = calc_combinations(file_info)
         top_combinations = make_chart(file_info, path_table)
         with open(f'static/figures/{filename}/top_combinations.txt', 'wt') as f:
@@ -192,8 +196,10 @@ def create_chart():
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             colormap_name = request.form.get('colormap').replace('"', '')
             cyt_potential_name = request.form.get('cyt_potential').replace('"', '')
+            mesure_variable = request.form.get('type_mesure').replace('"', '    ')
             file_info = {'title': filename, 'colormap': colormap_name,
-                         'cyt_potential': cyt_potential_name}
+                         'cyt_potential': cyt_potential_name,
+                         'mesure_type': mesure_variable}
             path_table, number_of_combinations = calc_combinations(file_info)
             top_combinations = make_chart(file_info, path_table)
             with open(f'static/figures/{filename.rsplit(".")[0]}/top_combinations.txt', 'wt') as f:
@@ -214,7 +220,7 @@ def create_chart():
 
             flash(extensions)
     return render_template('create_chart.html', menu=menu, colormap_list=colormap_list,
-                           cyt_potentials_list=cyt_potentials_list, form=form)
+                           cyt_potentials_list=cyt_potentials_list, form=form, type_mesure=mesure)
 
 
 @app.route('/save_chart_data')
@@ -261,8 +267,8 @@ def data_validation(metadata):
 def calc_combinations(metadata):
     filename = metadata['title']
     path_data = os.path.join('data', filename)
-
-    path_table, number_of_combinations = gentab.generate_table(path_data)
+    mesure_variable = metadata['mesure_type']
+    path_table, number_of_combinations = gentab.generate_table(path_data, mesure_variable)
 
     return path_table, number_of_combinations
 
@@ -364,5 +370,5 @@ if __name__ == '__main__':
     file_handler.setFormatter(formatter)
     app.logger.addHandler(file_handler)
 
-    app.run(host="0.0.0.0", port=5001)
+    app.run(host="0.0.0.0", port=8080)
 

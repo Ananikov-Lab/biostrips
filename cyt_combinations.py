@@ -4,7 +4,7 @@ from model import get_ld50
 roles_of_molecules = ['starting materials', 'catalysts', 'reagents', 'solvents', 'products', 'byproducts']
 
 
-def parsing_and_preparation_data(path_file):
+def parsing_and_preparation_data(path_file, mesure_variable):
     with open(path_file, "r", encoding="utf-8") as f:
         extension = path_file.split('.', 1)[1].lower()
 
@@ -67,7 +67,7 @@ def parsing_and_preparation_data(path_file):
                 try:
                     x = float(line[4].replace(',', '.'))
                 except:
-                    line[4] = get_ld50([line[4]])
+                    line[4] = get_ld50([line[4]], mesure_variable)
                 cytotoxicity.append(line[4].replace(',', '.'))
 
                 # calculation of normalized cytotoxicity

@@ -47,6 +47,10 @@
                     {{ form.products_variables.label }}
                     {{ form.products_variables(placeholder=form.products_variables.description, class="form-control") }}
                 </div>
+                <div class="mb-3">
+                    {{ form.type_mesure.label }}
+                    {{ form.type_mesure(placeholder=form.type_mesure.description, class="form-select") }}
+                </div>
                 <table id="reagents_info" name="reagents_info">
                     <tr>
                         <th>Reagent name</th>
@@ -136,7 +140,17 @@
                         {% endfor %}
                     </select>
                 </div>
-
+                    <div class="mb-3">
+                     <select name="type_mesure" id="type_mesure" class="form-select" required
+                             aria-label="select example">
+                        <option value="">Select variable dimension</option>
+                         {% for type in type_mesure %}
+                             <li>
+                                <option name="type_mesure" id="type_mesure">"{{ type }}"</option>
+                            </li>
+                        {% endfor %}
+                    </select>
+                </div>
                 <div class="mb-3">
                     <button name='send_upload' class="btn btn-primary" type="submit">Send</button>
                 </div>

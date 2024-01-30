@@ -8,9 +8,9 @@ letters_dict = {'A': 1, 'B': 2, 'C': 3, 'D': 4, 'E': 5, 'F': 6, 'G': 7,
 inverse_letters_dict = {number: letter for letter, number in letters_dict.items()}
 
 
-def generate_table(path_input):
+def generate_table(path_input, mesure):
 
-    raw_data, variables_names, product_variables_names, variables_dict, labels, products_labels = cytcomb.parsing_and_preparation_data(path_input)
+    raw_data, variables_names, product_variables_names, variables_dict, labels, products_labels = cytcomb.parsing_and_preparation_data(path_input, mesure)
 
     inverse_variables_dict = {variable: number for number, variable in variables_dict.items()}
 
