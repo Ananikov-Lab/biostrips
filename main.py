@@ -48,7 +48,7 @@ cyt_potentials_list = [{'name': 'BF'},
                        {'name': 'CPf'},
                        {'name': 'CPf_rel'}]
 
-mesure = ['mol', 'g']
+mesure = ['mol/kg', 'g/kg']
 
 
 class ReagentLineForm(Form):
@@ -370,5 +370,5 @@ if __name__ == '__main__':
     file_handler.setFormatter(formatter)
     app.logger.addHandler(file_handler)
 
-    app.run(host="0.0.0.0", port=8080)
+    app.run(host="0.0.0.0", port=5001)
 
