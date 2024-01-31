@@ -57,7 +57,7 @@ def get_ld50(smiles_list, mesure_variable):
     y_train = experimental_setup.scaler.fit_transform(y_train)
 
     y_hat = experimental_setup.scaler.inverse_transform(mordred_rf.predict(df[m_new].to_numpy()))
-    if mesure_variable == 'mol/kg':
+    if mesure_variable == 'mol/kg or mol/L':
         return str(10**(-1*round(y_hat[0][0], 2)))
     else:
         molwt = Descriptors.MolWt(Chem.MolFromSmiles(smiles_list[0]))

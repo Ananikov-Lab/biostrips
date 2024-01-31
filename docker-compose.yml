@@ -3,7 +3,7 @@ services:
   web:
     build: .
     mem_limit: 3g
-    container_name: biostrips_test
+    container_name: biostrips_web
     restart: always
     volumes:
       - .:/src

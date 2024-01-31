@@ -48,7 +48,7 @@ cyt_potentials_list = [{'name': 'BF'},
                        {'name': 'CPf'},
                        {'name': 'CPf_rel'}]
 
-mesure = ['mol/kg', 'g/kg']
+mesure = ['mol/kg or mol/L', 'g/kg or g/L']
 
 
 class ReagentLineForm(Form):
@@ -196,7 +196,7 @@ def create_chart():
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             colormap_name = request.form.get('colormap').replace('"', '')
             cyt_potential_name = request.form.get('cyt_potential').replace('"', '')
-            mesure_variable = request.form.get('type_mesure').replace('"', '    ')
+            mesure_variable = request.form.get('type_mesure').replace('"', '')
             file_info = {'title': filename, 'colormap': colormap_name,
                          'cyt_potential': cyt_potential_name,
                          'mesure_type': mesure_variable}
