@@ -123,7 +123,7 @@
                         <option value="">Select colormap</option>
                         {% for colormap in colormap_list %}
                             <li>
-                                <option name="colormap" id="colormap">"{{ colormap.name }}"</option>
+                                <option name="colormap" id="colormap">{{ colormap.name }}</option>
                             </li>
                         {% endfor %}
                     </select>
@@ -135,7 +135,7 @@
                         <option value="">Select cytotoxic potential</option>
                         {% for cyt_potential in cyt_potentials_list %}
                             <li>
-                                <option name="cyt_potential" id="cyt_potential">"{{ cyt_potential.name }}"</option>
+                                <option name="cyt_potential" id="cyt_potential">{{ cyt_potential.name }}</option>
                             </li>
                         {% endfor %}
                     </select>

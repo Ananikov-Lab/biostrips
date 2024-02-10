@@ -44,6 +44,17 @@ def get_ld50(smiles_list, mesure_variable):
     calc_2d = Calculator(descriptors, ignore_3D=False)
     calc_3d = Calculator(descriptors, ignore_3D=True)
     
+    if '.' in smiles_list[0]:
+        max_wt = 0
+        heavy_cmpd = ''
+    for cmpd in smiles_list[0].split('.'):
+        wt = Chem.Descriptors.MolWt(Chem.MolFromSmiles(cmpd))
+        if max_wt < wt:
+            max_wt = wt
+            heavy_cmpd = cmpd
+            
+    smiles_list = [heavy_cmpd]
+
     mols = [Chem.MolFromSmiles(Chem.MolToSmiles(Chem.MolFromSmiles(smi))) for smi in smiles_list]
     if mols[0] is None:
         return 'unknown'
