@@ -47,11 +47,11 @@ def get_ld50(smiles_list, mesure_variable):
     if '.' in smiles_list[0]:
         max_wt = 0
         heavy_cmpd = ''
-    for cmpd in smiles_list[0].split('.'):
-        wt = Chem.Descriptors.MolWt(Chem.MolFromSmiles(cmpd))
-        if max_wt < wt:
-            max_wt = wt
-            heavy_cmpd = cmpd
+        for cmpd in smiles_list[0].split('.'):
+            wt = Chem.Descriptors.MolWt(Chem.MolFromSmiles(cmpd))
+            if max_wt < wt:
+                max_wt = wt
+                heavy_cmpd = cmpd
             
     smiles_list = [heavy_cmpd]
 
