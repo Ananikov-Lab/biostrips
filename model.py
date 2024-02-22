@@ -68,7 +68,7 @@ def get_ld50(smiles_list, mesure_variable):
             else:
                 molwt = Descriptors.MolWt(Chem.MolFromSmiles(smiles_list[0]))
                 list_ld50.append((10**(-1*round(y_hat[0][0], 2)))*molwt)
-            return str(max(list_ld50))
+            return str(round(max(list_ld50), 2))
 
     mols = [Chem.MolFromSmiles(Chem.MolToSmiles(Chem.MolFromSmiles(smi))) for smi in smiles_list]
     if mols[0] is None:
@@ -81,7 +81,7 @@ def get_ld50(smiles_list, mesure_variable):
 
     y_hat = experimental_setup.scaler.inverse_transform(mordred_rf.predict(df[m_new].to_numpy()))
     if mesure_variable == 'mol/kg or mol/L':
-        return str(10**(-1*round(y_hat[0][0], 2)))
+        return str(round(10**(-1*round(y_hat[0][0], 2)), 2))
     else:
         molwt = Descriptors.MolWt(Chem.MolFromSmiles(smiles_list[0]))
-        return  str((10**(-1*round(y_hat[0][0], 2)))*molwt)
+        return  str(round((10**(-1*round(y_hat[0][0], 2)))*molwt, 2))

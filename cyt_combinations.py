@@ -343,7 +343,7 @@ def generate_combinations(raw_data, variables_names, inverse_letters_dict):
                 flag = true_role
             true_letter = inverse_letters_dict[int(role.split('-')[1])]
             true_role_dict = {}
-            true_role_dict[role] = true_letter
+            true_role_dict[role] = [true_letter, raw_data[4][index]]
             role_for_dict[raw_data[1][index]] = true_role_dict
         else:
             pass
