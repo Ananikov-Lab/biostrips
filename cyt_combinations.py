@@ -333,20 +333,21 @@ def generate_combinations(raw_data, variables_names, inverse_letters_dict):
     for role in raw_data[2]:
         index = raw_data[2].index(role)
         true_role = role.split('-')[0]
-        if true_role in variables_names:
-            if flag == '':
-                flag = true_role
-                role_for_dict = {}
-            if flag != true_role:
-                role_dict[flag] = role_for_dict
-                role_for_dict = {}
-                flag = true_role
+        if flag == '':
+            flag = true_role
+            role_for_dict = {}
+        if flag != true_role:
+            role_dict[flag] = role_for_dict
+            role_for_dict = {}
+            flag = true_role
+        try:
             true_letter = inverse_letters_dict[int(role.split('-')[1])]
-            true_role_dict = {}
-            true_role_dict[role] = [true_letter, raw_data[4][index]]
-            role_for_dict[raw_data[1][index]] = true_role_dict
-        else:
-            pass
+        except:
+            true_letter = ''
+        true_role_dict = {}
+        true_role_dict[role] = [true_letter, raw_data[4][index]]
+        role_for_dict[raw_data[1][index]] = true_role_dict
+
     return sorted(combinations), role_dict
 
 

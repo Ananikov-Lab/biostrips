@@ -22,13 +22,12 @@ def generate_table(path_input, mesure):
         for variable in variables_names:
             text += variable + '-'
         text = text[:-1]
-        first_string = print(f'Reaction name:, {text}', file=out_file)
+        print(f'Reaction name:, {text}', file=out_file)
         for name, values in legend.items():
             print(name, file=out_file)
             for name_val, val in values.items():
                 print(f'{name_val},{list(val.keys())[0]}, {list(val.values())[0][0]}, {list(val.values())[0][1]}', file=out_file)
-
+        
     number_of_combinations = len(combinations)
 
     return path_out, number_of_combinations
-
