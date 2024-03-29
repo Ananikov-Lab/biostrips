@@ -347,6 +347,7 @@ def generate_combinations(raw_data, variables_names, inverse_letters_dict):
         true_role_dict = {}
         true_role_dict[role] = [true_letter, raw_data[4][index]]
         role_for_dict[raw_data[1][index]] = true_role_dict
+    role_dict[flag] = role_for_dict
 
     return sorted(combinations), role_dict
 
