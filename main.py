@@ -137,39 +137,28 @@ def create_chart():
     form.colormap.choices = [(el["name"], el["name"]) for el in colormap_list]
     form.cyt_potential.choices = [(el["name"], el["name"]) for el in cyt_potentials_list]
     form.type_mesure.choices = [(el, el) for el in mesure]
+
     if 'send_create' in request.form:
         meta_filename = filename + '.txt'
         if meta_filename in os.listdir(path_data):
             flash('Sorry, this name is taken. Try another filename')
             return redirect(url_for('create_chart'), 302)
         cell_name = form.cell_name.data
-        colormap = form.colormap.data
-        cyt_potential = form.cyt_potential.data
         reagents_info = form.reagents_info.data
         products_info = form.products_info.data
         variables = form.variables.data
         products_variables = form.products_variables.data
         mesure_variable = request.form.get('type_mesure').replace('"', '')
-        for reag_info in reagents_info:
-            try:
-                x = float(reag_info['cc50'].replace(',', '.'))
-            except:
-                reag_info['cc50'] = get_ld50([reag_info['cc50']], mesure_variable)
-
-        for prod_info in products_info:
-            try:
-                x = float(prod_info['cc50'].replace(',', '.'))
-            except:
-                prod_info['cc50'] = get_ld50([prod_info['cc50']], mesure_variable)
-
         save_chart_data(filename, cell_name, reagents_info, products_info, variables, products_variables)
         colormap_name = request.form.get('colormap').replace('"', '')
         cyt_potential_name = request.form.get('cyt_potential').replace('"', '')
         file_info = {'title': meta_filename, 'colormap': colormap_name,
                      'cyt_potential': cyt_potential_name,
                      'mesure_type': mesure_variable}
+        
         path_table, number_of_combinations = calc_combinations(file_info)
         top_combinations = make_chart(file_info, path_table)
+
         with open(f'static/figures/{filename}/top_combinations.txt', 'wt') as f:
             text = f'{filename}\n{colormap_name}\n{cyt_potential_name}\n{number_of_combinations}\n'
             f.write(text)
@@ -232,18 +221,47 @@ def save_chart_data(filename, cell_name, reagents_info, products_info, variables
         print("Variables", variables, sep='\t', end='\n', file=out_file)
         print("Product variables", products_variables, sep='\t', end='\n', file=out_file)
         print("Samples", "Abbreviation", "Mr, g*mol-1", "Mass, g", "CC50, mM", sep='\t', end='\n', file=out_file)
-        print("Starting materials", end='\n', file=out_file)
+        print("Starting materials", end='\t', file=out_file)
+        print("", end='\t', file=out_file)
+        print("", end='\t', file=out_file)
+        print("", end='\t', file=out_file)
+        print("", end='\n', file=out_file)
 
+        flag = "S"
+        dict_output_reag = {
+            "C": "Catalysts",
+            "R": "Reagents",
+            "S": "Solvents"
+        }
         for el in reagents_info:
+            if el["reagent_role"][0] != flag:
+                flag = el["reagent_role"][0]
+                print(dict_output_reag[flag], end='\t', file=out_file)
+                print("", end='\t', file=out_file)
+                print("", end='\t', file=out_file)
+                print("", end='\t', file=out_file)
+                print("", end='\n', file=out_file)
             print(el["reagent_name"], end='\t', file=out_file)
             print(el["reagent_role"], end='\t', file=out_file)
             print(el["molar_mass"], end='\t', file=out_file)
             print(el["mass"], end='\t', file=out_file)
             print(el["cc50"], end='\n', file=out_file)
 
-        print("Products", end='\n', file=out_file)
+        print("Products", end='\t', file=out_file)
+        print("", end='\t', file=out_file)
+        print("", end='\t', file=out_file)
+        print("", end='\t', file=out_file)
+        print("", end='\n', file=out_file)
 
+        flag = "P"
         for el in products_info:
+            if el["reagent_role"][0] != flag:
+                flag = el["reagent_role"][0]
+                print("Byproducts", end='\t', file=out_file)
+                print("", end='\t', file=out_file)
+                print("", end='\t', file=out_file)
+                print("", end='\t', file=out_file)
+                print("", end='\n', file=out_file)
             print(el["reagent_name"], end='\t', file=out_file)
             print(el["reagent_role"], end='\t', file=out_file)
             print(el["molar_mass"], end='\t', file=out_file)
