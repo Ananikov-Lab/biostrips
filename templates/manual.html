@@ -314,7 +314,11 @@
                         reagent (R),
                         solvent (S), product (P), or byproduct (BP), molecular weight (g/mol), mass (g) used in the
                         reaction,
-                        and CC<sub>50</sub> (mM) in the corresponding cell line. There are two separate forms, first of which is
+                        and CC<sub>50</sub> (mM) in the corresponding cell line.
+                        Instead of CC<sub>50</sub>, experimental or predicted LD<sub>50</sub> values can be used. In the latter case, SMILES should be
+                        provided for all the substances in the reaction and the corresponding LD<sub>50</sub> are calculated by using a
+                        baseline prediction model. To achieve better performance, users can provide their custom models. 
+                        There are two separate forms, first of which is
                         completed
                         for starting materials, catalysts, reagents, and solvents, and the second is for products and
                         byproducts.
@@ -329,9 +333,9 @@
 
                     <p class="lead">Figure 6 shows the completed form for synthesis of 4-nitro-1,1’-biphenyl provided
                         in Figure 2. For considerations used for the designation of substances, see the section
-                        “How to create a source file manually”. Pressing the “Send” button starts the process of
-                        calculating all possible reaction combinations. After this, bio-Strips are ready to be
-                        built.</p>
+                        “How to create a source file manually”. Pressing the “Send” button starts the
+                        process of calculating all possible reaction combinations and building the corresponding
+                         bio-Strips.</p>
                     <img src="{{ url_for('static', filename='images/figure_6.png') }}" width="600"
                          class="img-fluid rounded mx-auto d-block">
                     <p class="text-center fw-normal">Figure 6.<span class="text_center fw-light"> An overview of
@@ -351,18 +355,17 @@
 
             <div class="collapse show" id="collapse_build_biostrips">
                 <div class="card card-body">
-                    <p class="lead">Here, we will describe the process when using the manually created .txt
+                    <p class="lead">Here, we will describe the process when using a manually created .txt
                         source file. When using the dedicated form, it is essentially the same but the source file
                         is generated and uploaded to the server automatically.</p>
                     <p class="lead">To upload the source file to the server, go to the “Upload file and select options”
-                        form in the “<a href="/create_chart">Build Charts</a>” tab and provide the information required: choose the source file and
-                        select the colormap and the cytotoxic potential (the detailed description of the last two
-                        parameters
-                        is provided in the section “How to create a source file by using a dedicated form”) (Figure 7,
+                        form in the “<a href="/create_chart">Build Charts</a>” tab and provide the information required: choose the source file and select the colormap, cytotoxic potential, and variable
+                        dimension (the detailed description of the last three parameters is provided in the section “How to
+                        create a source file by using a dedicated form”.) (Figure 7,
                         top form).
                         Then press the “Send” button. After this, if the source file does not contain any errors,
-                        the “<a href="/create_chart">Build Charts</a>” will show the
-                        “Filename” - a unique id, which can be subsequently used for retrieving this run
+                        the “<a href="/create_chart">Build Charts</a>” will show the “Filename” (Figure 7, bottom
+                        form) - a unique id, which can be subsequently used for retrieving this run
                         quickly (see the “Previous runs” tab in the menu).
                         </p>
 
@@ -386,20 +389,19 @@
                     cytotoxicity scale colored in accordance with the percentile distribution of the CC<sub>50</sub> values
                     are shown above. The length of the sections in the bars corresponds to the “normalized cytotoxicity”
                     (NC) of the substances, whereas their color corresponds to CC<sub>50</sub> measured in the HEK293T cell line.
-                    The bio-Strips are supplied with the reaction title and BF. Only three of 54 bio-Strips are shown
+                    The bio-Strips are supplied with the reaction title and BF. Only four of 54 bio-Strips are shown
                     for clarity.</span></p>
-
-                    <p class="lead">Pressing the “Download” button allows downloading a .zip archive of the results
-                        which
-                        contains the separate bio-Strips in .pdf, .png, and .svg formats, and a .xlsx file with the
-                        calculated
-                        cytotoxicity metrics (BF, CP<sub>i</sub>, CP<sub>f</sub>, and CP<sub>f_rel</sub>) (Figure 9).</p>
+                    <p class="lead">Pressing the “Download” button downloads
+                        a .zip archive of the results which contains two folders: “data” and “results”. The “data” folder contains
+                        the .txt source file used for building the bio-Strips and a .csv file with the legend for the reaction names
+                        and toxicity values used (Figure 9).</p>
                     <img src="{{ url_for('static', filename='images/figure_9.png') }}" width="400"
                          class="img-fluid rounded mx-auto d-block">
                     <p class="text-center fw-normal">Figure 9.<span class="text_center fw-light"> A part of the resulting .xlsx
                     file with the calculated metrics for the above-considered reactions.</span></p>
-                    <p class="lead">The archive also contains the template used for calculations (*.txt) and a
-                    legend for the reaction names (*.csv) (Figure 10).</p>
+                    <p class="lead">The “results” folder contain separate bio-Strips in .pdf, .png,
+                        and .svg formats, and a .csv file with the calculated cytotoxicity metrics (BF, CP<sub>i</sub>, CP<sub>f</sub>, and CP<sub>f_rel</sub>)
+                         (Figure 10).</p>
                     <img src="{{ url_for('static', filename='images/figure_10.png') }}" width="400"
                         class="img-fluid rounded mx-auto d-block">
                     <p class="text-center fw-normal">Figure 10.<span class="text_center fw-light"> The resulting .csv file with the legend for the reaction names. </span></p>
