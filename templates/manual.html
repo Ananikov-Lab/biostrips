@@ -423,6 +423,34 @@
             <div class="d-grid gap-2">
                 <button class="btn btn-success" type="button" data-bs-toggle="collapse"
                         data-bs-target="#collapse_example" aria-controls="collapse_example">
+                    Using predicted LD<sub>50</sub> values for bio-Strips
+                </button>
+            </div>
+
+            <div class="collapse show" id="collapse_build_biostrips">
+                <div class="card card-body">
+
+                    <p class="lead">When experimental values are unavailable, users may resort to using predictive models. On our
+                        platform, we provide a baseline model trained on a large dataset of small organic molecules from
+                        LDToxDB (Feinstein et al., 2021, J. Chem. Inf. Model, 61, 5793). The model achieves a decent R<sup>2</sup> value of
+                        0.54 for this task (Figure 12). To use the model, simply provide SMILES instead of CC<sub>50</sub>.</p>
+                    <p class="lead">For cases where the accuracy of predictions is critical, we suggest that users supply their own custom
+                        model, trained on custom data collected under controlled, fixed conditions. Still, given current state of
+                        the field, experimental data remains the best option.</p>
+                    <img src="{{ url_for('static', filename='images/figure_12.png') }}" width="600"
+                         class="img-fluid rounded mx-auto d-block">
+                    <p class="text-center fw-normal">Figure 12.<span class="text_center fw-light"> Performance of the model: comparison of predicted and ground truth values on a test set
+                        (left) and examples of predictions (right).</span></p>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="mb-3">
+            <div class="d-grid gap-2">
+                <button class="btn btn-success" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapse_example" aria-controls="collapse_example">
                     Sample input files
                 </button>
             </div>
