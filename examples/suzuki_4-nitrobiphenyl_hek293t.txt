@@ -3,7 +3,7 @@ Variables	SM2, CT, R, S
 Product variables	SM2, R			
 Samples	Abbreviation	Mr, g*mol-1	Mass, g 	CC50, mM
 Starting materials				
-Phenylboronic acid	SM1	121.93	0.1220	3.072
+Phenylboronic acid	SM1	121.93	0.1220	3.072	
 1-Iodo-4-nitrobenzene	SM2-1	249.01	0.2490	35.000
 1-Bromo-4-nitrobenzene	SM2-2	202.01	0.2020	4.000
 1-Chloro-4-nitrobenzene	SM2-3	157.55	0.1580	33.000
